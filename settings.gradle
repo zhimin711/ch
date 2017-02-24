@@ -1,0 +1,5 @@
+rootProject.name = 'ch'
+include 'ch-utils'
+include 'ch-jdbc-jpa'
+include 'ch-jdbc-mybatis'
+
