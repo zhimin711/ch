@@ -23,11 +23,11 @@ public class BootGridResult<T> extends BaseResult<T> {
         super(status);
     }
 
-    public BootGridResult(int current, int rowCount, long total, Collection<T> rows) {
+    public BootGridResult(Collection<T> records, int pageNum, int pageSize, long total) {
         super(Constants.SUCCESS);
-        this.current = current;
-        this.rowCount = rowCount;
+        this.current = pageNum;
+        this.rowCount = pageSize;
         this.total = total;
-        this.rows = rows;
+        this.rows = records;
     }
 }
