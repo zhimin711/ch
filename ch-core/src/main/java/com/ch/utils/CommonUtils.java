@@ -117,11 +117,17 @@ public class CommonUtils {
         return pattern.matcher(str).matches();
     }
 
-
-    public static boolean isEmail(String str) {
-        String regex = "\\w+(\\.\\w)*@\\w+(\\.\\w{2,3}){1,3}";
-        Pattern pattern = Pattern.compile("[0-9]*");
-        return pattern.matcher(str).matches();
+    /**
+     * 检测邮箱地址是否合法
+     *
+     * @param email
+     * @return true合法 false不合法
+     */
+    public boolean isEmail(String email) {
+        if (StringUtils.isBlank(email)) return false;
+//        Pattern p = Pattern.compile("\\w+@(\\w+.)+[a-z]{2,3}"); //简单匹配
+        Pattern p = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");//复杂匹配
+        return p.matcher(email).matches();
     }
 
     /**
