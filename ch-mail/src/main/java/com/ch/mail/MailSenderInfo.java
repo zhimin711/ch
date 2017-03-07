@@ -10,12 +10,19 @@ package com.ch.mail;
  */
 public class MailSenderInfo {
 
+
+    // 邮件发送者的地址
     private String[] fromAddresses;
+    // 邮件接收者的地址
     private String[] toAddresses;
     private String[] ccAddresses;
-
+    // 邮件主题
     private String subject;
+    // 邮件的文本内容
     private String content;
+
+    // 邮件附件的文件名
+    private String[] attachFileNames;
 
     public String[] getFromAddresses() {
         return fromAddresses;
@@ -56,4 +63,14 @@ public class MailSenderInfo {
     public void setContent(String content) {
         this.content = content;
     }
+
+
+    public String[] getAttachFileNames() {
+        return attachFileNames;
+    }
+
+    public void setAttachFileNames(String[] attachFileNames) {
+        this.attachFileNames = attachFileNames;
+    }
+
 }
