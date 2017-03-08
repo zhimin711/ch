@@ -67,18 +67,42 @@ public class CommonUtils {
         return arr == null || arr.length <= 0;
     }
 
+    /**
+     * Java封装基本类型
+     *
+     * @param objects
+     * @return
+     */
+    public static boolean isNotBlank(Object... objects) {
+        if (objects != null && objects.length > 0) {
+            boolean isNot = true;
+            for (Object obj : objects) {
+                if (!isNotEmpty(obj)) {
+                    isNot = false;
+                    break;
+                }
+            }
+            return isNot;
+        }
+        return false;
+    }
+
+    /**
+     * Java封装基本类型
+     *
+     * @param obj
+     * @return
+     */
     public static boolean isNotEmpty(Object obj) {
         if (obj == null) {
             return false;
         }
-        //logger.info("object is not empty: {}, is interface: {}", obj, obj.getClass().isAssignableFrom(List.class));
-        if (INTEGER_CLASS.isInstance(obj) || LONG_CLASS.isInstance(obj) || STRING_CLASS.isInstance(obj)) {
+        logger.info("object class: {}", obj, obj.getClass());
+        if (STRING_CLASS.isInstance(obj)) {
             return StringUtils.isNotEmpty(String.valueOf(obj));
         } else if (ARRAY_LIST_CLASS.isInstance(obj)) {
-//            logger.info("object of array list ", obj);
             return !((List) obj).isEmpty();
         } else if (HASH_SET_CLASS.isInstance(obj)) {
-//            logger.info("object of hash set ", obj);
             return !((Set) obj).isEmpty();
         }
         return true;
@@ -89,7 +113,7 @@ public class CommonUtils {
      * @return
      */
     public static String urlHandler(final String url) {
-        if (StringUtils.isBlank(url)) {
+        if (!isNotEmpty(url)) {
             return "";
         }
         String tmp = url;
