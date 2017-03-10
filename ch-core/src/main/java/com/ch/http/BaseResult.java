@@ -55,6 +55,18 @@ public abstract class BaseResult<T> {
         errors.add(new Error(code, name, msg));
     }
 
+
+    public void newError(ErrorCode error, String msg) {
+        if (errors == null) {
+            errors = new HashSet<>();
+        } else {
+            errors = errors.stream().filter(r -> !CommonUtils.isEquals(error.getCode(), r.getCode())).collect(Collectors.toSet());
+        }
+
+        errors.add(new Error(error.getCode(), error.getName(), msg));
+    }
+
+
     public int getStatus() {
         return status;
     }
