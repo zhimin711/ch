@@ -10,8 +10,6 @@ package com.ch;
  */
 public class Constants {
 
-    public final static String DEFAULT_ERROR_CODE = "100";
-
 //    public final static String SAVED_REQUEST_KEY = "shiroSavedRequest";
 
     public final static String CURRENT_USER = "currentUser";

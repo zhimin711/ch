@@ -101,7 +101,7 @@ public abstract class BaseResult<T> {
 
         public void setCode(String code) {
             if (StringUtils.isBlank(code)) {
-                code = Constants.DEFAULT_ERROR_CODE;
+                code = ErrorCode.ERROR.getCode();
             }
             this.code = code;
         }
