@@ -29,8 +29,7 @@ public class CommonUtils {
     static final Class<String> STRING_CLASS = String.class;
     static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
     static final Class<Date> DATE_CLASS = Date.class;
-    static final Class<ArrayList> ARRAY_LIST_CLASS = ArrayList.class;
-    static final Class<HashSet> HASH_SET_CLASS = HashSet.class;
+    static final Class<Collection> COLLECTION_CLASS = Collection.class;
 
     private CommonUtils() {
     }
@@ -42,7 +41,7 @@ public class CommonUtils {
      * @param b
      * @return true or false
      */
-    public static boolean isEquals(Object a, Object b) {
+    public static boolean isEquals(final Object a, final Object b) {
 //        logger.debug("{} === {}", a, b);
         if (INTEGER_CLASS.isInstance(a) && INTEGER_CLASS.isInstance(b)) {
             int x = Integer.valueOf(a.toString());
@@ -62,8 +61,7 @@ public class CommonUtils {
         return false;
     }
 
-    public static boolean isEmpty(Object[] arr) {
-//        logger.debug("Array[{}] is empty?", arr);
+    public static boolean isEmpty(final Object[] arr) {
         return arr == null || arr.length <= 0;
     }
 
@@ -97,13 +95,11 @@ public class CommonUtils {
         if (obj == null) {
             return false;
         }
-        logger.info("object class: {}", obj, obj.getClass());
+        logger.info("object class: {}", obj.getClass());
         if (STRING_CLASS.isInstance(obj)) {
             return StringUtils.isNotEmpty(String.valueOf(obj));
-        } else if (ARRAY_LIST_CLASS.isInstance(obj)) {
-            return !((List) obj).isEmpty();
-        } else if (HASH_SET_CLASS.isInstance(obj)) {
-            return !((Set) obj).isEmpty();
+        } else if (COLLECTION_CLASS.isInstance(obj)) {
+            return !((Collection) obj).isEmpty();
         }
         return true;
     }

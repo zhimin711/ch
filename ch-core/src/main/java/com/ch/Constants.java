@@ -12,6 +12,7 @@ public class Constants {
 
 //    public final static String SAVED_REQUEST_KEY = "shiroSavedRequest";
 
+    public static final String SUPER_ADMIN = "admin";
     public final static String CURRENT_USER = "currentUser";
     public final static String TOKEN = "token";
     public final static String SECURITY_ROLE_PREFIX = "ROLE_";
@@ -19,23 +20,15 @@ public class Constants {
     public final static String SEPARATOR = "-";
 
 
+    public final static String STATUS = "status";
     /**
      * int status
      */
-    public final static String STATUS = "status";
-    public final static int NONE = -1;
+    public final static int UNKNOW = -1;
     public final static int FAILED = 0;
     public final static int SUCCESS = 1;
-    public final static int SELECTED = 1;
     public final static int ERROR = 2;
-
-    /**
-     * String type
-     */
-    public final static String MENU = "0";
-    public final static String PAGE = "1";
-    public final static String BUTTON = "2";
-
+    public final static int SELECTED = 1;
     /**
      * String status
      */
@@ -52,10 +45,23 @@ public class Constants {
     public final static String IS_SYS = "1";
 
     /**
+     * String type 0~9
+     */
+    public final static String ZERO = "0";
+    public final static String ONE = "1";
+    public final static String TWO = "2";
+    public final static String THREE = "3";
+    public final static String FOUR = "4";
+    public final static String FIVE = "5";
+    public final static String SIX = "6";
+    public final static String SEVEN = "7";
+    public final static String EIGHT = "8";
+    public final static String NINE = "9";
+
+    /**
      * boolean status
      */
     public final static boolean YES = true;
     public final static boolean NO = false;
 
-    public static final String SUPER_ADMIN = "admin";
 }

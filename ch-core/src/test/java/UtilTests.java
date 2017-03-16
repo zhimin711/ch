@@ -1,4 +1,5 @@
 import com.ch.utils.CommonUtils;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 /**
@@ -13,6 +14,7 @@ public class UtilTests {
 
     @Test
     public void testCommon() {
-        System.out.println(CommonUtils.isNotEmpty(1));
+        System.out.println(CommonUtils.isNotEmpty(Lists.newArrayList("1")));
     }
+
 }
