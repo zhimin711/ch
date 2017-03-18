@@ -4,6 +4,7 @@ import com.ch.pojo.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -224,4 +225,116 @@ public class CommonUtils {
         }
         return target;
     }
+
+
+    /**
+     * set属性的值到Bean
+     *
+     * @param target
+     * @param propertyValueMap
+     */
+    public static void setFieldValue(Object target, Map<String, String> propertyValueMap) {
+        Class<?> cls = target.getClass();
+        // 取出bean里的所有方法
+        Method[] methods = cls.getDeclaredMethods();
+        Field[] fields = cls.getDeclaredFields();
+
+        for (Field field : fields) {
+            try {
+                String fieldSetName = getSetMethodName(field.getName());
+                if (!existSetMethod(methods, fieldSetName)) {
+                    continue;
+                }
+                Method fieldSetMet = cls.getMethod(fieldSetName, field.getType());
+                String value = propertyValueMap.get(field.getName());
+                if (null != value && !"".equals(value)) {
+                    String fieldType = field.getType().getSimpleName();
+                    if ("String".equals(fieldType)) {
+                        fieldSetMet.invoke(target, value);
+                    } else if ("Date".equals(fieldType) || "Timestamp".equals(fieldType)) {
+                        Date temp = DateUtils.parse(value);
+                        fieldSetMet.invoke(target, temp);
+                    } else if ("Integer".equals(fieldType) || "int".equals(fieldType)) {
+                        Integer val = Integer.parseInt(value);
+                        fieldSetMet.invoke(target, val);
+                    } else if ("Long".equalsIgnoreCase(fieldType) || "long".equals(fieldType)) {
+                        Long temp = Long.parseLong(value);
+                        fieldSetMet.invoke(target, temp);
+                    } else if ("Double".equalsIgnoreCase(fieldType) || "double".equals(fieldType)) {
+                        Double temp = Double.parseDouble(value);
+                        fieldSetMet.invoke(target, temp);
+                    } else if ("Boolean".equalsIgnoreCase(fieldType) || "boolean".equals(fieldType)) {
+                        Boolean temp = Boolean.parseBoolean(value);
+                        fieldSetMet.invoke(target, temp);
+                    } else {
+                        logger.info("not supper type" + fieldType);
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("setFieldValue Error!", e);
+            }
+        }
+
+    }
+
+    /**
+     * 判断是否存在某属性的 set方法
+     *
+     * @param methods
+     * @param fieldSetMethodName
+     * @return boolean
+     */
+    private static boolean existSetMethod(Method[] methods, String fieldSetMethodName) {
+        for (Method method : methods) {
+            if (fieldSetMethodName.equals(method.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 判断是否存在某属性的 get方法
+     *
+     * @param methods
+     * @param fieldGetMethodName
+     * @return boolean
+     */
+    private static boolean existsGetMethod(Method[] methods, String fieldGetMethodName) {
+        for (Method method : methods) {
+            if (fieldGetMethodName.equals(method.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 拼接某属性的 get方法
+     *
+     * @param fieldName
+     * @return String
+     */
+    private static String getGetMethodName(String fieldName) {
+        if (null == fieldName || "".equals(fieldName)) {
+            return null;
+        }
+        return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+    }
+
+    /**
+     * 拼接在某属性的 set方法
+     *
+     * @param fieldName
+     * @return String
+     */
+    private static String getSetMethodName(String fieldName) {
+        if (null == fieldName || "".equals(fieldName)) {
+            return null;
+        }
+        return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+    }
+
+
 }
