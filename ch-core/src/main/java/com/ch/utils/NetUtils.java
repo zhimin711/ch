@@ -26,4 +26,13 @@ public class NetUtils {
 
         return "255.255.255.255";
     }
+
+    public static byte[] getLocalAddress() {
+        try {
+            return InetAddress.getLocalHost().getAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
