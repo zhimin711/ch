@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -64,5 +65,18 @@ public abstract class AbstractService<ID extends Serializable, T> implements ISe
             return false;
         }
         return true;
+    }
+
+    @Override
+    public int batchSave(Collection<T> records) {
+        Long c = records.stream().mapToInt(r -> getMapper().insertSelective(r)).count();
+        return c.intValue();
+    }
+
+    @Override
+    public int batchUpdate(Collection<T> records) {
+//        records.forEach(r -> getMapper().updateByPrimaryKeySelective(r));
+        Long c = records.stream().mapToInt(r -> getMapper().updateByPrimaryKeySelective(r)).count();
+        return c.intValue();
     }
 }
