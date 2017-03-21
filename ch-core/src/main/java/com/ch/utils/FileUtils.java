@@ -1,5 +1,8 @@
 package com.ch.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 描述：com.ch.utils
  *
@@ -10,5 +13,21 @@ package com.ch.utils;
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
 
-//    public static
+    private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+
+    /**
+     * 通过文件名获取后缀
+     *
+     * @param fileName
+     * @return
+     */
+    public static String getFileSuffix(String fileName) {
+        logger.info("File name: {}", fileName);
+        int start = fileName.lastIndexOf(".");
+        String suffix = fileName.substring(start);
+        if (CommonUtils.isNotEmpty(suffix)) {
+            return suffix;
+        }
+        return null;
+    }
 }
