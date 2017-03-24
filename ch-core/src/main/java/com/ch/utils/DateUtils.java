@@ -24,9 +24,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static final String SHORT_CN = "yyyy-MM-dd";
     public static final String SHORT_ZH_CN = "yyyy年MM月dd日";
 
-    public static final String TIME_EN = "yyyy/MM/dd HH:MM:ss";
-    public static final String TIME_CN = "yyyy-MM-dd HH:MM:ss";
-    public static final String TIME_ZH_CN = "yyyy年MM月dd日 HH时MM分ss秒";
+    public static final String TIME_EN = "yyyy/MM/dd HH:mm:ss";
+    public static final String TIME_CN = "yyyy-MM-dd HH:mm:ss";
+    public static final String TIME_ZH_CN = "yyyy年MM月dd日 HH时mm分ss秒";
     public static final String TIME_UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     private DateUtils() {

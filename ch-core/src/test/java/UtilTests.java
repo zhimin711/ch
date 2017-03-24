@@ -1,4 +1,5 @@
 import com.ch.utils.CommonUtils;
+import com.ch.utils.DateUtils;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -16,5 +17,12 @@ public class UtilTests {
     public void testCommon() {
         System.out.println(CommonUtils.isNotEmpty(Lists.newArrayList("1")));
     }
+
+
+    @Test
+    public void testDate() {
+        System.out.println(DateUtils.parse("2018-01-02 11:22:33", DateUtils.TIME_CN));
+    }
+
 
 }
