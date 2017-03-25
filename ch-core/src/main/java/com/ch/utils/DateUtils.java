@@ -34,12 +34,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static String format(Date date) {
         if (null == date) {
-            date = currentTime();
+            return null;
         }
         return format(date, TIME_CN);
     }
 
     public static String format(Date date, String pattern) {
+        if (null == date) {
+            return null;
+        }
         if (StringUtils.isBlank(pattern)) {
             pattern = TIME_CN;
         }

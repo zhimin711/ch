@@ -1,6 +1,7 @@
 package com.ch.utils;
 
 import com.ch.pojo.KeyValue;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -231,9 +232,9 @@ public class CommonUtils {
      * set属性的值到Bean
      *
      * @param target
-     * @param propertyValueMap
+     * @param fieldValueMap
      */
-    public static void setFieldValue(Object target, Map<String, String> propertyValueMap) {
+    public static void setFieldValue(Object target, Map<String, String> fieldValueMap) {
         Class<?> cls = target.getClass();
         // 取出bean里的所有方法
         Method[] methods = cls.getDeclaredMethods();
@@ -246,7 +247,7 @@ public class CommonUtils {
                     continue;
                 }
                 Method fieldSetMet = cls.getMethod(fieldSetName, field.getType());
-                String value = propertyValueMap.get(field.getName());
+                String value = fieldValueMap.get(field.getName());
                 if (null != value && !"".equals(value)) {
                     String fieldType = field.getType().getSimpleName();
                     if ("String".equals(fieldType)) {
@@ -274,6 +275,49 @@ public class CommonUtils {
                 logger.error("setFieldValue Error!", e);
             }
         }
+
+    }
+
+
+    /**
+     * 取Bean的属性和值对应关系的MAP
+     *
+     * @param bean
+     * @return Map
+     */
+    public static Map<String, String> getFieldValueMap(Object bean) {
+        Class<?> cls = bean.getClass();
+        Map<String, String> valueMap = Maps.newHashMap();
+        // 取出bean里的所有方法
+        Method[] methods = cls.getDeclaredMethods();
+        Field[] fields = cls.getDeclaredFields();
+
+        for (Field field : fields) {
+            try {
+                String fieldType = field.getType().getSimpleName();
+                String fieldGetName = getGetMethodName(field.getName());
+                if (!existsGetMethod(methods, fieldGetName)) {
+                    continue;
+                }
+//                Method fieldGetMet = cls.getMethod(fieldGetName, new Class[]{});
+//                Object fieldVal = fieldGetMet.invoke(bean, new Object[]{});
+
+                Method fieldGetMet = cls.getMethod(fieldGetName);
+                Object fieldVal = fieldGetMet.invoke(bean);
+                String result = null;
+                if ("Date".equals(fieldType) || "Timestamp".equals(fieldType)) {
+                    result = DateUtils.format((Date) fieldVal);
+                } else {
+                    if (null != fieldVal) {
+                        result = String.valueOf(fieldVal);
+                    }
+                }
+                valueMap.put(field.getName(), result);
+            } catch (Exception e) {
+                logger.error("getFieldValueMap Error!", e);
+            }
+        }
+        return valueMap;
 
     }
 
