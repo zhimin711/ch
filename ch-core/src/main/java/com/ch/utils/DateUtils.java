@@ -139,4 +139,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         return 0L;
     }
+
+
+    public static Date getFirstDayOfMouth(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        return c.getTime();
+    }
 }

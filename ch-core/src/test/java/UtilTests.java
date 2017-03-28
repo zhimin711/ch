@@ -18,10 +18,13 @@ public class UtilTests {
         System.out.println(CommonUtils.isNotEmpty(Lists.newArrayList("1")));
     }
 
+    Object o;
 
     @Test
     public void testDate() {
-        System.out.println(DateUtils.parse("2018-01-02 11:22:33", DateUtils.TIME_CN));
+        o = DateUtils.getFirstDayOfMouth(DateUtils.currentTime());
+        System.out.println(o);
+        System.out.println(DateUtils.parse("2018-01-02 00:00:00"));
     }
 
 
