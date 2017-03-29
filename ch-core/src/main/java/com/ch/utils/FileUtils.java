@@ -42,7 +42,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @return
      * @throws IOException
      */
-    private String getCharset(InputStream inputStream) throws IOException {
+    public static String getCharset(InputStream inputStream) throws IOException {
         BufferedInputStream bin = new BufferedInputStream(inputStream);
         int p = (bin.read() << 8) + bin.read();
         String code;
