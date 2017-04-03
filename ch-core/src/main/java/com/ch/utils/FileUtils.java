@@ -3,9 +3,7 @@ package com.ch.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * 描述：com.ch.utils
@@ -38,13 +36,23 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
     /**
      * Txt file get charset
      *
-     * @param inputStream
+     * @param file
      * @return
      * @throws IOException
      */
-    public static String getCharset(InputStream inputStream) throws IOException {
-        BufferedInputStream bin = new BufferedInputStream(inputStream);
-        int p = (bin.read() << 8) + bin.read();
+    public static String getCharset(File file) {
+        int p = 0;
+        InputStream is = null;
+        BufferedInputStream bin = null;
+        try {
+            is = new FileInputStream(file);
+            bin = new BufferedInputStream(is);
+            p = (bin.read() << 8) + bin.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.close(bin, is);
+        }
         String code;
         switch (p) {
             case 0xefbb:
