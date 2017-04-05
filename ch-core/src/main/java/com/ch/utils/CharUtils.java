@@ -30,7 +30,7 @@ public class CharUtils {
     }
 
     // 只能判断部分CJK字符（CJK统一汉字）
-    public static boolean isChineseByREG(String str) {
+    public static boolean isChineseByUnicode(String str) {
         if (str == null) {
             return false;
         }
@@ -39,7 +39,7 @@ public class CharUtils {
     }
 
     // 只能判断部分CJK字符（CJK统一汉字）
-    public static boolean isChineseByName(String str) {
+    public static boolean isChineseByCJK(String str) {
         if (str == null) {
             return false;
         }
@@ -49,4 +49,20 @@ public class CharUtils {
         Pattern pattern = Pattern.compile(reg);
         return pattern.matcher(str.trim()).find();
     }
+
+
+    /**
+     * 字符串转换unicode
+     */
+    public static String string2Unicode(String string) {
+        StringBuilder unicode = new StringBuilder();
+        for (int i = 0; i < string.length(); i++) {
+            // 取出每一个字符
+            char c = string.charAt(i);
+            // 转换为unicode
+            unicode.append("\\u").append(Integer.toHexString(c));
+        }
+        return unicode.toString();
+    }
+
 }

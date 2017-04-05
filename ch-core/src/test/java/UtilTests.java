@@ -25,6 +25,13 @@ public class UtilTests {
         o = DateUtils.getFirstDayOfMouth(DateUtils.currentTime());
         System.out.println(o);
         System.out.println(DateUtils.parse("2018-01-02 00:00:00"));
+
+        String sql = "CREATE TABLE IF NOT EXISTS `TI_LINE_REQUIRE_TOTAL_INFO_20170328` SELECT\n" +
+                "\t*\n" +
+                "FROM\n" +
+                "\tTI_LINE_REQUIRE_TOTAL_INFO\n" +
+                "WHERE\n" +
+                "\treceipt_time > '2017-03-26'";
     }
 
 
