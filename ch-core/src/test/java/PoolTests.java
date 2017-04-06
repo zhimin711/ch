@@ -22,6 +22,7 @@ public class PoolTests {
         Runnable r1 = () -> System.out.println("test1");
         DefaultThreadPool.exe(r1);
         Thread.sleep(1000);
+
         Callable<String> task = () -> "Callable - String";
 
         Future<String> future = DefaultThreadPool.submit(task);

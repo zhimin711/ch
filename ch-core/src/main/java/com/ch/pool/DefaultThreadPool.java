@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.concurrent.*;
 
 /**
- * 描述：com.ch.pool
+ * 描述：默认静态线程池
+ * <p>queue size: 1000</p>
+ * <p>core pool size: 10</p>
+ * <p>max pool size: 30</p>
+ * <p>keep alive time: 50</p>
  *
  * @author 80002023
  *         2017/3/15.
@@ -25,7 +29,7 @@ public class DefaultThreadPool {
 //        POOL = createFixedPool(10);
     }
 
-    public static ExecutorService getInstance() {
+    private static ExecutorService getInstance() {
         return POOL;
     }
 
@@ -33,10 +37,22 @@ public class DefaultThreadPool {
         return Executors.newFixedThreadPool(num);
     }
 
+    /**
+     * 执行一个线程，无返回
+     *
+     * @param command 线程
+     */
     public static void exe(Runnable command) {
         getInstance().execute(command);
     }
 
+    /**
+     * 提交线程任务
+     *
+     * @param task 线程任务
+     * @param <T>  任务执行对象
+     * @return 返回线程执行结果
+     */
     public static <T> Future<T> submit(Callable<T> task) {
         return getInstance().submit(task);
     }
@@ -44,15 +60,19 @@ public class DefaultThreadPool {
     public static <T> T invokeAny(Collection<Callable<T>> tasks) {
         try {
             return getInstance().invokeAny(tasks);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-
+    /**
+     * 批量提交线程任务
+     *
+     * @param tasks 线程任务
+     * @param <T>   任务执行对象
+     * @return 返回线程执行结果集
+     */
     public static <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks) {
         try {
             return getInstance().invokeAll(tasks);
@@ -62,9 +82,14 @@ public class DefaultThreadPool {
         return null;
     }
 
-    public static void shutdown() {
-        if (getInstance() != null && !getInstance().isShutdown())
+    /**
+     * 关闭线程池
+     */
+    @Deprecated
+    protected static void shutdown() {
+        if (getInstance() != null && !getInstance().isShutdown()) {
             getInstance().shutdown();
+        }
     }
 
 

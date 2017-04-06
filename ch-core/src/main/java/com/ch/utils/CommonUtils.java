@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * 描述：com.ch.utils
+ * 描述：通用工具类
  *
  * @author 80002023
  *         2017/2/4.
@@ -24,14 +24,14 @@ public class CommonUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
-    static final Class<Integer> INTEGER_CLASS = Integer.class;
-    static final Class<Long> LONG_CLASS = Long.class;
-    static final Class<Double> DOUBLE_CLASS = Double.class;
-    static final Class<Float> FLOAT_CLASS = Float.class;
-    static final Class<String> STRING_CLASS = String.class;
-    static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
+    private static final Class<Integer> INTEGER_CLASS = Integer.class;
+    private static final Class<Long> LONG_CLASS = Long.class;
+    private static final Class<Double> DOUBLE_CLASS = Double.class;
+    private static final Class<Float> FLOAT_CLASS = Float.class;
+    private static final Class<String> STRING_CLASS = String.class;
+    private static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
     static final Class<Date> DATE_CLASS = Date.class;
-    static final Class<Collection> COLLECTION_CLASS = Collection.class;
+    private static final Class<Collection> COLLECTION_CLASS = Collection.class;
 
     private CommonUtils() {
     }
@@ -39,8 +39,8 @@ public class CommonUtils {
     /**
      * Java封装基本类型比较 Integer、String、Long、Double、Float
      *
-     * @param a
-     * @param b
+     * @param a 对象a
+     * @param b 对象b
      * @return true or false
      */
     public static boolean isEquals(final Object a, final Object b) {
@@ -70,8 +70,8 @@ public class CommonUtils {
     /**
      * Java封装基本类型
      *
-     * @param objects
-     * @return
+     * @param objects 对象集合
+     * @return true or false
      */
     public static boolean isNotBlank(Object... objects) {
         if (objects != null && objects.length > 0) {
@@ -90,14 +90,14 @@ public class CommonUtils {
     /**
      * Java封装基本类型
      *
-     * @param obj
-     * @return
+     * @param obj 对象
+     * @return true or false
      */
     public static boolean isNotEmpty(Object obj) {
         if (obj == null) {
             return false;
         }
-        logger.info("object class: {}", obj.getClass());
+        logger.debug("isNotEmpty object class: {}", obj.getClass());
         if (STRING_CLASS.isInstance(obj)) {
             return StringUtils.isNotEmpty(String.valueOf(obj));
         } else if (COLLECTION_CLASS.isInstance(obj)) {
@@ -107,8 +107,8 @@ public class CommonUtils {
     }
 
     /**
-     * @param url
-     * @return
+     * @param url 字符串
+     * @return true or false
      */
     public static String urlHandler(final String url) {
         if (!isNotEmpty(url)) {
@@ -130,8 +130,8 @@ public class CommonUtils {
     /**
      * check string is number
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return true or false
      */
     public static boolean isNumeric(String str) {
 
@@ -142,7 +142,7 @@ public class CommonUtils {
     /**
      * 检测邮箱地址是否合法
      *
-     * @param email
+     * @param email 字符串
      * @return true合法 false不合法
      */
     public static boolean isEmail(String email) {
@@ -155,8 +155,8 @@ public class CommonUtils {
     /**
      * check string is decimal
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return true or false
      */
     public static boolean isDecimal(String str) {
         String s = "0.00";
@@ -170,8 +170,8 @@ public class CommonUtils {
     /**
      * check string contain digit
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return true or false
      */
     public static boolean hasDigit(String str) {
         Pattern pattern = Pattern.compile(".*\\d+.*");
@@ -182,9 +182,9 @@ public class CommonUtils {
     /**
      * Get list keyValue by key
      *
-     * @param records
-     * @param key
-     * @return
+     * @param records KeyValue集合
+     * @param key Key键值
+     * @return key的值
      */
     public static KeyValue getKey(final List<KeyValue> records, String key) {
         if (records != null) {
@@ -199,11 +199,11 @@ public class CommonUtils {
     /**
      * set target object of property value
      *
-     * @param target
-     * @param methodName
-     * @param value
-     * @param clazz
-     * @return
+     * @param target 目标对象
+     * @param methodName 对象方法
+     * @param value 值
+     * @param clazz 值类型
+     * @return 返回对象
      */
     public static Object setPropertyValue(Object target, String methodName, Object value, Class clazz) {
         if (target != null && methodName != null) {
@@ -231,8 +231,8 @@ public class CommonUtils {
     /**
      * set属性的值到Bean
      *
-     * @param target
-     * @param fieldValueMap
+     * @param target 目标对象
+     * @param fieldValueMap 属性与值Map
      */
     public static void setFieldValue(Object target, Map<String, String> fieldValueMap) {
         Class<?> cls = target.getClass();
@@ -282,7 +282,7 @@ public class CommonUtils {
     /**
      * 取Bean的属性和值对应关系的MAP
      *
-     * @param bean
+     * @param bean 目标对象
      * @return Map
      */
     public static Map<String, String> getFieldValueMap(Object bean) {
@@ -324,8 +324,8 @@ public class CommonUtils {
     /**
      * 判断是否存在某属性的 set方法
      *
-     * @param methods
-     * @param fieldSetMethodName
+     * @param methods 对象方法
+     * @param fieldSetMethodName Set方法名
      * @return boolean
      */
     private static boolean existSetMethod(Method[] methods, String fieldSetMethodName) {
@@ -340,8 +340,8 @@ public class CommonUtils {
     /**
      * 判断是否存在某属性的 get方法
      *
-     * @param methods
-     * @param fieldGetMethodName
+     * @param methods 对象方法
+     * @param fieldGetMethodName Get方法名
      * @return boolean
      */
     private static boolean existsGetMethod(Method[] methods, String fieldGetMethodName) {
@@ -357,7 +357,7 @@ public class CommonUtils {
     /**
      * 拼接某属性的 get方法
      *
-     * @param fieldName
+     * @param fieldName 属性名
      * @return String
      */
     private static String getGetMethodName(String fieldName) {
@@ -370,7 +370,7 @@ public class CommonUtils {
     /**
      * 拼接在某属性的 set方法
      *
-     * @param fieldName
+     * @param fieldName 属性名
      * @return String
      */
     private static String getSetMethodName(String fieldName) {
