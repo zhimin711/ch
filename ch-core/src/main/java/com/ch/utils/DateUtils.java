@@ -32,6 +32,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     private DateUtils() {
     }
 
+    /**
+     * 格式化时间为字符串（yyyy-MM-dd HH:mm:ss）
+     *
+     * @param date 时间
+     * @return 时间字符串
+     */
     public static String format(Date date) {
         if (null == date) {
             return null;
@@ -39,6 +45,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return format(date, TIME_CN);
     }
 
+    /**
+     * 根据指定格式，格式化时间为字符串
+     * 没有指定，默认格式为：yyyy-MM-dd HH:mm:ss
+     *
+     * @param date    时间
+     * @param pattern 时间格式
+     * @return 时间字符串
+     */
     public static String format(Date date, String pattern) {
         if (null == date) {
             return null;
@@ -50,6 +64,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return sdf.format(date);
     }
 
+    /**
+     * 格式化时间为日期字符串（yyyy-MM-dd）
+     *
+     * @param date 时间
+     * @return 日期字符串
+     */
     public static String formatShort(Date date) {
         if (date == null) {
             return "";
@@ -58,6 +78,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return sdf.format(date);
     }
 
+    /**
+     * 格式化时间为中文日期字符串（yyyy年MM月dd日）
+     *
+     * @param date 时间
+     * @return 日期字符串
+     */
     public static String formatShortOfCN(Date date) {
         if (date == null) {
             return "";
@@ -66,7 +92,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return sdf.format(date);
     }
 
-    public static String formatShortOfUTC(Date date) {
+    /**
+     * 格式化时间为UTC时间字符串
+     *
+     * @param date 时间
+     * @return UTC符串
+     */
+    public static String formatOfUTC(Date date) {
         if (date == null) {
             return "";
         }
@@ -74,7 +106,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return sdf.format(date);
     }
 
-
+    /**
+     * 根据时间格式解析时间字符串
+     *
+     * @param dateStr 时间字符串
+     * @param pattern 时间解析格式
+     * @return 时间
+     */
     public static Date parse(String dateStr, String pattern) {
         if (StringUtils.isBlank(dateStr)) {
             return null;
@@ -88,18 +126,31 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return null;
     }
 
+    /**
+     * 解析时间字符串（格式：）
+     *
+     * @param dateStr 时间字符串
+     * @return 时间
+     */
     public static Date parse(String dateStr) {
         return parse(dateStr, TIME_CN);
     }
 
+    /**
+     * 获取当前时间
+     *
+     * @return 返回当前时间
+     */
     public static Date currentTime() {
         return Calendar.getInstance().getTime();
     }
 
     /**
-     * @param dateStart
-     * @param dateEnd
-     * @return
+     * 日期时间比较
+     *
+     * @param dateStart 开始时间
+     * @param dateEnd   结束时间
+     * @return -1 or 0 or 1
      */
     public static int compare(Date dateStart, Date dateEnd) {
         return dateStart.compareTo(dateEnd);
@@ -112,7 +163,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date1      时间字符串1
      * @param date2      时间字符串2
      * @return 返回 -1：小于，0：等于，1：大于
-     * @throws ParseException
      */
     public static int compareTo(String date1, String date2, String dateFormat) {
         if (!CommonUtils.isNotEmpty(dateFormat)) {
@@ -130,6 +180,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return d1.compareTo(d2);
     }
 
+    /**
+     * 转换过期时间为秒（相对当前时间）
+     *
+     * @param expires 过期时间
+     * @return
+     */
     public static Long convertExpiresToSeconds(Date expires) {
         logger.info("convert expires date seconds! {}", expires);
         Date dateTime = currentTime();
@@ -140,7 +196,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return 0L;
     }
 
-
+    /**
+     * 获取指定日期的月份的第一天
+     *
+     * @param date 日期
+     * @return 第一天
+     */
     public static Date getFirstDayOfMouth(Date date) {
         if (date == null) {
             return null;

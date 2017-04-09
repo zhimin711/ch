@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 
 /**
- * 描述：com.ch.utils
+ * 描述：文件工具类
  *
  * @author 80002023
  *         2017/3/6.
@@ -18,10 +18,10 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
     private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     /**
-     * 通过文件名获取后缀
+     * 通过文件名获得扩展名
      *
-     * @param fileName
-     * @return
+     * @param fileName 文件名
+     * @return 文件扩展名
      */
     public static String getFileExtension(String fileName) {
         logger.info("File name: {}", fileName);
@@ -36,9 +36,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
     /**
      * Txt file get charset
      *
-     * @param file
-     * @return
-     * @throws IOException
+     * @param file 文件
+     * @return 编码
      */
     public static String getCharset(File file) {
         int p = 0;
