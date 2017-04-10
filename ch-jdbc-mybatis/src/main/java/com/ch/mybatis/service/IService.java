@@ -1,5 +1,7 @@
 package com.ch.mybatis.service;
 
+import com.github.pagehelper.PageInfo;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -15,57 +17,87 @@ import java.util.List;
 public interface IService<ID extends Serializable, T> {
 
     /**
-     * @param record
-     * @return
+     * 保存记录
+     *
+     * @param record 对象记录
+     * @return 记录条数
      */
     int save(T record);
 
     /**
-     * @param record
-     * @return
+     * 根据对象主键更新记录
+     *
+     * @param record 对象记录
+     * @return 记录条数
      */
     int update(T record);
 
     /**
-     * @param id
-     * @return
+     * 根据主键删除记录
+     *
+     * @param id 主键ID
+     * @return 记录条数
      */
     int delete(ID id);
 
     /**
-     * @param id
-     * @return
+     * 根据主键查询记录
+     *
+     * @param id 主键ID
+     * @return 对象
      */
     T find(ID id);
 
     /**
-     * @param record
-     * @return
+     * 根据对象查询
+     *
+     * @param record 对象
+     * @return 记录集合
      */
     List<T> find(T record);
 
     /**
-     * @param record
-     * @param pageNum
-     * @param pageSize
-     * @return
+     * 分页查询记录
+     *
+     * @param record   对象
+     * @param pageNum  页数
+     * @param pageSize 每页大小
+     * @return 记录集合
      */
     List<T> findPageList(T record, int pageNum, int pageSize);
 
+
     /**
-     * @return
+     * 分页查询记录
+     *
+     * @param record   对象
+     * @param pageNum  页数
+     * @param pageSize 每页大小
+     * @return 记录页
+     */
+    PageInfo<T> findPage(T record, int pageNum, int pageSize);
+
+
+    /**
+     * 查询全部
+     *
+     * @return 全部记录
      */
     List<T> findAll();
 
     /**
-     * @param records
-     * @return
+     * 批量保存
+     *
+     * @param records 记录集合
+     * @return 记录条数
      */
     int batchSave(Collection<T> records);
 
     /**
-     * @param records
-     * @return
+     * 批量更新
+     *
+     * @param records 记录集合
+     * @return 记录条数
      */
     int batchUpdate(Collection<T> records);
 }

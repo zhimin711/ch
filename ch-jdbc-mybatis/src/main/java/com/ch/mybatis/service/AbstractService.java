@@ -1,6 +1,7 @@
 package com.ch.mybatis.service;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.common.Mapper;
@@ -78,5 +79,12 @@ public abstract class AbstractService<ID extends Serializable, T> implements ISe
 //        records.forEach(r -> getMapper().updateByPrimaryKeySelective(r));
         Long c = records.stream().mapToInt(r -> getMapper().updateByPrimaryKeySelective(r)).count();
         return c.intValue();
+    }
+
+    @Override
+    public PageInfo<T> findPage(T record, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize, true, true, false);
+        List<T> records = getMapper().select(record);
+        return new PageInfo<>(records);
     }
 }
