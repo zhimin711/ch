@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.text.DecimalFormat;
 
 /**
  * 描述：com.ch.utils
@@ -68,5 +69,31 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
                 code = "GBK";
         }
         return code;
+    }
+
+    /**
+     * 转换文件大小
+     *
+     * @param size 文件大小(B)
+     * @return 最大单位大小
+     */
+    public static String convertSize(final Long size) {
+        String fileSize;
+
+        DecimalFormat df = new DecimalFormat(".##");
+        if (size == null) {
+            fileSize = "-";
+        } else if (size > ONE_TB) {
+            fileSize = df.format(size * 1.0 / ONE_TB) + " TB";
+        } else if (size > ONE_GB) {
+            fileSize = df.format(size * 1.0 / ONE_GB) + " GB";
+        } else if (size > ONE_MB) {
+            fileSize = df.format(size * 1.0 / ONE_MB) + " MB";
+        } else if (size > ONE_KB) {
+            fileSize = df.format(size * 1.0 / ONE_KB) + " KB";
+        } else {
+            fileSize = size + " B";
+        }
+        return fileSize;
     }
 }

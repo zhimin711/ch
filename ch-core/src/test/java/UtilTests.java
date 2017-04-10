@@ -1,5 +1,6 @@
 import com.ch.utils.CommonUtils;
 import com.ch.utils.DateUtils;
+import com.ch.utils.FileUtils;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
@@ -15,7 +16,8 @@ public class UtilTests {
 
     @Test
     public void testCommon() {
-        System.out.println(CommonUtils.isNotEmpty(Lists.newArrayList("1")));
+        o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
+        System.out.println(o);
     }
 
     Object o;
@@ -24,14 +26,15 @@ public class UtilTests {
     public void testDate() {
         o = DateUtils.getFirstDayOfMouth(DateUtils.currentTime());
         System.out.println(o);
-        System.out.println(DateUtils.parse("2018-01-02 00:00:00"));
+        o = DateUtils.parse("2018-01-02 00:00:00");
+        System.out.println(o);
+    }
 
-        String sql = "CREATE TABLE IF NOT EXISTS `TI_LINE_REQUIRE_TOTAL_INFO_20170328` SELECT\n" +
-                "\t*\n" +
-                "FROM\n" +
-                "\tTI_LINE_REQUIRE_TOTAL_INFO\n" +
-                "WHERE\n" +
-                "\treceipt_time > '2017-03-26'";
+
+    @Test
+    public void testFile() {
+        o = FileUtils.convertSize(22209L);
+        System.out.println(o);
     }
 
 
