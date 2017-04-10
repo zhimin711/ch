@@ -21,6 +21,11 @@ public class IOUtils extends org.apache.commons.io.IOUtils {
     private IOUtils() {
     }
 
+    /**
+     * 关闭IO
+     *
+     * @param closeables IO
+     */
     public static void close(Closeable... closeables) {
         if (closeables != null) {
             for (Closeable closeable : closeables) {
