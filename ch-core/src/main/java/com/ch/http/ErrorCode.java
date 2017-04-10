@@ -1,7 +1,7 @@
 package com.ch.http;
 
 /**
- * 描述：com.ch.http
+ * 描述：定义错误枚举类
  *
  * @author 80002023
  *         2017/3/10.

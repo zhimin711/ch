@@ -5,7 +5,7 @@ import com.ch.Constants;
 import java.util.Collection;
 
 /**
- * 描述：com.ch.http
+ * 描述：封装HTTP请求结果
  *
  * @author 80002023
  *         2017/2/5.

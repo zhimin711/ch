@@ -20,24 +20,51 @@ import java.util.stream.Collectors;
  */
 public abstract class BaseResult<T> {
 
+    /**
+     * 请求状态
+     */
     private int status;
+    /**
+     * 记录集合
+     */
     private Collection<T> records;
+    /**
+     * 请求错误集合
+     */
     private Set<Error> errors;
 
+    /**
+     * @param status 请求状态
+     */
     public BaseResult(int status) {
         setStatus(status);
     }
 
+    /**
+     * 根据记录集合创建一个请求结果
+     *
+     * @param records 记录集合
+     */
     public BaseResult(Collection<T> records) {
         setStatus(Constants.SUCCESS);
         setRecords(records);
     }
 
+    /**
+     * 根据一条记录创建一个请求结果
+     *
+     * @param record 记录
+     */
     public BaseResult(T record) {
         setStatus(Constants.SUCCESS);
         this.put(record);
     }
 
+    /**
+     * 放一条记录到请求结果
+     *
+     * @param record 记录
+     */
     public void put(T record) {
         if (records == null) {
             records = new HashSet<T>();
@@ -45,6 +72,13 @@ public abstract class BaseResult<T> {
         records.add(record);
     }
 
+    /**
+     * 创建一个错误放入当前结果
+     *
+     * @param code 错误码
+     * @param name 名称
+     * @param msg  消息
+     */
     public void newError(String code, String name, String msg) {
         if (errors == null) {
             errors = new HashSet<>();
@@ -55,7 +89,12 @@ public abstract class BaseResult<T> {
         errors.add(new Error(code, name, msg));
     }
 
-
+    /**
+     * 使用一个已知错误放入请求结果
+     *
+     * @param error 错误
+     * @param msg   消息
+     */
     public void newError(ErrorCode error, String msg) {
         if (errors == null) {
             errors = new HashSet<>();

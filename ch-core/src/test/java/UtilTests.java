@@ -14,13 +14,13 @@ import org.junit.Test;
  */
 public class UtilTests {
 
+    Object o;
+
     @Test
     public void testCommon() {
         o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
         System.out.println(o);
     }
-
-    Object o;
 
     @Test
     public void testDate() {
