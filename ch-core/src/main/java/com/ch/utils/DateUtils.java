@@ -3,10 +3,10 @@ package com.ch.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * 描述：com.ch.utils
@@ -22,12 +22,20 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String SHORT_EN = "yyyy/MM/dd";
     public static final String SHORT_CN = "yyyy-MM-dd";
-    public static final String SHORT_ZH_CN = "yyyy年MM月dd日";
+    public static final String SHORT_CN_ZH = "yyyy年MM月dd日";
+    public static final String SHORT_ZH_CN2 = "yyyy\u5E74M\u6708d\u65E5";
 
     public static final String TIME_EN = "yyyy/MM/dd HH:mm:ss";
     public static final String TIME_CN = "yyyy-MM-dd HH:mm:ss";
-    public static final String TIME_ZH_CN = "yyyy年MM月dd日 HH时mm分ss秒";
+    public static final String TIME_CN_ZH = "yyyy年MM月dd日 HH时mm分ss秒";
     public static final String TIME_UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+    private static final String PATTERN_DATE_CN = "yyyy-MM-dd";
+    private static final String PATTERN_DATETIME_CN = "yyyy-MM-dd HH:mm:ss";
+    private static final String PATTERN_TIME = "HH:mm:ss";
+    private static final String PATTERN_SHORT_TIME = "HH:mm";
+    private static final String PATTERN_DATE_STR = "yyyyMMdd";
+    private static final String PATTERN_DATETIME_ = "yyyyMMddHHmmss";
 
     private DateUtils() {
     }
@@ -88,7 +96,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat(SHORT_ZH_CN);
+        SimpleDateFormat sdf = new SimpleDateFormat(SHORT_CN_ZH);
         return sdf.format(date);
     }
 
@@ -137,9 +145,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取当前时间
+     * 获得系统当前日期时间
      *
-     * @return 返回当前时间
+     * @return 返回当前日期时间
      */
     public static Date currentTime() {
         return Calendar.getInstance().getTime();
@@ -214,4 +222,147 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
+
+    /**
+     * 得到指定日期的星期
+     *
+     * @param year  指定的年份
+     * @param month 指定的月份
+     * @param day   指定的日期
+     * @return 日期 String
+     */
+    public static String getWeekday(int year, int month, int day) {
+        GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);
+        return (new SimpleDateFormat("E")).format(calendar.getTime());
+    }
+
+    /**
+     * 得到指定日期前/后offset天的日期
+     *
+     * @param dateString 以"yyyy-MM-dd"格式指定的日期
+     * @param offset     偏移量
+     * @return String
+     */
+    public static String getDate(String dateString, int offset) {
+        Calendar calendar = Calendar.getInstance();
+        try {
+            Date date = (new SimpleDateFormat(PATTERN_DATE_CN)).parse(dateString);
+            calendar.setTime(date);
+        } catch (Exception e) {
+            return "";
+        }
+        calendar.add(6, -1 * offset);
+        return (new SimpleDateFormat(PATTERN_DATE_CN)).format(calendar.getTime());
+    }
+
+    /**
+     * 得到当前日期是一年中的第几天
+     *
+     * @return String
+     */
+    public static String getDateInYear() {
+        return (new SimpleDateFormat("DDD")).format(new Date());
+    }
+
+    /**
+     * 得到当前日期是一年中的第几个星期
+     *
+     * @return String
+     */
+    public static String getWeekInYear() {
+        return (new SimpleDateFormat("ww")).format(new Date());
+    }
+
+
+    /**
+     * 得到指定日期是一年中的第几个星期
+     *
+     * @param year  指定的年份
+     * @param month 指定的月份
+     * @param day   指定的日期
+     * @return 指定日期是一年中的第几个星期 String
+     */
+    public static String getWeekInYear(int year, int month, int day) {
+        GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);
+        return (new SimpleDateFormat("ww")).format(calendar.getTime());
+    }
+
+
+    /**
+     * 得到指定日期是当前月的第几个星期
+     *
+     * @return String
+     */
+    public static String getWeekInMonth() {
+        return (new SimpleDateFormat("WW")).format(new Date());
+    }
+
+
+    /**
+     * 得到指定日期是所在月份的第几个星期
+     *
+     * @param year  指定的年份
+     * @param month 指定的月份
+     * @param day   指定的日期
+     * @return 指定日期是所在月份的第几个星期 String
+     */
+    public static String getWeekInMonth(int year, int month, int day) {
+        GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);
+        return (new SimpleDateFormat("WW")).format(calendar.getTime());
+    }
+
+    /**
+     * 得到当前日期前beforeNum天的日期
+     *
+     * @param beforeNum 提前量
+     * @return String
+     */
+    public static String getDateByBefore(int beforeNum) {
+        Calendar now = Calendar.getInstance();
+        now.add(6, -1 * beforeNum);
+        return (new SimpleDateFormat(PATTERN_DATE_CN)).format(now.getTime());
+    }
+
+    /**
+     * 得到指定日期前beforeNum天的日期
+     *
+     * @param year      指定的年份
+     * @param month     指定的月份
+     * @param day       指定的日期
+     * @param beforeNum 提前量
+     * @return String
+     */
+    public static String getDateByBefore(int year, int month, int day,
+                                         int beforeNum) {
+        GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);
+        calendar.add(6, -1 * beforeNum);
+        return (new SimpleDateFormat(PATTERN_DATE_CN)).format(calendar.getTime());
+    }
+
+    /**
+     * 获取2个日期相差天数
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static long getOffset(String date1, String date2) {
+        long diff = 0;
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(PATTERN_DATE_CN);
+
+            Date d1 = sdf.parse(date1);
+            Date d2 = sdf.parse(date2);
+
+            long c = d2.getTime() - d1.getTime();
+            diff = c / 1000 / 3600 / 24;
+        } catch (Exception e) {
+            logger.error("获取偏移量失败", e);
+        }
+
+        return diff;
+    }
+
+
 }
