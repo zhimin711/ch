@@ -18,6 +18,11 @@ public class UtilTests {
 
     @Test
     public void testCommon() {
+        System.out.println(CommonUtils.isEquals(20, 20));
+        System.out.println(CommonUtils.isEquals(20.0000000000022, 20.0000000000022));
+        System.out.println(CommonUtils.isEquals(20L, 20));
+        o = DateUtils.currentTime();
+        System.out.println(CommonUtils.isEquals(o, o));
         o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
         System.out.println(o);
     }

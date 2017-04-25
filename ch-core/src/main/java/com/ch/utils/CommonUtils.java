@@ -24,20 +24,13 @@ public class CommonUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
-    private static final Class<Integer> INTEGER_CLASS = Integer.class;
-    private static final Class<Long> LONG_CLASS = Long.class;
-    private static final Class<Double> DOUBLE_CLASS = Double.class;
-    private static final Class<Float> FLOAT_CLASS = Float.class;
-    private static final Class<String> STRING_CLASS = String.class;
-    private static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
-    static final Class<Date> DATE_CLASS = Date.class;
-    private static final Class<Collection> COLLECTION_CLASS = Collection.class;
-
     private CommonUtils() {
     }
 
     /**
-     * Java封装基本类型比较 Integer、String、Long、Double、Float
+     * 对象比较 支持类型
+     * 基本类型：Integer、Long、Double、Float、byte、short
+     * 其它类型：String、Date
      *
      * @param a 对象a
      * @param b 对象b
@@ -45,35 +38,70 @@ public class CommonUtils {
      */
     public static boolean isEquals(final Object a, final Object b) {
 //        logger.debug("{} === {}", a, b);
-        if (INTEGER_CLASS.isInstance(a) && INTEGER_CLASS.isInstance(b)) {
-            int x = Integer.valueOf(a.toString());
-            int y = Integer.valueOf(b.toString());
-            return x == y;
-        } else if (LONG_CLASS.isInstance(a) && LONG_CLASS.isInstance(b)) {
-            return a.equals(b);
-        } else if (DOUBLE_CLASS.isInstance(a) && DOUBLE_CLASS.isInstance(b)) {
-            return a.equals(b);
-        } else if (FLOAT_CLASS.isInstance(a) && FLOAT_CLASS.isInstance(b)) {
-            return a.equals(b);
-        } else if (STRING_CLASS.isInstance(a) && STRING_CLASS.isInstance(b)) {
-            return a.equals(b);
-        } else if (BOOLEAN_CLASS.isInstance(a) && BOOLEAN_CLASS.isInstance(b)) {
-            return a.equals(b);
+        if (isNotEmpty(a) && isNotEmpty(b)) {
+            if (a instanceof Number && b instanceof Number) {
+                return a.equals(b);
+            } else if (a instanceof String && b instanceof String) {
+                return a.equals(b);
+            } else if (a instanceof Boolean && b instanceof Boolean) {
+                return a.equals(b);
+            } else if (a instanceof Date && b instanceof Date) {
+                return ((Date) a).getTime() == ((Date) b).getTime();
+            }
         }
         return false;
     }
 
-    public static boolean isEmpty(final Object[] arr) {
-        return arr == null || arr.length <= 0;
+    /**
+     * 判断对象是否为空
+     *
+     * @param obj 对象
+     * @return true or false
+     */
+    public static boolean isEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        logger.debug("CommonUtils.isEmpty param class name: {}", obj.getClass());
+        if (obj instanceof String) {
+            if (((String) obj).trim().length() == 0) {
+                return true;
+            }
+        } else if (obj instanceof Collection) {
+            if (((Collection) obj).isEmpty()) {
+                return true;
+            }
+        } else if (obj.getClass().isArray()) {
+            if (((Object[]) obj).length == 0) {
+                return true;
+            }
+        } else if (obj instanceof Map) {
+            if (((Map) obj).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
+     * 判断对象是否不为空
+     * Java封装基本类型
+     *
+     * @param obj 对象
+     * @return true or false
+     */
+    public static boolean isNotEmpty(Object obj) {
+        return !isEmpty(obj);
+    }
+
+    /**
+     * 判断对象数组是否不为空
      * Java封装基本类型
      *
      * @param objects 对象集合
      * @return true or false
      */
-    public static boolean isNotBlank(Object... objects) {
+    public static boolean isNotEmpty(Object... objects) {
         if (objects != null && objects.length > 0) {
             boolean isNot = true;
             for (Object obj : objects) {
@@ -88,25 +116,8 @@ public class CommonUtils {
     }
 
     /**
-     * Java封装基本类型
+     * 网址最后"/"处理
      *
-     * @param obj 对象
-     * @return true or false
-     */
-    public static boolean isNotEmpty(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        logger.debug("isNotEmpty object class: {}", obj.getClass());
-        if (STRING_CLASS.isInstance(obj)) {
-            return StringUtils.isNotEmpty(String.valueOf(obj));
-        } else if (COLLECTION_CLASS.isInstance(obj)) {
-            return !((Collection) obj).isEmpty();
-        }
-        return true;
-    }
-
-    /**
      * @param url 字符串
      * @return true or false
      */
@@ -183,7 +194,7 @@ public class CommonUtils {
      * Get list keyValue by key
      *
      * @param records KeyValue集合
-     * @param key Key键值
+     * @param key     Key键值
      * @return key的值
      */
     public static KeyValue getKey(final List<KeyValue> records, String key) {
@@ -199,10 +210,10 @@ public class CommonUtils {
     /**
      * set target object of property value
      *
-     * @param target 目标对象
+     * @param target     目标对象
      * @param methodName 对象方法
-     * @param value 值
-     * @param clazz 值类型
+     * @param value      值
+     * @param clazz      值类型
      * @return 返回对象
      */
     public static Object setPropertyValue(Object target, String methodName, Object value, Class clazz) {
@@ -231,7 +242,7 @@ public class CommonUtils {
     /**
      * set属性的值到Bean
      *
-     * @param target 目标对象
+     * @param target        目标对象
      * @param fieldValueMap 属性与值Map
      */
     public static void setFieldValue(Object target, Map<String, String> fieldValueMap) {
@@ -324,7 +335,7 @@ public class CommonUtils {
     /**
      * 判断是否存在某属性的 set方法
      *
-     * @param methods 对象方法
+     * @param methods            对象方法
      * @param fieldSetMethodName Set方法名
      * @return boolean
      */
@@ -340,7 +351,7 @@ public class CommonUtils {
     /**
      * 判断是否存在某属性的 get方法
      *
-     * @param methods 对象方法
+     * @param methods            对象方法
      * @param fieldGetMethodName Get方法名
      * @return boolean
      */
