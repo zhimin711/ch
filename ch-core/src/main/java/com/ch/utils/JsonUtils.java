@@ -22,15 +22,15 @@ public class JsonUtils {
     /**
      * use gson plugin format object to json
      *
-     * @param object
-     * @return json string
+     * @param object 任意对象
+     * @return json Json格式化字符串
      */
     public static String toJson(Object object) {
         if (object == null) {
             return null;
         }
         try {
-            return JsonUtils.newInstance().toJson(object);
+            return newInstance().toJson(object);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,8 +40,8 @@ public class JsonUtils {
     /**
      * use gson plugin format object to json and Without Expose
      *
-     * @param object
-     * @return json string
+     * @param object 任意对象
+     * @return json Json格式化字符串
      */
     public static String toJsonWithoutExpose(Object object) {
         if (object == null) {
@@ -59,19 +59,19 @@ public class JsonUtils {
     }
 
     /**
+     * 解析Json反射对象
      * parse json to class
      *
-     * @param json
-     * @param classOfT
-     * @return
+     * @param json json格式化字符串
+     * @param classOfT 返回映射类
+     * @return 返回实体对象
      */
     public static <T> T fromJson(String json, Class<T> classOfT) {
         if (json == null) {
             return null;
         }
         try {
-            T t = newInstance().fromJson(json, classOfT);
-            return t;
+            return newInstance().fromJson(json, classOfT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class JsonUtils {
     }
 
     /**
-     * @param json
+     * @param json json格式化字符串
      * @return
      */
     public static Map<String, Object> fromJson(String json) {
@@ -106,8 +106,8 @@ public class JsonUtils {
     /**
      * Class<T> clazz
      *
-     * @param arrayJson
-     * @return
+     * @param arrayJson json格式化数组
+     * @return 实体集合
      */
     public static <T> List<T> fromJsonToList(String arrayJson) {
         if (arrayJson == null) {
