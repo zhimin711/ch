@@ -23,6 +23,8 @@ dependencies {
 //    compile 'commons-lang:commons-lang:2.5'
     compile 'commons-io:commons-io:2.5'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile "org.apache.ant:ant:1.9.7"
+
     compile 'com.alibaba:druid:1.0.18'
 
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
