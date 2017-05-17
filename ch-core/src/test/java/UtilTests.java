@@ -18,7 +18,10 @@ public class UtilTests {
 
     @Test
     public void testCommon() {
-        System.out.println(CommonUtils.isEquals(20, 20));
+        String a = "20a";
+        String b = "20b";
+        System.out.println(CommonUtils.compareTo(a,b));
+        System.out.println(CommonUtils.isEquals(a, b));
         System.out.println(CommonUtils.isEquals(20.0000000000022, 20.0000000000022));
         System.out.println(CommonUtils.isEquals(20L, 20));
         o = DateUtils.currentTime();

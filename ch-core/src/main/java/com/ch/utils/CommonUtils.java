@@ -207,4 +207,32 @@ public class CommonUtils {
     }
 
 
+    /**
+     * 数字、字符串、日期类型 比较
+     *
+     * @param a 对象a
+     * @param b 对象b
+     * @return 返回 -1：小于，0：等于，1：大于
+     */
+    public static int compareTo(Object a, Object b) {
+        if (!isNotEmpty(a, b)) {
+            return 0;
+        } else if (isEmpty(a)) {
+            return -1;
+        } else if (isEmpty(b)) {
+            return 1;
+        }
+        if (!a.getClass().equals(b.getClass())) {
+            throw new RuntimeException("Class Type is not same!");
+        } else if (a instanceof Number && b instanceof Number) {
+            return String.valueOf(a).compareTo(String.valueOf(b));
+        } else if (a instanceof String && b instanceof String) {
+            return ((String) a).compareTo((String) b);
+        } else if (a instanceof Date && b instanceof Date) {
+            return ((Date) a).compareTo((Date) b);
+        } else {
+            throw new RuntimeException("Not Support Class Type Compare!");
+        }
+    }
+
 }
