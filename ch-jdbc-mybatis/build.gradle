@@ -16,7 +16,7 @@ dependencies {
     compile("com.ch:ch-core:1.0-SNAPSHOT"){
 //        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
-    compile "org.mybatis:mybatis:3.2.8"
+    compile "org.mybatis:mybatis:3.4.4"
     compile "org.mybatis:mybatis-spring:1.3.0"
     compile('tk.mybatis:mapper:3.3.8') {
 //        exclude group: 'javax.persistence', module: 'persistence-api'
