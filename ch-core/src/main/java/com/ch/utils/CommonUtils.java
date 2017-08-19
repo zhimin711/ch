@@ -61,7 +61,6 @@ public class CommonUtils {
         if (obj == null) {
             return true;
         }
-        logger.debug("CommonUtils.isEmpty param class name: {}", obj.getClass());
         if (obj instanceof String) {
             if (((String) obj).trim().length() == 0) {
                 return true;
@@ -79,6 +78,7 @@ public class CommonUtils {
                 return true;
             }
         }
+//        logger.debug("CommonUtils.isEmpty obj class: {}", obj.getClass());
         return false;
     }
 
