@@ -3,7 +3,6 @@ package com.ch.mybatis.service;
 import com.github.pagehelper.PageInfo;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -91,7 +90,7 @@ public interface IService<ID extends Serializable, T> {
      * @param records 记录集合
      * @return 记录条数
      */
-    int batchSave(Collection<T> records);
+    int batchSave(List<T> records);
 
     /**
      * 批量更新
@@ -99,5 +98,5 @@ public interface IService<ID extends Serializable, T> {
      * @param records 记录集合
      * @return 记录条数
      */
-    int batchUpdate(Collection<T> records);
+    int batchUpdate(List<T> records);
 }
