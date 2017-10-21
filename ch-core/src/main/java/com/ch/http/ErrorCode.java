@@ -4,7 +4,7 @@ package com.ch.http;
  * 描述：定义错误枚举类
  *
  * @author 80002023
- *         2017/3/10.
+ * 2017/3/10.
  * @version 1.0
  * @since 1.8
  */
@@ -23,9 +23,10 @@ public enum ErrorCode {
     }
 
     public static ErrorCode fromCode(String code) {
+        if(code == null){
+           return ERROR;
+        }
         switch (code) {
-            case "100":
-                return DEFAULT;
             case "101":
             case "102":
             case "103":
@@ -43,6 +44,8 @@ public enum ErrorCode {
                 return NOT_ALLOWED;
             case "403":
                 return NOT_AUTH;
+            default:
+                return DEFAULT;
         }
         return ERROR;
     }

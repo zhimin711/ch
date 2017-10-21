@@ -22,17 +22,19 @@ public enum ImageType {
     }
 
     public static ImageType fromType(String type) {
-        if (type != null) {
-            type = type.toLowerCase();
-            switch (type) {
-                case "jpg":
-                    return JPG;
-                case "png":
-                    return PNG;
-                case "gif":
-                    return GIF;
-            }
+        if (type == null) {
+            return UNKNOWN;
         }
-        return UNKNOWN;
+        type = type.toLowerCase();
+        switch (type) {
+            case "jpg":
+                return JPG;
+            case "png":
+                return PNG;
+            case "gif":
+                return GIF;
+            default:
+                return UNKNOWN;
+        }
     }
 }

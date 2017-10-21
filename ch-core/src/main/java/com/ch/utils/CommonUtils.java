@@ -1,21 +1,18 @@
 package com.ch.utils;
 
-import com.ch.pojo.KeyValue;
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * 描述：通用工具类
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -78,7 +75,6 @@ public class CommonUtils {
                 return true;
             }
         }
-//        logger.debug("CommonUtils.isEmpty obj class: {}", obj.getClass());
         return false;
     }
 
@@ -187,25 +183,6 @@ public class CommonUtils {
         Pattern pattern = Pattern.compile(".*\\d+.*");
         return pattern.matcher(str).matches();
     }
-
-
-    /**
-     * Get list keyValue by key
-     *
-     * @param records KeyValue集合
-     * @param key     Key键值
-     * @return key的值
-     */
-    public static KeyValue getKey(final List<KeyValue> records, String key) {
-        if (records != null) {
-            List<KeyValue> result = records.stream().filter(r -> isEquals(key, r.getKey())).collect(Collectors.toList());
-            if (!result.isEmpty()) {
-                return result.get(0);
-            }
-        }
-        return null;
-    }
-
 
     /**
      * 数字、字符串、日期类型 比较

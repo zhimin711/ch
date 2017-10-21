@@ -4,14 +4,15 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.ch.utils.EncryptUtils;
 
 /**
- * 描述：com.zh.jdbc.pool
+ * 描述:加密数据数据源
+ * <p>support spring xml</p>
  *
  * @author 80002023
- *         2017/2/21.
  * @version 1.0
+ * @see EncryptUtils#decrypt(String, String)
  * @since 1.8
  */
-public class ChDataSource extends DruidDataSource {
+public class EncryptDataSource extends DruidDataSource {
 
     private String pubKey;
 

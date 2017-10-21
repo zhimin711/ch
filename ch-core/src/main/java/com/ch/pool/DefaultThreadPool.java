@@ -23,12 +23,12 @@ public class DefaultThreadPool {
 
     private final static Logger logger = LoggerFactory.getLogger(DefaultThreadPool.class);
 
-    private final static BlockingQueue<Runnable> QUEUE;
+//    private final static BlockingQueue<Runnable> QUEUE;
 
     private final static ExecutorService POOL;
 
     static {
-        QUEUE = new ArrayBlockingQueue<>(10000);
+//        QUEUE = new ArrayBlockingQueue<>(10000);
 //        POOL = new ThreadPoolExecutor(10, 30, 50, TimeUnit.MILLISECONDS, QUEUE);
         int num = Runtime.getRuntime().availableProcessors() / 2;
         POOL = createFixedPool(num);
@@ -38,7 +38,7 @@ public class DefaultThreadPool {
         return POOL;
     }
 
-    public static ExecutorService createFixedPool(int num) {
+    private static ExecutorService createFixedPool(int num) {
         return Executors.newFixedThreadPool(num);
     }
 
@@ -47,7 +47,7 @@ public class DefaultThreadPool {
      *
      * @param command 线程
      */
-    public static void exe(Runnable command) {
+    public static synchronized void exe(Runnable command) {
         getInstance().execute(command);
     }
 
@@ -58,11 +58,11 @@ public class DefaultThreadPool {
      * @param <T>  任务执行对象
      * @return 返回线程执行结果
      */
-    public static <T> Future<T> submit(Callable<T> task) {
+    public static synchronized <T> Future<T> submit(Callable<T> task) {
         return getInstance().submit(task);
     }
 
-    public static <T> T invokeAny(Collection<Callable<T>> tasks) {
+    public static synchronized <T> T invokeAny(Collection<Callable<T>> tasks) {
         try {
             return getInstance().invokeAny(tasks);
         } catch (InterruptedException | ExecutionException e) {
@@ -78,7 +78,7 @@ public class DefaultThreadPool {
      * @param <T>   任务执行对象
      * @return 返回线程执行结果集
      */
-    public static <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks) {
+    public static synchronized <T> List<Future<T>> invokeAll(Collection<Callable<T>> tasks) {
         try {
             return getInstance().invokeAll(tasks);
         } catch (InterruptedException e) {
@@ -91,7 +91,7 @@ public class DefaultThreadPool {
      * 关闭线程池
      */
     @Deprecated
-    protected static void shutdown() {
+    protected static synchronized void shutdown() {
         if (getInstance() != null && !getInstance().isShutdown()) {
             getInstance().shutdown();
         }
