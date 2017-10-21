@@ -33,8 +33,7 @@ public class IOUtils extends org.apache.commons.io.IOUtils {
                     if (closeable != null)
                         closeable.close();
                 } catch (IOException e) {
-//                    e.printStackTrace();
-                    logger.error("Close {} io failed! {}", closeable.getClass().getName(), e.getMessage());
+                    logger.error("Close {} io failed! {}", e);
                 }
             }
         }

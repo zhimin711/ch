@@ -1,5 +1,8 @@
 package com.ch.pool;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
@@ -12,12 +15,13 @@ import java.util.concurrent.*;
  * <p>keep alive time: 50</p>
  *
  * @author 80002023
- *         2017/3/15.
+ * 2017/3/15.
  * @version 1.0
  * @since 1.8
  */
 public class DefaultThreadPool {
 
+    private final static Logger logger = LoggerFactory.getLogger(DefaultThreadPool.class);
 
     private final static BlockingQueue<Runnable> QUEUE;
 
@@ -25,8 +29,9 @@ public class DefaultThreadPool {
 
     static {
         QUEUE = new ArrayBlockingQueue<>(10000);
-        POOL = new ThreadPoolExecutor(10, 30, 50, TimeUnit.MILLISECONDS, QUEUE);
-//        POOL = createFixedPool(10);
+//        POOL = new ThreadPoolExecutor(10, 30, 50, TimeUnit.MILLISECONDS, QUEUE);
+        int num = Runtime.getRuntime().availableProcessors() / 2;
+        POOL = createFixedPool(num);
     }
 
     private static ExecutorService getInstance() {
@@ -61,7 +66,7 @@ public class DefaultThreadPool {
         try {
             return getInstance().invokeAny(tasks);
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            logger.error("DefaultThreadPool invokeAny Error!", e);
         }
         return null;
     }
@@ -77,7 +82,7 @@ public class DefaultThreadPool {
         try {
             return getInstance().invokeAll(tasks);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("DefaultThreadPool invokeAll Error!", e);
         }
         return null;
     }

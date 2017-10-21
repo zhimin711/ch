@@ -72,26 +72,24 @@ public class UUIDGenerator {
 
     public static String format(int intValue) {
         String formatted = Integer.toHexString(intValue);
-        StringBuffer buf = new StringBuffer("00000000");
+        StringBuilder buf = new StringBuilder("00000000");
         buf.replace(8 - formatted.length(), 8, formatted);
         return buf.toString();
     }
 
     public static String format(short shortValue) {
         String formatted = Integer.toHexString(shortValue);
-        StringBuffer buf = new StringBuffer("0000");
+        StringBuilder buf = new StringBuilder("0000");
         buf.replace(4 - formatted.length(), 4, formatted);
         return buf.toString();
     }
 
     public static String generate() {
-        StringBuffer uuidBuff = new StringBuffer(36);
-        uuidBuff.append(format(getIP())).append(sep);
-        uuidBuff.append(format(getJVM())).append(sep);
-        uuidBuff.append(format(getHiTime())).append(sep);
-        uuidBuff.append(format(getLoTime())).append(sep);
-        uuidBuff.append(format(getCount()));
-        return uuidBuff.toString();
+        return format(getIP()) + sep +
+                format(getJVM()) + sep +
+                format(getHiTime()) + sep +
+                format(getLoTime()) + sep +
+                format(getCount());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +15,10 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
- * 描述：
+ * 描述：Zip 工具
  *
  * @author zhimin
- *         2016/9/12.
+ * 2016/9/12.
  * @version 1.0
  * @since JDK1.8
  */
@@ -30,6 +31,11 @@ public class ZipUtils {
 
     /**
      * 解压缩（解压单个指定文件）
+     *
+     * @param zipFilePath 压缩文件绝对路径
+     * @param outFilePath 解压输出目录
+     * @param fileName    指定文件名
+     * @return 成功或失败
      */
     public static boolean extract(String zipFilePath, String outFilePath, String fileName) {
         InputStream input = null;
@@ -46,10 +52,9 @@ public class ZipUtils {
             while ((temp = input.read()) != -1) {
                 output.write(temp);
             }
-            zipFile.close();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("extract file error!", e);
         } finally {
             IOUtils.close(input, output, zipFile);
         }
@@ -58,10 +63,12 @@ public class ZipUtils {
 
 
     /**
-     * zip压缩包解压<p>包含中文名文件解压会报错</p>
-     * @param filePath 压缩包文件路径
+     * zip压缩包解压
+     * <p>包含中文名文件解压会报错</p>
+     *
+     * @param filePath   压缩包文件路径
      * @param extractDir 解压保存路径
-     * @return 解压文件集合
+     * @return 文件集合
      */
     public static List<File> unzip(String filePath, String extractDir) {
         List<File> fileList = new ArrayList<>();
@@ -92,7 +99,7 @@ public class ZipUtils {
                 }
                 zis.closeEntry();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("unzip error!", e);
             } finally {
                 IOUtils.close(zis, bos);
             }
@@ -101,6 +108,12 @@ public class ZipUtils {
         return null;
     }
 
+    /**
+     * 获取文件后缀
+     *
+     * @param name 文件名
+     * @return 文件后缀
+     */
     public static String getFileType(String name) {
         if (StringUtils.isNotBlank(name)) {
             int start = name.lastIndexOf(".");
@@ -110,6 +123,14 @@ public class ZipUtils {
     }
 
     //zipFileName为需要解压的zip文件，extPlace为解压后文件的存放路径，两者均须已经存在
+
+    /**
+     * Ant解压zip压缩文件
+     *
+     * @param zipFileName 解压的zip文件绝对路径
+     * @param targetDir   输出目录
+     * @return 文件集合
+     */
     public static List<File> unzipFile(String zipFileName, String targetDir) {
         List<File> fileList = new ArrayList<>();
         org.apache.tools.zip.ZipFile zipFile = null;
@@ -143,17 +164,17 @@ public class ZipUtils {
                     }
                     fileList.add(newFile);
                 } catch (IOException e1) {
-                    ;
+                    logger.error("unzip inner file error!", e1);
                 } finally {
                     IOUtils.close(in, os);
                 }
             }
             return fileList;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("unzipFile  error!", e);
         } finally {
             IOUtils.close(zipFile);
         }
-        return null;
+        return Lists.newArrayList();
     }
 }

@@ -41,7 +41,7 @@ public class BeanUtils {
                 try {
                     method.invoke(target, value);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("set target object of property value error!", e);
                 }
             }
         }

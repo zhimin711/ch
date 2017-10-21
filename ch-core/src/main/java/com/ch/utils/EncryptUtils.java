@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -40,9 +40,9 @@ public class EncryptUtils {
     /**
      * use config tool encrypt text by private key
      *
-     * @param privateKey
-     * @param source
-     * @return
+     * @param privateKey 私钥
+     * @param source     明文串
+     * @return 加密串
      */
     public static String encrypt(String privateKey, String source) {
         try {
@@ -52,8 +52,7 @@ public class EncryptUtils {
                 return ConfigTools.encrypt(source);
             }
         } catch (Exception e) {
-            logger.error("Encrypt Error!");
-//            e.printStackTrace();
+            logger.error("Encrypt Error!", e);
         }
         return source;
     }
@@ -61,11 +60,11 @@ public class EncryptUtils {
     /**
      * use config tool decrypt text by public key
      *
-     * @param publicKey
-     * @param source
-     * @return
+     * @param publicKey 公钥
+     * @param source    加密串
+     * @return 解密串
      */
-    public static String decrypt(String publicKey, String source) {
+    public static String decrypt(final String publicKey, final String source) {
         try {
             if (StringUtils.isNotBlank(publicKey)) {
                 return ConfigTools.decrypt(publicKey, source);
@@ -73,9 +72,7 @@ public class EncryptUtils {
                 return ConfigTools.decrypt(source);
             }
         } catch (Exception e) {
-//            logger.info("public key: {}, cipher text: {}", publicKey, source);
-            logger.error("Config tool decrypt error! public key: {}, cipher text: {}", publicKey, source);
-//            e.printStackTrace();
+            logger.error("Config tool decrypt error! public key: {" + publicKey + "}, cipher text: {" + source + "}", e);
         }
         return source;
     }
@@ -85,15 +82,14 @@ public class EncryptUtils {
      * key[0] private key
      * key[1] public key
      *
-     * @param keySize
-     * @return
+     * @param keySize 钥匙算法位数
+     * @return 钥匙对（0私钥与1公钥）
      */
     public static String[] genKeyPair(int keySize) {
         try {
             return ConfigTools.genKeyPair(keySize);
         } catch (NoSuchAlgorithmException e) {
-            logger.error("Config tool genKeyPair error! message: {}", e.getMessage());
-//            e.printStackTrace();
+            logger.error("Config tool genKeyPair error!", e);
         }
         return null;
     }

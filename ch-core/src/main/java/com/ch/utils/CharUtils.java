@@ -12,7 +12,7 @@ public class CharUtils {
     /**
      * 根据Unicode编码完美的判断中文汉字和符号
      *
-     * @param c
+     * @param c 字符
      * @return true or false
      */
     private static boolean isChinese(char c) {

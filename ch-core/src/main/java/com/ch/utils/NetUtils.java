@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -36,8 +36,8 @@ public class NetUtils {
     /**
      * 解析网址,返回根网址
      *
-     * @param url
-     * @return
+     * @param url HTTP或HTTPS网络地址
+     * @return 域名或IP地址
      */
     public static String parseUrl(String url) {
         if (isURL(url)) {
@@ -58,18 +58,32 @@ public class NetUtils {
         return "";
     }
 
+    /**
+     * 判断是否是网址
+     *
+     * @param url HTTP或HTTPS网络地址
+     * @return true or false
+     */
     public static boolean isURL(String url) {
         return StringUtils.isNotBlank(url) && (url.startsWith(HTTP_PROTOCOL) || url.startsWith(HTTPS_PROTOCOL));
     }
 
+    /**
+     * 判断是否是SSL网址
+     *
+     * @param url HTTPS网络地址
+     * @return true or false
+     */
     public static boolean isSSL(String url) {
         return url.startsWith(HTTPS_PROTOCOL);
     }
 
     /**
-     * @param address
-     * @return
-     * @Description : IP可能的范围是0-255.0-255.0-255.0-255
+     * 判断是否是IP地址IPV4
+     * IP的范围是0-255.0-255.0-255.0-255
+     *
+     * @param address IP地址
+     * @return true or false
      */
     public static boolean isIP(String address) {
         if (StringUtils.isNotBlank(address)) {
@@ -83,21 +97,30 @@ public class NetUtils {
         return matcher.matches();
     }
 
+    /**
+     * 获取本机IP
+     *
+     * @return 本机IP
+     */
     public static String getLocalIp() {
         try {
             InetAddress address = InetAddress.getLocalHost();
             return address.getHostAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.error("get local host ip error!",e);
         }
         return "255.255.255.255";
     }
-
+    /**
+     * 获取本机IP byte[]
+     *
+     * @return 本机IP byte[]
+     */
     public static byte[] getLocalAddress() {
         try {
             return InetAddress.getLocalHost().getAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            logger.error("get local host ip byte error!",e);
         }
         return null;
     }
