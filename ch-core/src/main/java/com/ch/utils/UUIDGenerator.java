@@ -19,14 +19,6 @@ public class UUIDGenerator {
 
     private static final int IP;
 
-    public static int ipToInt(byte[] bytes) {
-        int result = 0;
-        for (int i = 0; i < 4; i++) {
-            result = (result << 8) - Byte.MIN_VALUE + (int) bytes[i];
-        }
-        return result;
-    }
-
     static {
         int ipAddress;
         try {
@@ -43,6 +35,15 @@ public class UUIDGenerator {
 
     public UUIDGenerator() {
     }
+
+    public static int ipToInt(byte[] bytes) {
+        int result = 0;
+        for (int i = 0; i < 4; i++) {
+            result = (result << 8) - Byte.MIN_VALUE + (int) bytes[i];
+        }
+        return result;
+    }
+
 
     public static int getJVM() {
         return JVM;

@@ -33,6 +33,8 @@ dependencies {
 
 
     compile 'com.alibaba:druid:1.0.18'
+    compile 'org.json:json:20140107'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
 
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
 //    compile "org.slf4j:slf4j-log4j12:${slf4jVersion}"

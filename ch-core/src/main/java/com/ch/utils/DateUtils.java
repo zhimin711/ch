@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Objects;
 
 /**
  * 描述：com.ch.utils
@@ -20,22 +21,38 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
-    public static final String SHORT_EN = "yyyy/MM/dd";
-    public static final String SHORT_CN = "yyyy-MM-dd";
-    public static final String SHORT_CN_ZH = "yyyy年MM月dd日";
-    public static final String SHORT_ZH_CN2 = "yyyy\u5E74M\u6708d\u65E5";
+    public enum Pattern {
+        YEAR("yyyy"), //
+        MONTH("MM"), //
+        DAY("dd"), //
+        HOUR("HH"), //
+        MINUTE("mm"), //
+        SECOND("ss"), //
+        DATE_CN_ZH("yyyy年MM月dd日"), //
+        DATE_CN_ZH2("yyyy\u5E74M\u6708d\u65E5"), //
+        DATE_CN("yyyy-MM-dd"), //
+        DATE_EN("yyyy/MM/dd"), //
+        DATE_SHORT("yyyyMMdd"), //
+        TIME_FULL("HH:mm:ss"), //
+        TIME_SHORT("HHmmss"), //
+        TIME_HM("HH:mm"), //
+        DATETIME_YMDHM_CN("yyyy-MM-dd HH:mm"), //
+        DATETIME_SHORT("yyyyMMddHHmmss"), //
+        DATETIME_CN("yyyy-MM-dd HH:mm:ss"), //
+        DATETIME_CN_ZH("yyyy年MM月dd日 HH时mm分ss秒"), //
+        DATETIME_EN("yyyy/MM/dd HH:mm:ss"),
+        DATETIME_UTC("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-    public static final String TIME_EN = "yyyy/MM/dd HH:mm:ss";
-    public static final String TIME_CN = "yyyy-MM-dd HH:mm:ss";
-    public static final String TIME_CN_ZH = "yyyy年MM月dd日 HH时mm分ss秒";
-    public static final String TIME_UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+        private final String value;
 
-    private static final String PATTERN_DATE_CN = "yyyy-MM-dd";
-    private static final String PATTERN_DATETIME_CN = "yyyy-MM-dd HH:mm:ss";
-    private static final String PATTERN_TIME = "HH:mm:ss";
-    private static final String PATTERN_SHORT_TIME = "HH:mm";
-    private static final String PATTERN_DATE_STR = "yyyyMMdd";
-    private static final String PATTERN_DATETIME_ = "yyyyMMddHHmmss";
+        private Pattern(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 
     private DateUtils() {
     }
@@ -50,7 +67,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (null == date) {
             return null;
         }
-        return format(date, TIME_CN);
+        return format(date, Pattern.DATETIME_CN);
     }
 
     /**
@@ -61,14 +78,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param pattern 时间格式
      * @return 时间字符串
      */
-    public static String format(Date date, String pattern) {
+    public static String format(Date date, Pattern pattern) {
         if (null == date) {
             return null;
         }
-        if (StringUtils.isBlank(pattern)) {
-            pattern = TIME_CN;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern.getValue());
         return sdf.format(date);
     }
 
@@ -78,12 +92,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date 时间
      * @return 日期字符串
      */
-    public static String formatShort(Date date) {
+    public static String formatDate(Date date) {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat(SHORT_CN);
-        return sdf.format(date);
+        return format(date, Pattern.DATE_CN);
     }
 
     /**
@@ -92,12 +105,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date 时间
      * @return 日期字符串
      */
-    public static String formatShortOfCN(Date date) {
+    public static String formatDateOfZH(Date date) {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat(SHORT_CN_ZH);
-        return sdf.format(date);
+        return format(date, Pattern.DATE_CN_ZH);
     }
 
     /**
@@ -110,8 +122,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (date == null) {
             return "";
         }
-        SimpleDateFormat sdf = new SimpleDateFormat(TIME_UTC);
-        return sdf.format(date);
+        return format(date, Pattern.DATETIME_UTC);
     }
 
     /**
@@ -121,11 +132,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param pattern 时间解析格式
      * @return 时间
      */
-    public static Date parse(String dateStr, String pattern) {
+    public static Date parse(String dateStr, Pattern pattern) {
         if (StringUtils.isBlank(dateStr)) {
             return null;
         }
-        SimpleDateFormat df = new SimpleDateFormat(pattern);
+        SimpleDateFormat df = new SimpleDateFormat(pattern.getValue());
         try {
             return df.parse(dateStr);
         } catch (Exception e) {
@@ -141,7 +152,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 时间
      */
     public static Date parse(String dateStr) {
-        return parse(dateStr, TIME_CN);
+        return parse(dateStr, Pattern.DATETIME_CN);
     }
 
     /**
@@ -167,17 +178,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 日期时间字符串比较
      *
-     * @param dateFormat 时间格式
-     * @param date1      时间字符串1
-     * @param date2      时间字符串2
+     * @param pattern 时间格式
+     * @param date1   时间字符串1
+     * @param date2   时间字符串2
      * @return 返回 -1：小于，0：等于，1：大于
      */
-    public static int compareTo(String date1, String date2, String dateFormat) {
-        if (!CommonUtils.isNotEmpty(dateFormat)) {
-            dateFormat = SHORT_CN;
+    public static int compareTo(String date1, String date2, Pattern pattern) {
+        if (Objects.isNull(pattern)) {
+            pattern = Pattern.DATE_CN;
         }
-        Date d1 = parse(date1, dateFormat);
-        Date d2 = parse(date2, dateFormat);
+        Date d1 = parse(date1, pattern);
+        Date d2 = parse(date2, pattern);
         if (d1 == null && d2 == null) {
             return 0;
         } else if (d1 == null) {
@@ -192,9 +203,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 转换过期时间为秒（相对当前时间）
      *
      * @param expires 过期时间
-     * @return
+     * @return 秒
      */
     public static Long convertExpiresToSeconds(Date expires) {
+        if (CommonUtils.isEmpty(expires)) {
+            return 0L;
+        }
         logger.info("convert expires date seconds! {}", expires);
         Date dateTime = currentTime();
         if (dateTime.before(expires)) {
@@ -211,9 +225,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 第一天
      */
     public static Date getFirstDayOfMouth(Date date) {
-        if (date == null) {
-            return null;
-        }
+        assert date != null;
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.set(Calendar.DAY_OF_MONTH, 1);
@@ -245,14 +257,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String getDate(String dateString, int offset) {
         Calendar calendar = Calendar.getInstance();
-        try {
-            Date date = (new SimpleDateFormat(PATTERN_DATE_CN)).parse(dateString);
-            calendar.setTime(date);
-        } catch (Exception e) {
-            return "";
-        }
+        Date date = parse(dateString, Pattern.DATE_CN);
+        assert date != null;
+        calendar.setTime(date);
         calendar.add(6, -1 * offset);
-        return (new SimpleDateFormat(PATTERN_DATE_CN)).format(calendar.getTime());
+        return format(calendar.getTime(), Pattern.DATE_CN);
     }
 
     /**
@@ -320,7 +329,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static String getDateByBefore(int beforeNum) {
         Calendar now = Calendar.getInstance();
         now.add(6, -1 * beforeNum);
-        return (new SimpleDateFormat(PATTERN_DATE_CN)).format(now.getTime());
+        return format(now.getTime(), Pattern.DATE_CN);
     }
 
     /**
@@ -336,7 +345,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                                          int beforeNum) {
         GregorianCalendar calendar = new GregorianCalendar(year, month - 1, day);
         calendar.add(6, -1 * beforeNum);
-        return (new SimpleDateFormat(PATTERN_DATE_CN)).format(calendar.getTime());
+        return format(calendar.getTime(), Pattern.DATE_CN);
     }
 
     /**
@@ -347,21 +356,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return
      */
     public static long getOffset(String date1, String date2) {
-        long diff = 0;
 
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(PATTERN_DATE_CN);
+        Date d1 = parse(date1, Pattern.DATE_CN);
+        Date d2 = parse(date2, Pattern.DATE_CN);
 
-            Date d1 = sdf.parse(date1);
-            Date d2 = sdf.parse(date2);
-
-            long c = d2.getTime() - d1.getTime();
-            diff = c / 1000 / 3600 / 24;
-        } catch (Exception e) {
-            logger.error("获取偏移量失败", e);
-        }
-
-        return diff;
+        assert d1 != null;
+        assert d2 != null;
+        long c = d2.getTime() - d1.getTime();
+        return c / 1000 / 3600 / 24;
     }
 
 
