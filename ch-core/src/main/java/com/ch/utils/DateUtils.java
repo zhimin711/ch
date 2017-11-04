@@ -13,7 +13,7 @@ import java.util.Objects;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -21,26 +21,89 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
+    /**
+     * 时间格式
+     */
     public enum Pattern {
-        YEAR("yyyy"), //
-        MONTH("MM"), //
-        DAY("dd"), //
-        HOUR("HH"), //
-        MINUTE("mm"), //
+        /**
+         * 年
+         */
+        YEAR("yyyy"),
+        /**
+         * 月
+         */
+        MONTH("MM"),
+        /**
+         * 日
+         */
+        DAY("dd"),
+        /**
+         * 小时
+         */
+        HOUR("HH"),
+        /**
+         * 分钟
+         */
+        MINUTE("mm"),
+        /**
+         * 秒
+         */
         SECOND("ss"), //
+        /**
+         * 中文：年/月/日
+         */
         DATE_CN_ZH("yyyy年MM月dd日"), //
+        /**
+         * 中文：年/月/日
+         */
         DATE_CN_ZH2("yyyy\u5E74M\u6708d\u65E5"), //
+        /**
+         * 中国：年-月-日
+         */
         DATE_CN("yyyy-MM-dd"), //
+        /**
+         * 国际：年/月/日
+         */
         DATE_EN("yyyy/MM/dd"), //
+        /**
+         * 年月日
+         */
         DATE_SHORT("yyyyMMdd"), //
+        /**
+         *小时:分钟:秒
+         */
         TIME_FULL("HH:mm:ss"), //
+        /**
+         *小时分钟秒
+         */
         TIME_SHORT("HHmmss"), //
+        /**
+         *小时:分钟
+         */
         TIME_HM("HH:mm"), //
+        /**
+         *年-月-日 小时:分钟
+         */
         DATETIME_YMDHM_CN("yyyy-MM-dd HH:mm"), //
+        /**
+         *年月日小时分钟秒
+         */
         DATETIME_SHORT("yyyyMMddHHmmss"), //
+        /**
+         *年-月-日 小时:分钟:秒
+         */
         DATETIME_CN("yyyy-MM-dd HH:mm:ss"), //
+        /**
+         *年-月-日 小时:分钟:秒
+         */
         DATETIME_CN_ZH("yyyy年MM月dd日 HH时mm分ss秒"), //
+        /**
+         *年/月/日 小时:分钟:秒
+         */
         DATETIME_EN("yyyy/MM/dd HH:mm:ss"),
+        /**
+         *UTC:年-月-日'T'小时:分钟:秒'Z'
+         */
         DATETIME_UTC("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         private final String value;
