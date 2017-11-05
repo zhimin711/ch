@@ -18,12 +18,12 @@ ext {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.google.guava:guava:19.0'
 //    compile 'commons-lang:commons-lang:2.5'
     compile 'commons-io:commons-io:2.5'
     compile 'org.apache.commons:commons-lang3:3.4'
     compile "org.apache.ant:ant:1.9.7"
+
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.2'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
@@ -34,7 +34,9 @@ dependencies {
 
     compile 'com.alibaba:druid:1.0.18'
     compile 'org.json:json:20140107'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
+//    compile group: 'net.sf.json-lib', name: 'json-lib', version: '2.4'
+
 
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
 //    compile "org.slf4j:slf4j-log4j12:${slf4jVersion}"

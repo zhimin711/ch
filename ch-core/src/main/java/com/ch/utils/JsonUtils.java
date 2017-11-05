@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -64,11 +65,11 @@ public class JsonUtils {
         }
         switch (type) {
             case GSON:
-                return toJsonOfGson(object);
+                return toJson2(object);
             case JACKSON:
                 return toJsonOfJackson(object);
             default:
-                return toJsonOfGson(object);
+                return toJson2(object);
 
         }
     }
@@ -80,7 +81,7 @@ public class JsonUtils {
      * @param object 任意对象
      * @return json Json格式化字符串
      */
-    private static String toJsonOfGson(Object object) {
+    private static String toJson2(Object object) {
         if (object == null) {
             return null;
         }
@@ -179,18 +180,19 @@ public class JsonUtils {
     /**
      * parse array json string to List T
      * Class<T> clazz
+     * new TypeReference<List<T>>{}
      *
      * @param arrayJson json格式化数组
+     * @param type      {@link TypeReference}
      * @return 实体集合
      */
-    public static <T> List<T> fromJsonToList(String arrayJson) {
+    public static <T> List<T> fromJsonToList(String arrayJson, TypeReference<List<T>> type) {
         if (arrayJson == null) {
             return null;
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
-            List<T> records = mapper.readValue(arrayJson, new TypeReference<List<T>>() {
-            });
+            List<T> records = mapper.readValue(arrayJson, type);
             if (records != null) {
                 return records;
             }
@@ -201,19 +203,20 @@ public class JsonUtils {
     }
 
     /**
-     * Class<T> clazz
+     * Gson
+     * new TypeToken<List<KeyValue>>() {}.getType()
      *
      * @param arrayJson json格式化数组
+     * @param typeOfT   TypeToken {@link TypeToken}
      * @return 实体集合
      */
-    public static <T> List<T> fromJsonToListOfGson(String arrayJson) {
+    public static <T> List<T> fromJsonToList(String arrayJson, Type typeOfT) {
         if (arrayJson == null) {
             return null;
         }
 
         try {
-            List<T> records = newInstance().fromJson(arrayJson, new TypeToken<T>() {
-            }.getType());
+            List<T> records = newInstance().fromJson(arrayJson, typeOfT);
             if (records != null) {
 //                logger.info("fromJson: string to list size {}", records.size());
                 return records;
