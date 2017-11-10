@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.ch.exception.OutOfLimitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,5 +95,29 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
             fileSize = size + " B";
         }
         return fileSize;
+    }
+
+    /**
+     * 读取文件流输出为字符串
+     *
+     * @param is 文件输入流
+     * @return str - 文件内容字符
+     */
+    public static String readToString(final InputStream is) {
+        byte[] tmp = new byte[1024]; //读数据缓存
+        StringBuilder builder = new StringBuilder();
+        try {
+            while (is.available() > 0) {
+                int i = is.read(tmp, 0, 1024);
+                if (i < 0) break;
+                builder.append(new String(tmp, 0, i));
+                if (builder.length() / ONE_MB > 100) {
+                    throw new OutOfLimitException("File input is  too large!");
+                }
+            }
+        } catch (IOException e) {
+            logger.info("readToString Error!", e);
+        }
+        return builder.toString();
     }
 }
