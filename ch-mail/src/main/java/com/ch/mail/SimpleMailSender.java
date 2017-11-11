@@ -50,7 +50,6 @@ public class SimpleMailSender {
             // 创建邮件的接收者地址，并设置到邮件消息中
             message.setRecipients(Message.RecipientType.TO, to);
 
-
             Address[] cc = MailUtils.convertAddress(mailInfo.getCcAddresses());
             if (cc.length > 0) {
                 message.setRecipients(Message.RecipientType.CC, cc);
@@ -115,7 +114,7 @@ public class SimpleMailSender {
     }
 
     protected boolean openSession() {
-        if (config == null && StringUtils.isBlank(config.getMailServerHost())) {
+        if (config == null || StringUtils.isBlank(config.getMailServerHost())) {
             return false;
         }
 //        Session sendMailSession;

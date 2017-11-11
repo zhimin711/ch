@@ -1,5 +1,6 @@
 package com.ch.mail;
 
+import com.ch.exception.ConfigException;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,7 +39,7 @@ public class MailUtils {
                 return new Address[]{address};
             }
         } catch (AddressException e) {
-            e.printStackTrace();
+            logger.error("convertAddress", e);
         }
         return new Address[]{};
     }
@@ -48,10 +51,10 @@ public class MailUtils {
             try {
                 return new InternetAddress(r);
             } catch (AddressException e) {
-                e.printStackTrace();
+                logger.error("convertAddress", e);
             }
             return null;
-        }).filter(r -> r != null).toArray(Address[]::new);
+        }).filter(Objects::nonNull).toArray(Address[]::new);
         return addressesArr;
     }
 
@@ -78,7 +81,7 @@ public class MailUtils {
                 p.load(in);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("loadProp Error! please check config properties!", e);
         }
         return p;
     }
@@ -86,17 +89,19 @@ public class MailUtils {
     public static MailSenderConfig loadConfig(Properties properties) {
         MailSenderConfig config = new MailSenderConfig();
         String host = (String) properties.get("mail.smtp.host");
-        String port = (String) properties.get("mail.smtp.host");
+        String port = (String) properties.get("mail.smtp.port");
         String auth = (String) properties.get("mail.smtp.auth");
         String debug = (String) properties.get("mail.debug");
         String username = (String) properties.get("mail.auth.username");
         String password = (String) properties.get("mail.auth.password");
-        if (StringUtils.isNotBlank(host)) {
-            config.setMailServerHost(host.trim());
+        if (StringUtils.isBlank(host)) {
+            throw new ConfigException("Mail host must require!");
         }
-        if (StringUtils.isNotBlank(port)) {
-            config.setMailServerHost(port.trim());
+        config.setMailServerHost(host.trim());
+        if (StringUtils.isBlank(port)) {
+            throw new ConfigException("Mail port must require!");
         }
+        config.setMailServerHost(port.trim());
         if (CommonUtils.isEquals(auth, "true")) {
             config.setValidate(true);
             config.setUsername(username);
