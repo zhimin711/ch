@@ -37,8 +37,8 @@ public class MailTests {
         MailSenderInfo info = new MailSenderInfo();
         info.setSubject("Test");
         info.setContent("Test Content");
-        info.setFromAddresses(new String[]{"80002023@sf-express.com"});
-        info.setToAddresses(new String[]{"80002023@sf-express.com"});
+        info.setFromAddresses(new String[]{"ZhiMinMa@sf-express.com"});
+        info.setToAddresses(new String[]{"ZhiMinMa@sf-express.com"});
 
         sender.sendTextMail(info);
     }
