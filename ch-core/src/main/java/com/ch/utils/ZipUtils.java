@@ -18,7 +18,7 @@ import java.util.zip.ZipInputStream;
  * 描述：Zip 工具
  *
  * @author zhimin
- * 2016/9/12.
+ *         2016/9/12.
  * @version 1.0
  * @since JDK1.8
  */
@@ -73,53 +73,35 @@ public class ZipUtils {
     public static List<File> unzip(String filePath, String extractDir) {
         List<File> fileList = new ArrayList<>();
         File source = new File(filePath);
-        if (source.exists()) {
-            ZipInputStream zis = null;
-            BufferedOutputStream bos = null;
-            try {
-                zis = new ZipInputStream(new FileInputStream(source));
-                ZipEntry entry;
-                while ((entry = zis.getNextEntry()) != null
-                        && !entry.isDirectory()) {
-                    String fileType = getFileType(entry.getName());
-                    File target = new File(extractDir, UUID.randomUUID().toString() + fileType);
-                    if (!target.getParentFile().exists()) {
-                        // 创建文件父目录
-                        target.getParentFile().mkdirs();
-                    }
-                    // 写入文件
-                    bos = new BufferedOutputStream(new FileOutputStream(target));
-                    int read;
-                    byte[] buffer = new byte[1024 * 10];
-                    while ((read = zis.read(buffer, 0, buffer.length)) != -1) {
-                        bos.write(buffer, 0, read);
-                    }
-                    bos.flush();
-                    fileList.add(target);
+        if (!source.exists()) {
+            return Lists.newArrayList();
+        }
+        ZipInputStream zis = null;
+        BufferedOutputStream bos = null;
+        try {
+            zis = new ZipInputStream(new FileInputStream(source));
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null
+                    && !entry.isDirectory()) {
+                FileUtils.create(extractDir);
+                File target = new File(extractDir, UUID.randomUUID().toString() + FileUtils.getFileExtension(entry.getName()));
+                // 写入文件
+                bos = new BufferedOutputStream(new FileOutputStream(target));
+                int read;
+                byte[] buffer = new byte[1024 * 10];
+                while ((read = zis.read(buffer, 0, buffer.length)) != -1) {
+                    bos.write(buffer, 0, read);
                 }
-                zis.closeEntry();
-            } catch (IOException e) {
-                logger.error("unzip error!", e);
-            } finally {
-                IOUtils.close(zis, bos);
+                bos.flush();
+                fileList.add(target);
             }
-            return fileList;
+            zis.closeEntry();
+        } catch (IOException e) {
+            logger.error("unzip error!", e);
+        } finally {
+            IOUtils.close(zis, bos);
         }
-        return null;
-    }
-
-    /**
-     * 获取文件后缀
-     *
-     * @param name 文件名
-     * @return 文件后缀
-     */
-    public static String getFileType(String name) {
-        if (StringUtils.isNotBlank(name)) {
-            int start = name.lastIndexOf(".");
-            return name.substring(start);
-        }
-        return "";
+        return fileList;
     }
 
     //zipFileName为需要解压的zip文件，extPlace为解压后文件的存放路径，两者均须已经存在
@@ -144,16 +126,8 @@ public class ZipUtils {
                 zipEntry = (org.apache.tools.zip.ZipEntry) e.nextElement();
                 String entryName = zipEntry.getName();
                 logger.info("unzip File name: {}", entryName);
-
-                String fileType = getFileType(entryName);
-                File newFile = new File(targetDir, UUID.randomUUID().toString() + fileType);
-                if (!newFile.getParentFile().exists()) {
-                    // 创建文件父目录
-                    boolean c = newFile.getParentFile().mkdirs();
-                    if (c) {
-                        // TODO: 2016/9/21
-                    }
-                }
+                FileUtils.create(targetDir);
+                File newFile = new File(targetDir, UUID.randomUUID().toString() + FileUtils.getFileExtension(entryName));
                 try {
                     in = zipFile.getInputStream(zipEntry);
                     os = new FileOutputStream(newFile);
