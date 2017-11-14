@@ -1,13 +1,13 @@
 import com.ch.pojo.KeyValue;
-import com.ch.utils.CommonUtils;
-import com.ch.utils.DateUtils;
-import com.ch.utils.FileUtils;
-import com.ch.utils.JsonUtils;
+import com.ch.utils.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * 描述：PACKAGE_NAME
@@ -41,6 +41,7 @@ public class UtilTests {
         System.out.println(o);
         o = DateUtils.parse("2018-01-02 00:00:00");
         System.out.println(o);
+
     }
 
 
@@ -48,6 +49,13 @@ public class UtilTests {
     public void testFile() {
         o = FileUtils.convertSize(22209L);
         System.out.println(o);
+        Date currTime = DateUtils.currentTime();
+        String dateStr = DateUtils.format(currTime, DateUtils.Pattern.DATE_SHORT);
+        String uuid = UUIDGenerator.generate();
+        File file = new File("D:\\opt\\" + dateStr + File.separator + uuid + "\\demo.txt");
+        System.out.println(file.getParent());
+        boolean ok = FileUtils.create(file);
+        System.out.println(ok);
     }
 
     @Test

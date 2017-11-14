@@ -20,19 +20,33 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
     private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
     /**
-     * 通过文件名获得扩展名
+     * 通过文件名获得扩展名(带点)
      *
      * @param fileName 文件名
      * @return 文件扩展名
      */
     public static String getFileExtension(String fileName) {
-        logger.info("File name: {}", fileName);
+//        logger.info("File name: {}", fileName);
         int start = fileName.lastIndexOf(".");
         String suffix = fileName.substring(start);
         if (CommonUtils.isNotEmpty(suffix)) {
             return suffix;
         }
-        return null;
+        return "";
+    }
+
+    /**
+     * 通过文件名获得扩展名(不带点)
+     *
+     * @param fileName 文件名
+     * @return 文件扩展名
+     */
+    public static String getFileExtensionName(String fileName) {
+        String extension = getFileExtension(fileName);
+        if (CommonUtils.isEmpty(extension)) {
+            return "";
+        }
+        return extension.substring(1);
     }
 
     /**
@@ -119,5 +133,54 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
             logger.info("readToString Error!", e);
         }
         return builder.toString();
+    }
+
+    /**
+     * 创建文件或目录
+     *
+     * @param file
+     * @return
+     */
+    public static boolean create(File file) {
+        if (file == null) {
+            return false;
+        } else if (file.isFile()) {
+            return true;
+        } else if (file.isDirectory()) {
+            return true;
+        }
+        boolean ok = false;
+        if (!file.exists()) {
+            ok = file.mkdir();
+        }
+        if (ok) {
+            return true;
+        } else {
+            ok = create(file.getParent());
+        }
+        return ok && file.mkdir();
+    }
+
+    /**
+     * 创建文件目录
+     *
+     * @param path
+     * @return
+     */
+    public static boolean create(String path) {
+        File file = new File(path);
+        boolean ok = false;
+        if (!file.exists()) {
+            ok = file.mkdir();
+        }
+        if (ok) {
+            return true;
+        }
+        String tmp = file.getParent();
+        if (CommonUtils.isEmpty(tmp)) {
+            return false;
+        }
+        ok = create(file.getParent());
+        return ok && file.mkdir();
     }
 }
