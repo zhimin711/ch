@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * 描述：通用工具类
  *
  * @author 80002023
- * 2017/2/4.
+ *         2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -208,6 +208,7 @@ public class CommonUtils {
         } else if (a instanceof Date && b instanceof Date) {
             return ((Date) a).compareTo((Date) b);
         } else {
+            logger.error("{} compare {} error!", a, b);
             throw new RuntimeException("Not Support Class Type Compare!");
         }
     }

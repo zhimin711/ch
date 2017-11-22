@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * 描述：com.ch.utils
  *
  * @author 80002023
- * 2017/2/4.
+ *         2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -68,6 +68,13 @@ public class NetUtils {
         return StringUtils.isNotBlank(url) && (url.startsWith(HTTP_PROTOCOL) || url.startsWith(HTTPS_PROTOCOL));
     }
 
+    public static boolean isURL2(String url) {
+        String p = "^((http|https)://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$";
+        Pattern pattern = Pattern.compile(p);
+
+        return pattern.matcher(url).find();
+    }
+
     /**
      * 判断是否是SSL网址
      *
@@ -107,10 +114,11 @@ public class NetUtils {
             InetAddress address = InetAddress.getLocalHost();
             return address.getHostAddress();
         } catch (UnknownHostException e) {
-            logger.error("get local host ip error!",e);
+            logger.error("get local host ip error!", e);
         }
         return "255.255.255.255";
     }
+
     /**
      * 获取本机IP byte[]
      *
@@ -120,7 +128,7 @@ public class NetUtils {
         try {
             return InetAddress.getLocalHost().getAddress();
         } catch (UnknownHostException e) {
-            logger.error("get local host ip byte error!",e);
+            logger.error("get local host ip byte error!", e);
         }
         return null;
     }
