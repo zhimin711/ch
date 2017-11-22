@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 描述：PACKAGE_NAME
@@ -40,6 +43,23 @@ public class UtilTests {
         o = DateUtils.getFirstDayOfMouth(DateUtils.currentTime());
         System.out.println(o);
         o = DateUtils.parse("2018-01-02 00:00:00");
+        o = DateUtils.matchDateString("#2017-11-17 10:35:10.487|INFO |");
+        o = DateUtils.matchDateString("11-17 10:35:10.487|INFO |");
+        System.out.println(o);
+
+        String pattern = "(\\d{1,2}[:|时|点]\\d{1,2}(分)?((:)?\\d{1,2}(秒)?((.)?\\d{1,3})?)?)";
+//        pattern = "((\\d{1,4}[-|/|年|.]?)\\d{1,2}[-|/|月|.]\\d{1,2}([日|号])?)";
+        List<String> matches = Lists.newArrayList();
+        Matcher matcher = Pattern.compile(DateUtils.patternToRegex(DateUtils.Pattern.DATETIME_MDHMSS)).matcher("#2017-11-17 10:35:10.487|INFO |\n");
+        if (matcher.find() && matcher.groupCount() >= 1) {
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                String temp = matcher.group(i);
+                matches.add(temp);
+            }
+        }
+        if (matches.size() > 0) {
+            o = matches.get(0).trim();
+        }
         System.out.println(o);
 
     }

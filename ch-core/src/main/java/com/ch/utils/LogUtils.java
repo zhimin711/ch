@@ -11,6 +11,11 @@ public class LogUtils {
     private LogUtils() {
     }
 
+    /**
+     * %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level
+     * @param str
+     * @return
+     */
     public static boolean isLogFormat(String str) {
         String pattern = ".*[\u007C\u0020](DEBUG|INFO|WARN|ERROR).*";
         return Pattern.matches(pattern, str);

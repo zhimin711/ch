@@ -1,19 +1,18 @@
 package com.ch.utils;
 
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Objects;
+import java.util.*;
+import java.util.regex.Matcher;
 
 /**
  * 描述：com.ch.utils
  *
  * @author 80002023
- * 2017/2/4.
+ *         2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -70,39 +69,47 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
          */
         DATE_SHORT("yyyyMMdd"), //
         /**
-         *小时:分钟:秒
+         * 小时:分钟:秒
          */
         TIME_FULL("HH:mm:ss"), //
         /**
-         *小时分钟秒
+         * 小时分钟秒
          */
         TIME_SHORT("HHmmss"), //
         /**
-         *小时:分钟
+         * 小时:分钟
          */
         TIME_HM("HH:mm"), //
         /**
-         *年-月-日 小时:分钟
+         * 年-月-日 小时:分钟
          */
         DATETIME_YMDHM_CN("yyyy-MM-dd HH:mm"), //
         /**
-         *年月日小时分钟秒
+         * 年月日小时分钟秒
          */
         DATETIME_SHORT("yyyyMMddHHmmss"), //
         /**
-         *年-月-日 小时:分钟:秒
+         * 年-月-日 小时:分钟:秒(yyyy-MM-dd HH:mm:ss)
          */
         DATETIME_CN("yyyy-MM-dd HH:mm:ss"), //
         /**
-         *年-月-日 小时:分钟:秒
+         * 年-月-日 小时:分钟:秒.毫秒(yyyy-MM-dd HH:mm:ss.SSS)
+         */
+        DATETIME_FULL("yyyy-MM-dd HH:mm:ss.SSS"),
+        /**
+         * 月-日 小时:分钟:秒.毫秒(MM-dd HH:mm:ss.SSS)
+         */
+        DATETIME_MDHMSS("MM-dd HH:mm:ss.SSS"), //
+        /**
+         * 年-月-日 小时:分钟:秒
          */
         DATETIME_CN_ZH("yyyy年MM月dd日 HH时mm分ss秒"), //
         /**
-         *年/月/日 小时:分钟:秒
+         * 年/月/日 小时:分钟:秒
          */
         DATETIME_EN("yyyy/MM/dd HH:mm:ss"),
         /**
-         *UTC:年-月-日'T'小时:分钟:秒'Z'
+         * UTC:年-月-日'T'小时:分钟:秒'Z'
          */
         DATETIME_UTC("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
@@ -414,8 +421,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 获取2个日期相差天数
      *
-     * @param date1
-     * @param date2
+     * @param date1 开始日期
+     * @param date2 结束日期
      * @return
      */
     public static long getOffset(String date1, String date2) {
@@ -429,5 +436,84 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return c / 1000 / 3600 / 24;
     }
 
+    /**
+     * (1)能匹配的年月日类型有：
+     * 2014年4月19日
+     * 2014年4月19号
+     * 2014-4-19
+     * 2014/4/19
+     * 2014.4.19
+     * (2)能匹配的时分秒类型有：
+     * 15:28:21
+     * 15:28
+     * 5:28 pm
+     * 15点28分21秒
+     * 15点28分
+     * 15点
+     * (3)能匹配的年月日时分秒类型有：
+     * (1)和(2)的任意组合，二者中间可有任意多个空格
+     * 如果dateStr中有多个时间串存在，只会匹配第一个串，其他的串忽略
+     *
+     * @param dateStr 时间
+     * @return
+     */
+    public static String matchDateString(String dateStr) {
+        return matchDateString(dateStr, Pattern.DATETIME_CN);
+    }
 
+
+    public static String matchDateString(String dateStr, Pattern pattern) {
+        try {
+            List<String> matches = Lists.newArrayList();
+            //(\d{1,4}[-|/|年|.]\d{1,2}[-|/|月|.]\d{1,2}([日|号])?(\s)*(\d{1,2}([点|时])?((:)?\d{1,2}(分)?((:)?\d{1,2}(秒)?)?)?)?(\s)*(PM|AM)?)
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile(patternToRegex(pattern),
+                    java.util.regex.Pattern.CASE_INSENSITIVE | java.util.regex.Pattern.MULTILINE);
+            Matcher matcher = p.matcher(dateStr);
+            if (matcher.find() && matcher.groupCount() >= 1) {
+                for (int i = 1; i <= matcher.groupCount(); i++) {
+                    String temp = matcher.group(i);
+                    matches.add(temp);
+                }
+            }
+            if (matches.size() > 0) {
+                return matches.get(0).trim();
+            }
+        } catch (Exception e) {
+            logger.error("matchDateString Error!", e);
+        }
+
+        return dateStr;
+    }
+
+    public static String patternToRegex(Pattern pattern) {
+        String regex = "(\\d{1,4}[-|/|年|.]\\d{1,2}[-|/|月|.]\\d{1,2}([日|号])?(\\s)*(\\d{1,2}([点|时])?((:)?\\d{1,2}(分)?((:)?\\d{1,2}(秒)?)?)?)?(\\s)*(PM|AM)?)";
+//        String ymdStdRegex = "\\d{1,4}[-|/|年|.]\\d{1,2}[-|/|月|.]\\d{1,2}([日|号])";
+        String ymdAiRegex = "((\\d{1,4}[-|/|年|.]?)\\d{1,2}[-|/|月|.]\\d{1,2}([日|号])?)";
+        String hmsRegex = "(\\d{1,2}[:|时|点]\\d{1,2}(分)?((:)?\\d{1,2}(秒)?((.)?\\d{1,3})?)?)";
+//        String ap = "(\\s)*(PM|AM)?";
+        switch (pattern) {
+            case DATE_EN:
+            case DATE_CN:
+            case DATE_CN_ZH:
+            case DATE_CN_ZH2:
+                regex = ymdAiRegex;
+                break;
+            case DATETIME_FULL:
+                break;
+            case TIME_FULL:
+            case TIME_HM:
+                regex = hmsRegex;
+                break;
+            case DATETIME_CN:
+            case DATETIME_YMDHM_CN:
+            case DATETIME_CN_ZH:
+            case DATETIME_EN:
+            case DATETIME_MDHMSS:
+                regex = "(" + ymdAiRegex + "(\\s)" + hmsRegex + ")";
+                break;
+            default:
+                break;
+        }
+        return regex;
+    }
 }
