@@ -1,5 +1,8 @@
 package com.ch.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.regex.Pattern;
 
 /**
@@ -8,31 +11,41 @@ import java.util.regex.Pattern;
  */
 public class LogUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(LogUtils.class);
+
+    public static final String LEVEL_PATTERN = "(DEBUG|INFO|WARN|ERROR)";
+    public static final String DATE_PATTERN = "\\d{1,4}[-|/|年|.]\\d{1,2}[-|/|月|.]\\d{1,2}";
+    public static final String TIME_PATTERN = "\\d{1,2}[:|时|点]\\d{1,2}[:|分]\\d{1,2}[.]\\d{1,3}";
+    public static final String THREAD_PATTERN = "[\\u007C|\\u005B].*[\\u007C|\\u005D]";
+
     private LogUtils() {
     }
 
     /**
-     * %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level
+     * %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %msg%n
+     *
      * @param str
      * @return
      */
     public static boolean isLogFormat(String str) {
-        String pattern = ".*[\u007C\u0020](DEBUG|INFO|WARN|ERROR).*";
+        String pattern = "([#]?)" + DATE_PATTERN + "(\\s)" + TIME_PATTERN + "(\\s)" + THREAD_PATTERN + "(\\s)" + LEVEL_PATTERN + ".*(\\s)*";
         return Pattern.matches(pattern, str);
     }
 
     /**
-     * format(#%d{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|%thread| %class.%method\\(%F:%L\\)|%msg%n)
+     * %d{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|%thread| %msg%n
+     *
      * @param str
      * @return
      */
     public static boolean isLogFormat1(String str) {
-        String pattern = ".*[\u007C](DEBUG|INFO|WARN|ERROR)[\u0020\u007C]*[\u007C].*";
+        String pattern = "([#]?)" + DATE_PATTERN + "(\\s)" + TIME_PATTERN + "(\\s?)" + "\\u007C" + LEVEL_PATTERN + "(\\s?)" + THREAD_PATTERN + ".*(\\s)*";
         return Pattern.matches(pattern, str);
     }
 
     /**
-     * format(%d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %class.%method\\(%F:%L\\) - %msg%n)
+     * %d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %msg%n
+     *
      * @param str
      * @return
      */

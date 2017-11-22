@@ -88,9 +88,18 @@ public class UtilTests {
 //        KeyValue tmp = mapper.readValue("{\"expires\":\"2017-08-15\",\"value\":\"[{\"b\":\"b\"}]\",\"key\":\"a\"}", KeyValue.class);
         JSONArray data = new JSONArray("[]");
         System.out.println(data.toString(1));
-
-
     }
 
+    @Test
+    public void testLogUtils() {
+        String str = "#2017-11-22 15:42:07.611 [main] INFO  o.s.web.context.ContextLoader -Root WebApplicationContext: initialization completed in 1240 ms\t\n";
+        String tmp = "2017-11-17 10:35:10.487|DEBUG|qtp1334042472-3152| com.sf.novatar.deploy.interceptor.ModuleInterceptor.intercept(ModuleInterceptor.java:70)|Response /contract/businessContractManageSF/findTaskInfosByContractLine.pvt in 17 ms.";
+
+        o = LogUtils.isLogFormat1(tmp);
+        System.out.println(o);
+        Pattern p = Pattern.compile(LogUtils.DATE_PATTERN + "(\\s)" + LogUtils.TIME_PATTERN + "(\\s)" + LogUtils.THREAD_PATTERN);
+        o = p.matcher(str).find();
+        System.out.println(o);
+    }
 
 }
