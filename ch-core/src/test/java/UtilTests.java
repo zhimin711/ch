@@ -42,7 +42,9 @@ public class UtilTests {
     public void testDate() {
         o = DateUtils.getFirstDayOfMouth(DateUtils.currentTime());
         System.out.println(o);
-        o = DateUtils.parse("2018-01-02 00:00:00");
+        Date date = DateUtils.parse("2018-01-02 00:10:21");
+        o = DateUtils.format(DateUtils.parseTimestamp(String.valueOf(date.getTime())));
+        System.out.println(o);
         o = DateUtils.matchDateString("#2017-11-17 10:35:10.487|INFO |");
         o = DateUtils.matchDateString("11-17 10:35:10.487|INFO |");
         System.out.println(o);

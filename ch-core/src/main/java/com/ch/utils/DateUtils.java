@@ -195,6 +195,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return format(date, Pattern.DATETIME_UTC);
     }
 
+    public static Date parseTimestamp(String timestamp) {
+        if (!CommonUtils.isNumeric(timestamp)) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(new Long(timestamp));
+        return calendar.getTime();
+    }
+
     /**
      * 根据时间格式解析时间字符串
      *
