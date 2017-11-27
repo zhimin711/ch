@@ -28,6 +28,9 @@ public class LogUtils {
      * @return
      */
     public static boolean isLogFormat(String str) {
+        if (CommonUtils.isEmpty(str)) {
+            return false;
+        }
         String pattern = "([#]?)" + DATE_PATTERN + "(\\s)" + TIME_PATTERN + "(\\s)" + THREAD_PATTERN + "(\\s)" + LEVEL_PATTERN + ".*(\\s)*";
         return Pattern.matches(pattern, str);
     }
@@ -39,6 +42,9 @@ public class LogUtils {
      * @return
      */
     public static boolean isLogFormat1(String str) {
+        if (CommonUtils.isEmpty(str)) {
+            return false;
+        }
         String pattern = "([#]?)" + DATE_PATTERN + "(\\s)" + TIME_PATTERN + "(\\s?)" + "\\u007C" + LEVEL_PATTERN + "(\\s?)" + THREAD_PATTERN + ".*(\\s)*";
         return Pattern.matches(pattern, str);
     }
@@ -50,12 +56,18 @@ public class LogUtils {
      * @return
      */
     public static boolean isLogFormat2(String str) {
+        if (CommonUtils.isEmpty(str)) {
+            return false;
+        }
         String pattern = ".*\\u005B*\\u005D\u0020(DEBUG|INFO|WARN|ERROR)\u0020.*";
         return Pattern.matches(pattern, str);
     }
 
 
     public static boolean isVerticalLineSplit(String str) {
+        if (CommonUtils.isEmpty(str)) {
+            return false;
+        }
         String pattern = ".*[\u007C](DEBUG|INFO|WARN|ERROR).*";
         return Pattern.matches(pattern, str);
     }
@@ -68,6 +80,9 @@ public class LogUtils {
      * @return
      */
     public static boolean hasResponseUrl(String str) {
+        if (CommonUtils.isEmpty(str)) {
+            return false;
+        }
         String pattern = ".*Response .*\u002E(pvt|pub|arz) in.*ms.";
         return Pattern.matches(pattern, str);
     }
