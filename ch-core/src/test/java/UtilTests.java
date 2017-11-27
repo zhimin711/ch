@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Date;
@@ -22,20 +24,23 @@ import java.util.regex.Pattern;
  */
 public class UtilTests {
 
+    final Logger logger = LoggerFactory.getLogger(UtilTests.class);
+
     Object o;
 
     @Test
     public void testCommon() {
+        logger.info("==========");
         String a = "20a";
         String b = "20b";
         System.out.println(CommonUtils.compareTo(a, b));
         System.out.println(CommonUtils.isEquals(a, b));
         System.out.println(CommonUtils.isEquals(20.0000000000022, 20.0000000000022));
-        System.out.println(CommonUtils.isEquals(20L, 20));
+        logger.info("{}", CommonUtils.isEquals(20L, 20));
         o = DateUtils.currentTime();
-        System.out.println(CommonUtils.isEquals(o, o));
+        logger.info("{}", CommonUtils.isEquals(o, o));
         o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
-        System.out.println(o);
+        logger.info("{}", o);
     }
 
     @Test
