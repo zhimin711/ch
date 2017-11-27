@@ -3,4 +3,5 @@ include 'ch-core'
 include 'ch-jdbc-jpa'
 include 'ch-jdbc-mybatis'
 include 'ch-mail'
+include 'ch-helper'
 
