@@ -85,6 +85,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
          */
         DATETIME_YMDHM_CN("yyyy-MM-dd HH:mm"), //
         /**
+         * 年-月-日 小时
+         */
+        DATE_HOUR("yyyyMMddHH"), //
+        /**
          * 年月日小时分钟秒
          */
         DATETIME_SHORT("yyyyMMddHHmmss"), //
@@ -115,7 +119,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         private final String value;
 
-        private Pattern(String value) {
+        Pattern(String value) {
             this.value = value;
         }
 

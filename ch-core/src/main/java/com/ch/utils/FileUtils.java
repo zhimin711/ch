@@ -27,10 +27,15 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      */
     public static String getFileExtension(String fileName) {
 //        logger.info("File name: {}", fileName);
+        if (CommonUtils.isEmpty(fileName)) {
+            return "";
+        }
         int start = fileName.lastIndexOf(".");
-        String suffix = fileName.substring(start);
-        if (CommonUtils.isNotEmpty(suffix)) {
-            return suffix;
+        if (start > 0) {
+            String suffix = fileName.substring(start);
+            if (CommonUtils.isNotEmpty(suffix)) {
+                return suffix;
+            }
         }
         return "";
     }
