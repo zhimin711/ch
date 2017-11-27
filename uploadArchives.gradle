@@ -25,13 +25,13 @@ artifacts {
 }
 
 //如果希望gradle install，安装到.m2本地仓库，参考下面的内容
-/*install {
+install {
     repositories.mavenInstaller {
         pom.version = "$project.version"
         pom.artifactId = "$project.name"
         pom.groupId = "$project.group"
     }
-}*/
+}
 
 //上传到nexus
 uploadArchives {
