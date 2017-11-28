@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * 描述：com.ch.utils
  *
  * @author 80002023
- * 2017/2/4.
+ *         2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -30,7 +31,7 @@ public class JsonUtils {
     /**
      * 工具类型
      */
-    enum ToolType {
+    public enum ToolType {
         GSON, JACKSON, JSON
     }
 
@@ -69,11 +70,29 @@ public class JsonUtils {
             case JACKSON:
                 return toJsonOfJackson(object);
             default:
-                return toJson2(object);
+                return toJson3(object);
 
         }
     }
 
+
+    /**
+     * use org.json plugin format object to json
+     *
+     * @param object 任意对象
+     * @return json Json格式化字符串
+     */
+    private static String toJson3(Object object) {
+        if (object == null) {
+            return null;
+        }
+        try {
+            return new JSONObject(object).toString();
+        } catch (Exception e) {
+            logger.error("use org.json format object to json string error!", e);
+        }
+        return null;
+    }
 
     /**
      * use gson plugin format object to json
@@ -153,13 +172,59 @@ public class JsonUtils {
         return null;
     }
 
+    public static <T> T fromJson(String json, ToolType type) {
+        switch (type) {
+            case GSON:
+                return newInstance().fromJson(json, new TypeToken<T>() {
+                }.getType());
+            case JSON:
+            case JACKSON:
+                return fromJson(json);
+        }
+        return null;
+    }
+
+    /**
+     * 解析JSON字符串
+     *
+     * @param json json string
+     * @param <T>  Object
+     * @return - 返回实体对象
+     */
+    public static <T> T fromJson(String json) {
+        return fromJson(json, new TypeReference<T>() {
+        });
+    }
+
+    /**
+     * 解析JSON字符串
+     *
+     * @param json json string
+     * @param type {@link TypeReference}
+     * @param <T>  返回映射类
+     * @return 返回实体对象
+     */
+    public static <T> T fromJson(String json, TypeReference<T> type) {
+        if (json == null) {
+            return null;
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            // convert JSON string to <T>
+            return mapper.readValue(json, type);
+        } catch (Exception e) {
+            logger.error("parse json to class error!", e);
+        }
+        return null;
+    }
+
     /**
      * Json 转 Map
      *
      * @param json json格式化字符串
      * @return Map
      */
-    public static Map<String, Object> fromJson(String json) {
+    public static Map<String, Object> fromJsonToMap(String json) {
         if (json == null) {
             return null;
         }
