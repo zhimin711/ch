@@ -77,31 +77,49 @@ public class FtpHelper {
         }
     }
 
+    /**
+     * 显示指定目录下所有文件(包含目录)
+     *
+     * @param dir 指定目录
+     * @return 指定目录文件集合
+     */
     public List<FileInfo> listFiles(String dir) {
-        try {
-            FTPFile[] ftpFiles = client.listFiles(dir);
-            return covertToFileInfo(ftpFiles);
-        } catch (IOException e) {
-            logger.error("listFiles", e);
-        }
-        return Lists.newArrayList();
+        return listFiles(dir, null, null);
     }
 
+    /**
+     * 显示指定目录下指定类型文件
+     *
+     * @param dir           显示目录
+     * @param fileExtension 显示文件扩展后缀
+     * @return 指定目录文件集合
+     */
     public List<FileInfo> listFiles(final String dir, final String fileExtension) {
-        try {
-
-            FTPFile[] ftpFiles = client.listFiles(dir, file -> fileExtension.equals(FileUtils.getFileExtensionName(file.getName())));
-            return covertToFileInfo(ftpFiles);
-        } catch (IOException e) {
-            logger.error("listFiles", e);
-        }
-        return Lists.newArrayList();
+        return listFiles(dir, fileExtension, null);
     }
 
-
+    /**
+     * 显示指定目录下指定类型文件并过滤文件名
+     *
+     * @param dir           指定目录
+     * @param fileExtension 文件类型(后缀)
+     * @param fileName      过滤文件名(包含)
+     * @return 指定目录文件集合
+     */
     public List<FileInfo> listFiles(final String dir, final String fileExtension, final String fileName) {
         try {
-            FTPFile[] ftpFiles = client.listFiles(dir, file -> fileExtension.equals(FileUtils.getFileExtensionName(file.getName())) && file.getName().contains(fileName));
+            FTPFile[] ftpFiles;
+            if (CommonUtils.isNotEmpty(dir) && CommonUtils.isNotEmpty(fileExtension) && CommonUtils.isNotEmpty(fileName)) {
+                ftpFiles = client.listFiles(dir, file ->
+                        fileExtension.equals(FileUtils.getFileExtensionName(file.getName()))
+                                && file.getName().contains(fileName));
+            } else if (CommonUtils.isNotEmpty(dir) && CommonUtils.isNotEmpty(fileExtension)) {
+                ftpFiles = client.listFiles(dir, file -> fileExtension.equals(FileUtils.getFileExtensionName(file.getName())));
+            } else if (CommonUtils.isNotEmpty(dir) && CommonUtils.isNotEmpty(fileName)) {
+                ftpFiles = client.listFiles(dir, file -> file.getName().contains(fileName));
+            } else {
+                ftpFiles = client.listFiles();
+            }
             return covertToFileInfo(ftpFiles);
         } catch (IOException e) {
             logger.error("listFiles", e);
@@ -109,14 +127,23 @@ public class FtpHelper {
         return Lists.newArrayList();
     }
 
+    /**
+     * 下载文件
+     *
+     * @param remoteFile 远程文件
+     * @param targetFile 输出文件
+     * @return 成功或失败
+     */
     public boolean download(String remoteFile, String targetFile) {
         return download(remoteFile, new File(targetFile));
     }
 
     /**
-     * @param remoteFile
-     * @param file       output file
-     * @return
+     * 下载文件
+     *
+     * @param remoteFile 远程文件
+     * @param file       输出文件
+     * @return 成功或失败
      */
     public boolean download(String remoteFile, File file) {
         OutputStream os = null;
