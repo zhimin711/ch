@@ -1,9 +1,11 @@
 package com.ch.helper.pojo;
 
+import java.io.Serializable;
+
 /**服务器
  * Created by 01370603 on 2017/12/2.
  */
-public class ServerInfo {
+public class ServerInfo implements Serializable {
 
     /**
      * IP或域名
