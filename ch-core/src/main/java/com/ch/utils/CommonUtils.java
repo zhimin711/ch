@@ -201,8 +201,16 @@ public class CommonUtils {
         }
         if (!a.getClass().equals(b.getClass())) {
             throw new RuntimeException("Class Type is not same!");
-        } else if (a instanceof Number && b instanceof Number) {
-            return String.valueOf(a).compareTo(String.valueOf(b));
+        } else if (a instanceof Integer && b instanceof Integer) {
+            return ((Integer) a).compareTo((Integer) b);
+        } else if (a instanceof Long && b instanceof Long) {
+            return ((Long) a).compareTo((Long) b);
+        } else if (a instanceof Double && b instanceof Double) {
+            return ((Double) a).compareTo((Double) b);
+        } else if (a instanceof Float && b instanceof Float) {
+            return ((Float) a).compareTo((Float) b);
+        } else if (a instanceof Byte && b instanceof Byte) {
+            return ((Byte) a).compareTo((Byte) b);
         } else if (a instanceof String && b instanceof String) {
             return ((String) a).compareTo((String) b);
         } else if (a instanceof Date && b instanceof Date) {
