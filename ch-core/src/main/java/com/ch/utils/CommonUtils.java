@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * 描述：通用工具类
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -63,7 +63,7 @@ public class CommonUtils {
                 return true;
             }
         } else if (obj instanceof Collection) {
-            if (((Collection) obj).isEmpty()) {
+            if (((Collection) obj).isEmpty() && ((Collection) obj).size() <= 0) {
                 return true;
             }
         } else if (obj.getClass().isArray()) {
