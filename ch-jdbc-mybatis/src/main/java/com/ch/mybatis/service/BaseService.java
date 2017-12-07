@@ -5,10 +5,7 @@ import com.ch.mybatis.exception.MybatisException;
 import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.common.special.InsertListMapper;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,7 +18,10 @@ import java.util.List;
  * @version 1.0
  * @since 1.8
  */
-public abstract class AbstractService<ID extends Serializable, T> implements IService<ID, T> {
+
+public abstract class BaseService<ID extends Serializable, T> implements IService<ID, T> {
+
+    abstract Mapper<T> getMapper();
 
     @Override
     public int save(T record) {
@@ -71,8 +71,6 @@ public abstract class AbstractService<ID extends Serializable, T> implements ISe
         checkMapper();
         return getMapper().selectAll();
     }
-
-    abstract Mapper<T> getMapper();
 
     private void checkMapper() {
         if (CommonUtils.isEmpty(getMapper())) {

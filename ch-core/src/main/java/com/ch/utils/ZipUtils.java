@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -18,7 +15,7 @@ import java.util.zip.ZipInputStream;
  * 描述：Zip 工具
  *
  * @author zhimin
- *         2016/9/12.
+ * 2016/9/12.
  * @version 1.0
  * @since JDK1.8
  */
@@ -104,6 +101,7 @@ public class ZipUtils {
         return fileList;
     }
 
+
     //zipFileName为需要解压的zip文件，extPlace为解压后文件的存放路径，两者均须已经存在
 
     /**
@@ -114,6 +112,18 @@ public class ZipUtils {
      * @return 文件集合
      */
     public static List<File> unzipFile(String zipFileName, String targetDir) {
+        return unzipFile(zipFileName, targetDir, null);
+    }
+
+    /**
+     * Ant解压zip压缩文件
+     *
+     * @param zipFileName 解压的zip文件绝对路径
+     * @param targetDir   输出目录
+     * @param extensions  输出文件后缀(过滤)
+     * @return 文件集合
+     */
+    public static List<File> unzipFile(String zipFileName, String targetDir, Set<String> extensions) {
         List<File> fileList = new ArrayList<>();
         org.apache.tools.zip.ZipFile zipFile = null;
         try {
@@ -122,11 +132,14 @@ public class ZipUtils {
             org.apache.tools.zip.ZipEntry zipEntry;
             InputStream in = null;
             OutputStream os = null;
+            FileUtils.create(targetDir);
             while (e.hasMoreElements()) {
                 zipEntry = (org.apache.tools.zip.ZipEntry) e.nextElement();
                 String entryName = zipEntry.getName();
                 logger.info("unzip File name: {}", entryName);
-                FileUtils.create(targetDir);
+                if (CommonUtils.isNotEmpty(extensions) && !extensions.contains(FileUtils.getFileExtensionName(entryName))) {
+                    continue;
+                }
                 File newFile = new File(targetDir, UUID.randomUUID().toString() + FileUtils.getFileExtension(entryName));
                 try {
                     in = zipFile.getInputStream(zipEntry);
