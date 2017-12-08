@@ -12,6 +12,7 @@ public class FileInfo {
     private String path;
     private Long fileSize;
     private Date modifyAt;
+    private boolean isDir = false;
 
     public String getFileName() {
         return fileName;
@@ -43,5 +44,13 @@ public class FileInfo {
 
     public void setModifyAt(Date modifyAt) {
         this.modifyAt = modifyAt;
+    }
+
+    public boolean isDir() {
+        return isDir;
+    }
+
+    public void setDir(boolean dir) {
+        isDir = dir;
     }
 }

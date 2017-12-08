@@ -109,14 +109,17 @@ public class FtpHelper {
     public List<FileInfo> listFiles(final String dir, final String fileExtension, final String fileName) {
         try {
             FTPFile[] ftpFiles;
-            if (CommonUtils.isNotEmpty(dir) && CommonUtils.isNotEmpty(fileExtension) && CommonUtils.isNotEmpty(fileName)) {
-                ftpFiles = client.listFiles(dir, file ->
+            String tmpDir = CommonUtils.isEmpty(dir) ? "" : dir;
+            if (CommonUtils.isNotEmpty(fileExtension) && CommonUtils.isNotEmpty(fileName)) {
+                ftpFiles = client.listFiles(tmpDir, file ->
                         fileExtension.equals(FileUtils.getFileExtensionName(file.getName()))
                                 && file.getName().contains(fileName));
-            } else if (CommonUtils.isNotEmpty(dir) && CommonUtils.isNotEmpty(fileExtension)) {
-                ftpFiles = client.listFiles(dir, file -> fileExtension.equals(FileUtils.getFileExtensionName(file.getName())));
-            } else if (CommonUtils.isNotEmpty(dir) && CommonUtils.isNotEmpty(fileName)) {
-                ftpFiles = client.listFiles(dir, file -> file.getName().contains(fileName));
+            } else if (CommonUtils.isNotEmpty(fileExtension)) {
+                ftpFiles = client.listFiles(tmpDir, file -> fileExtension.equals(FileUtils.getFileExtensionName(file.getName())));
+            } else if (CommonUtils.isNotEmpty(fileName)) {
+                ftpFiles = client.listFiles(tmpDir, file -> file.getName().contains(fileName));
+            } else if (CommonUtils.isNotEmpty(tmpDir)) {
+                ftpFiles = client.listFiles(tmpDir);
             } else {
                 ftpFiles = client.listFiles();
             }
@@ -168,6 +171,9 @@ public class FtpHelper {
             info.setFileName(file.getName());
             info.setFileSize(file.getSize());
             info.setModifyAt(file.getTimestamp().getTime());
+            if (file.isDirectory()) {
+                info.setDir(true);
+            }
             files.add(info);
         }
         return files;
