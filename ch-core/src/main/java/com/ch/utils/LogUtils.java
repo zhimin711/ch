@@ -21,6 +21,10 @@ public class LogUtils {
     private LogUtils() {
     }
 
+    public enum Level {
+        DEBUG, INFO, WARN, ERROR
+    }
+
     /**
      * %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %msg%n
      *
@@ -38,7 +42,7 @@ public class LogUtils {
     /**
      * %d{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|%thread| %msg%n
      *
-     * @param str
+     * @param str 日志信息
      * @return
      */
     public static boolean isLogFormat1(String str) {
@@ -52,7 +56,7 @@ public class LogUtils {
     /**
      * %d{MM-dd HH:mm:ss.SSS} [%thread] %-5level %msg%n
      *
-     * @param str
+     * @param str 日志信息
      * @return
      */
     public static boolean isLogFormat2(String str) {
@@ -64,7 +68,7 @@ public class LogUtils {
     }
 
 
-    public static boolean isVerticalLineSplit(String str) {
+    public static boolean isLogError(String str) {
         if (CommonUtils.isEmpty(str)) {
             return false;
         }

@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * 描述：PACKAGE_NAME
  *
  * @author 80002023
- *         2017/3/8.
+ * 2017/3/8.
  * @version 1.0
  * @since 1.8
  */
@@ -103,10 +103,10 @@ public class UtilTests {
         String tmp = "2017-11-17 10:35:10.487|DEBUG|qtp1334042472-3152| com.sf.novatar.deploy.interceptor.ModuleInterceptor.intercept(ModuleInterceptor.java:70)|Response /contract/businessContractManageSF/findTaskInfosByContractLine.pvt in 17 ms.";
 
         o = LogUtils.isLogFormat1(tmp);
-        System.out.println(o);
+        logger.info("{}", o);
         Pattern p = Pattern.compile(LogUtils.DATE_PATTERN + "(\\s)" + LogUtils.TIME_PATTERN + "(\\s)" + LogUtils.THREAD_PATTERN);
         o = p.matcher(str).find();
-        System.out.println(o);
+        logger.info("{}", o);
     }
 
 }

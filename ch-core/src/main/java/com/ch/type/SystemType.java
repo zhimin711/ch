@@ -25,7 +25,7 @@ public enum SystemType {
     OPEN_VMS("OpenVMS"),
     OTHERS("Others");
 
-    private SystemType(String desc) {
+    SystemType(String desc) {
         this.description = desc;
     }
 
