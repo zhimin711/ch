@@ -72,7 +72,7 @@ public class LogUtils {
         if (CommonUtils.isEmpty(str)) {
             return false;
         }
-        String pattern = ".*[\u007C](DEBUG|INFO|WARN|ERROR).*";
+        String pattern = ".*[\\u007C|\\u005B|\\u002D|\\u0020](ERROR)[\\u007C|\\u005D|\\u002D|\\u0020].*";
         return Pattern.matches(pattern, str);
     }
 

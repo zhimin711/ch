@@ -59,21 +59,13 @@ public class CommonUtils {
             return true;
         }
         if (obj instanceof String) {
-            if (((String) obj).trim().length() == 0) {
-                return true;
-            }
+            return ((String) obj).trim().length() == 0;
         } else if (obj instanceof Collection) {
-            if (((Collection) obj).isEmpty() && ((Collection) obj).size() <= 0) {
-                return true;
-            }
+            return ((Collection) obj).isEmpty() && ((Collection) obj).size() <= 0;
         } else if (obj.getClass().isArray()) {
-            if (((Object[]) obj).length == 0) {
-                return true;
-            }
+            return ((Object[]) obj).length == 0;
         } else if (obj instanceof Map) {
-            if (((Map) obj).isEmpty()) {
-                return true;
-            }
+            return ((Map) obj).isEmpty();
         }
         return false;
     }
