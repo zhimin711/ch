@@ -44,5 +44,9 @@ public enum ConditionType {
     /**
      * 区间
      */
-    BETWEEN
+    BETWEEN,
+    /**
+     * 模糊
+     */
+    LIKE
 }
