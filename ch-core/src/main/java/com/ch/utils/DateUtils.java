@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -203,10 +203,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (!CommonUtils.isNumeric(timestamp)) {
             return null;
         }
+        return parseTimestamp(new Long(timestamp));
+    }
+
+    public static Date parseTimestamp(Long timestamp) {
+        if (!CommonUtils.isEmpty(timestamp)) {
+            return null;
+        }
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Long(timestamp));
+        calendar.setTimeInMillis(timestamp);
         return calendar.getTime();
     }
+
 
     /**
      * 根据时间格式解析时间字符串
@@ -528,5 +536,21 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 break;
         }
         return regex;
+    }
+
+    /**
+     * 清除时间（时分秒）
+     *
+     * @param date
+     * @return
+     */
+    public static Date clearTime(Date date) {
+        assert date != null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        return c.getTime();
     }
 }
