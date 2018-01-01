@@ -207,7 +207,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     public static Date parseTimestamp(Long timestamp) {
-        if (!CommonUtils.isEmpty(timestamp)) {
+        if (CommonUtils.isEmpty(timestamp)) {
             return null;
         }
         Calendar calendar = Calendar.getInstance();
