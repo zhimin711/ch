@@ -1,6 +1,6 @@
 package com.ch.mybatis.service;
 
-import com.ch.mybatis.context.CustomMapper;
+import com.ch.mybatis.context.BaseMapper;
 import com.ch.mybatis.exception.MybatisException;
 import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public abstract class BaseService<ID extends Serializable, T> implements IService<ID, T> {
 
-    abstract Mapper<T> getMapper();
+    public abstract Mapper<T> getMapper();
 
     @Override
     public int save(T record) {
@@ -88,8 +88,8 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     public int batchSave(List<T> records) {
         checkMapper();
         checkParam(records);
-        if (getMapper() instanceof CustomMapper) {
-            return ((CustomMapper<T>) getMapper()).insertList(records);
+        if (getMapper() instanceof BaseMapper) {
+            return ((BaseMapper<T>) getMapper()).insertList(records);
         }
         Long c = records.stream().mapToInt(r -> getMapper().insertSelective(r)).count();
         return c.intValue();
