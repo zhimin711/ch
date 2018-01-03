@@ -539,18 +539,34 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 清除时间（时分秒）
+     *  获取指定日期开始日间 0点0分0秒
      *
-     * @param date
+     * @param date 指定日期
      * @return
      */
-    public static Date clearTime(Date date) {
+    public static Date startDayTime(Date date) {
         assert date != null;
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
+        return c.getTime();
+    }
+
+    /**
+     * 获取指定日期结束日间 23点59分59秒
+     *
+     * @param date 指定日期
+     * @return
+     */
+    public static Date endDayTime(Date date) {
+        assert date != null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
         return c.getTime();
     }
 }
