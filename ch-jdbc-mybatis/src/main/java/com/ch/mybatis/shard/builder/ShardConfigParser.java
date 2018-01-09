@@ -27,11 +27,8 @@ public class ShardConfigParser {
     private static final Map<String, String> DOC_TYPE_MAP = new HashMap<String, String>();
 
     static {
-        DOC_TYPE_MAP.put(
-                "http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd"
-                        .toLowerCase(), SHARD_CONFIG_DTD);
-        DOC_TYPE_MAP.put("-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN"
-                .toLowerCase(), SHARD_CONFIG_DTD);
+        DOC_TYPE_MAP.put("http://shardbatis.googlecode.com/dtd/shardbatis-config.dtd".toLowerCase(), SHARD_CONFIG_DTD);
+        DOC_TYPE_MAP.put("-//shardbatis.googlecode.com//DTD Shardbatis 2.0//EN".toLowerCase(), SHARD_CONFIG_DTD);
     }
 
     /**
@@ -42,8 +39,7 @@ public class ShardConfigParser {
      * @throws Exception
      */
     public ShardConfigHolder parse(InputStream input) throws Exception {
-        final ShardConfigHolder configHolder = ShardConfigHolder
-                .getInstance();
+        final ShardConfigHolder configHolder = ShardConfigHolder.getInstance();
 
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setValidating(true);
@@ -54,8 +50,7 @@ public class ShardConfigParser {
         DefaultHandler handler = new DefaultHandler() {
             private String parentElement;
 
-            public void startElement(String uri, String localName,
-                                     String qName, Attributes attributes) throws SAXException {
+            public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 
                 if ("strategy".equals(qName)) {// 解析<strategy/>节点
                     // 解析<strategy tableName="xxx"/>
@@ -66,11 +61,7 @@ public class ShardConfigParser {
                         Class<?> clazz = Class.forName(className);
                         ShardStrategy strategy = (ShardStrategy) clazz.newInstance();
                         configHolder.register(table, strategy);
-                    } catch (ClassNotFoundException e) {
-                        throw new SAXException(e);
-                    } catch (InstantiationException e) {
-                        throw new SAXException(e);
-                    } catch (IllegalAccessException e) {
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                         throw new SAXException(e);
                     }
 
@@ -79,7 +70,6 @@ public class ShardConfigParser {
                 if ("ignoreList".equals(qName) || "parseList".equals(qName)) {
                     parentElement = qName;
                 }
-
 
             }
 

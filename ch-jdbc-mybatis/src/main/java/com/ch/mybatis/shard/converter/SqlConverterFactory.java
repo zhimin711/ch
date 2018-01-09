@@ -63,8 +63,7 @@ public class SqlConverterFactory {
      * @return 修改后的sql
      * @throws ShardException 解析sql失败会抛出ShardException
      */
-    public String convert(String sql, Object params, String mapperId)
-            throws ShardException {
+    public String convert(String sql, Object params, String mapperId) throws ShardException {
         Statement statement = null;
         try {
             statement = pm.parse(new StringReader(sql));
@@ -73,8 +72,7 @@ public class SqlConverterFactory {
             throw new ShardException(e);
         }
 
-        SqlConverter converter = this.converterMap.get(statement.getClass()
-                .getName());
+        SqlConverter converter = this.converterMap.get(statement.getClass().getName());
 
         if (converter != null) {
             return converter.convert(statement, params, mapperId);

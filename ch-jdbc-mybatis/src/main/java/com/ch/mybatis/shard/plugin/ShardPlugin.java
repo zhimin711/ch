@@ -10,6 +10,7 @@ import com.ch.mybatis.shard.builder.ShardConfigHolder;
 import com.ch.mybatis.shard.builder.ShardConfigParser;
 import com.ch.mybatis.shard.converter.SqlConverterFactory;
 import com.ch.mybatis.shard.util.ReflectionUtils;
+import com.ch.utils.CommonUtils;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.io.Resources;
@@ -32,24 +33,21 @@ public class ShardPlugin implements Interceptor {
 
     public static final String SHARDING_CONFIG = "shardingConfig";
 
+    private String direct;
     // ConcurrentHashMap<mapperId,needParse>
 
     private static final ConcurrentHashMap<String, Boolean> cache = new ConcurrentHashMap<String, Boolean>();
 
     public Object intercept(Invocation invocation) throws Throwable {
 
-        StatementHandler statementHandler = (StatementHandler) invocation
-                .getTarget();
+        StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
 
         MappedStatement mappedStatement = null;
         if (statementHandler instanceof RoutingStatementHandler) {
-            StatementHandler delegate = (StatementHandler) ReflectionUtils
-                    .getFieldValue(statementHandler, "delegate");
-            mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(
-                    delegate, "mappedStatement");
+            StatementHandler delegate = (StatementHandler) ReflectionUtils.getFieldValue(statementHandler, "delegate");
+            mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(delegate, "mappedStatement");
         } else {
-            mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(
-                    statementHandler, "mappedStatement");
+            mappedStatement = (MappedStatement) ReflectionUtils.getFieldValue(statementHandler, "mappedStatement");
         }
 
         String mapperId = mappedStatement.getId();
@@ -63,13 +61,25 @@ public class ShardPlugin implements Interceptor {
 
             SqlConverterFactory cf = SqlConverterFactory.getInstance();
             sql = cf.convert(sql, params, mapperId);
+            sql = prepareSql(sql);
             if (log.isDebugEnabled()) {
                 log.debug("Converted Sql [" + mapperId + "]:" + sql);
             }
-            ReflectionUtils.setFieldValue(statementHandler
-                    .getBoundSql(), "sql", sql);
+            ReflectionUtils.setFieldValue(statementHandler.getBoundSql(), "sql", sql);
         }
         return invocation.proceed();
+    }
+
+    private String prepareSql(String sql) {
+        if (CommonUtils.isEmpty(this.direct)) {
+            return sql;
+        }
+        switch (this.direct.toLowerCase()) {
+            case "mysql":
+                sql = sql.replace(" OFFSET ", ",");
+                break;
+        }
+        return sql;
     }
 
     public Object plugin(Object target) {
@@ -81,10 +91,13 @@ public class ShardPlugin implements Interceptor {
 
         String config = properties.getProperty(SHARDING_CONFIG, null);
         if (config == null || config.trim().length() == 0) {
-            throw new IllegalArgumentException(
-                    "property 'shardingConfig' is requested.");
+            throw new IllegalArgumentException("property 'shardingConfig' is requested.");
         }
 
+        String direct = properties.getProperty("direct", null);
+        if (CommonUtils.isNotEmpty(direct)) {
+            this.direct = direct;
+        }
         ShardConfigParser parser = new ShardConfigParser();
         InputStream input = null;
 
@@ -114,7 +127,6 @@ public class ShardPlugin implements Interceptor {
         Boolean parse = cache.get(mapperId);
 
         if (parse != null) {//已被缓存
-
             return parse;
         }
         /*
@@ -135,9 +147,7 @@ public class ShardPlugin implements Interceptor {
             ShardConfigHolder configHolder = ShardConfigHolder.getInstance();
 
             if (!configHolder.isIgnoreId(mapperId)) {
-                if (!configHolder.isConfigParseId()
-                        || configHolder.isParseId(mapperId)) {
-
+                if (!configHolder.isConfigParseId() || configHolder.isParseId(mapperId)) {
                     parse = true;
                 }
             }
@@ -148,4 +158,5 @@ public class ShardPlugin implements Interceptor {
         cache.put(mapperId, parse);
         return parse;
     }
+
 }
