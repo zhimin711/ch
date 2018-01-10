@@ -139,15 +139,7 @@ public class LogUtils {
         } else if (sql.startsWith("group by ")) {
             return true;
         }
-        if (sql.contains("=?")) {
-            return true;
-        } else if (sql.contains("= ?")) {
-            return true;
-        } else if (sql.contains("is null")) {
-            return true;
-        } else if (sql.contains("in (")) {
-            return true;
-        } else return sql.contains(" as ");
+        return sql.contains("=?") || sql.contains("= ?") || sql.contains("is null") || sql.contains("in (") || sql.contains(" as ");
 
     }
 
