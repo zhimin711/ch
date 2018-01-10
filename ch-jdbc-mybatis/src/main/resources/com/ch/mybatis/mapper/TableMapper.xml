@@ -7,7 +7,7 @@
     <update id="truncate">
         TRUNCATE table ${tableName}
     </update>
-    <select id="isExists">
+    <select id="isExists" resultType="java.lang.Integer">
         SELECT count(1) FROM information_schema.tables WHERE table_schema = #{schemaName} and TABLE_NAME = #{tableName}
     </select>
 </mapper>
