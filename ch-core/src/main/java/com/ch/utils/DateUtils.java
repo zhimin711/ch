@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.ch.exception.InvalidArgumentException;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -539,7 +540,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     *  获取指定日期开始日间 0点0分0秒
+     * 获取指定日期开始日间 0点0分0秒
      *
      * @param date 指定日期
      * @return
@@ -569,4 +570,121 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         c.set(Calendar.SECOND, 59);
         return c.getTime();
     }
+
+    protected static final String[] WEEK_CN = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+
+    /**
+     * 获日期取周中文名称
+     *
+     * @param date
+     * @return
+     */
+    public static String getWeek(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (week_index < 0) {
+            week_index = 0;
+        }
+        return WEEK_CN[week_index];
+    }
+
+    /**
+     * 获工作是取周中文名称
+     *
+     * @param week
+     * @return
+     */
+    public static String getWeek(final Integer week) {
+        int index_week = 0;
+        if (week != null && week >= 0 && week <= 6) {
+            index_week = week;
+        }
+        return WEEK_CN[index_week];
+    }
+
+
+    public static Integer getOfType(Date date, int type) {
+        if (date == null) {
+            return null;
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int t = Calendar.YEAR;
+        switch (type) {
+            case Calendar.MONTH:
+                t = Calendar.MONTH;
+                return c.get(t) + 1;
+            case Calendar.DATE:
+                t = Calendar.DATE;
+                break;
+            case Calendar.HOUR:
+                t = Calendar.HOUR;
+                break;
+            case Calendar.MINUTE:
+                t = Calendar.MINUTE;
+                break;
+            case Calendar.SECOND:
+                t = Calendar.SECOND;
+                break;
+            case Calendar.DAY_OF_WEEK:
+                t = Calendar.DAY_OF_WEEK;
+                break;
+            case Calendar.DAY_OF_WEEK_IN_MONTH:
+                t = Calendar.DAY_OF_WEEK_IN_MONTH;
+                break;
+            default:
+                break;
+        }
+        return c.get(t);
+    }
+
+    /**
+     * 计算两个日期之间的工作日数
+     *
+     * @param start   开始日期
+     * @param end     结束日期
+     * @param workday 适用工作日（1周日2周一3周二4周三5周四6周五7周六）
+     * @return 工作日数
+     */
+    public static int workdays(Date start, Date end, String workday) {
+        if (start == null || end == null) {
+            throw new InvalidArgumentException("start ro end date is require!");
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        int count = 0;
+        while (cal.getTime().before(addDays(end, 1))) {
+            Integer tmp = getOfType(cal.getTime(), Calendar.DAY_OF_WEEK);
+            if (tmp != null && workday.contains(tmp.toString())) {
+                count++;
+            }
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return count;
+    }
+
+    /**
+     * 1234567转中文
+     *
+     * @param workday
+     * @param separator 分割符
+     * @return
+     */
+    public static String convertWorkdays(String workday, String separator) {
+        if (StringUtils.isBlank(workday)) {
+            return "-";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < workday.length(); i++) {
+            if (sb.length() > 0)
+                sb.append(separator);
+            String day = String.valueOf(workday.charAt(i));
+            if (StringUtils.isNumeric(day)) {
+                sb.append(DateUtils.getWeek(Integer.valueOf(day)));
+            }
+        }
+        return sb.toString();
+    }
+
 }

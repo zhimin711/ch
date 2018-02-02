@@ -1,3 +1,5 @@
+package com.ch.core;
+
 import com.ch.pool.DefaultThreadPool;
 import com.google.common.collect.Lists;
 import org.junit.Test;

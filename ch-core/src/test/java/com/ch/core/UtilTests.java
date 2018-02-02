@@ -1,3 +1,5 @@
+package com.ch.core;
+
 import com.ch.pojo.KeyValue;
 import com.ch.utils.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
