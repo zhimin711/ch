@@ -17,6 +17,7 @@ public class BeanUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
+    private BeanUtils(){}
     /**
      * set target object of property value
      *
@@ -101,12 +102,12 @@ public class BeanUtils {
 
 
     /**
-     * 取Bean的属性和值对应关系的MAP
+     * 取Bean声明的属性和值对应关系的MAP
      *
      * @param bean 目标对象
      * @return Map
      */
-    public static Map<String, String> getFieldValueMap(Object bean) {
+    public static Map<String, String> getDeclaredFieldValueMap(Object bean) {
         Class<?> cls = bean.getClass();
         Map<String, String> valueMap = Maps.newHashMap();
         // 取出bean里的所有方法
@@ -134,6 +135,45 @@ public class BeanUtils {
                     }
                 }
                 valueMap.put(field.getName(), result);
+            } catch (Exception e) {
+                logger.error("getDeclaredFieldValueMap Error!", e);
+            }
+        }
+        return valueMap;
+
+    }
+
+    /**
+     * 取Bean的属性和值对应关系的MAP
+     *
+     * @param bean 目标对象
+     * @return Map
+     */
+    public static Map<String, String> getKeyValueMap(Object bean) {
+        Class<?> cls = bean.getClass();
+        Map<String, String> valueMap = Maps.newHashMap();
+        // 取出bean里的所有方法
+        Method[] methods = cls.getMethods();
+
+        for (Method method : methods) {
+            try {
+                String methodName = method.getName();
+                String returnTypeName = method.getReturnType().getName();
+                if ("void".equals(returnTypeName) || methodName.startsWith("set")) {
+                    continue;
+                }
+//                Method fieldGetMet = cls.getMethod(fieldGetName, new Class[]{});
+//                Object fieldVal = fieldGetMet.invoke(bean, new Object[]{});
+                Object fieldVal = method.invoke(bean);
+                String result = null;
+                if ("Date".equals(returnTypeName) || "Timestamp".equals(returnTypeName)) {
+                    result = DateUtils.format((Date) fieldVal);
+                } else {
+                    if (null != fieldVal) {
+                        result = String.valueOf(fieldVal);
+                    }
+                }
+                valueMap.put(methodName, result);
             } catch (Exception e) {
                 logger.error("getFieldValueMap Error!", e);
             }
