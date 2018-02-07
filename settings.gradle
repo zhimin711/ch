@@ -5,4 +5,5 @@ include 'ch-jdbc-mybatis'
 include 'ch-mail'
 include 'ch-helper'
 include 'ch-doc'
+include 'ch-shiro'
 
