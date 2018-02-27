@@ -1,7 +1,6 @@
 package com.ch.utils;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +9,7 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 描述：Zip 工具
@@ -163,5 +163,121 @@ public class ZipUtils {
             IOUtils.close(zipFile);
         }
         return Lists.newArrayList();
+    }
+
+    /**
+     * 创建ZIP文件
+     *
+     * @param sourcePath 文件或文件夹路径
+     * @param zipPath    生成的zip文件存在路径（包括文件名）
+     */
+    public static void zipFile(String sourcePath, String zipPath) {
+        org.apache.tools.zip.ZipOutputStream zos = null;
+        try {
+            zos = new org.apache.tools.zip.ZipOutputStream(new FileOutputStream(zipPath));
+            zos.setEncoding("gbk");//此处修改字节码方式。
+            writeZipFile(new File(sourcePath), "", zos);
+        } catch (FileNotFoundException e) {
+            logger.error("创建ZIP文件失败", e);
+        } finally {
+            IOUtils.close(zos);
+
+        }
+    }
+
+    private static void writeZipFile(File file, String parentPath, org.apache.tools.zip.ZipOutputStream zos) {
+        if (file.exists()) {
+            if (file.isDirectory()) {//处理文件夹
+                parentPath += file.getName() + File.separator;
+                File[] files = file.listFiles();
+                if (files != null && files.length != 0) {
+                    for (File f : files) {
+                        writeZipFile(f, parentPath, zos);
+                    }
+                } else {       //空目录则创建当前目录
+                    try {
+                        zos.putNextEntry(new org.apache.tools.zip.ZipEntry(parentPath));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    org.apache.tools.zip.ZipEntry ze = new org.apache.tools.zip.ZipEntry(parentPath + file.getName());
+                    zos.putNextEntry(ze);
+                    byte[] content = new byte[1024];
+                    int len;
+                    while ((len = fis.read(content)) != -1) {
+                        zos.write(content, 0, len);
+                        zos.flush();
+                    }
+
+                } catch (IOException e) {
+                    logger.error("创建ZIP文件失败", e);
+                } finally {
+                    IOUtils.close(fis);
+                }
+            }
+        }
+    }
+
+    /**
+     * 创建ZIP文件
+     *
+     * @param sourcePath 文件或文件夹路径
+     * @param zipPath    生成的zip文件存在路径（包括文件名）
+     */
+    public static void zip(String sourcePath, String zipPath) {
+        ZipOutputStream zos = null;
+        try {
+            zos = new ZipOutputStream(new FileOutputStream(zipPath));
+//            zos.setEncoding("gbk");//此处修改字节码方式。
+            writeZip(new File(sourcePath), "", zos);
+        } catch (FileNotFoundException e) {
+            logger.error("创建ZIP文件失败", e);
+        } finally {
+            IOUtils.close(zos);
+
+        }
+    }
+
+    private static void writeZip(File file, String parentPath, ZipOutputStream zos) {
+        if (file.exists()) {
+            if (file.isDirectory()) {//处理文件夹
+                parentPath += file.getName() + File.separator;
+                File[] files = file.listFiles();
+                if (files != null && files.length != 0) {
+                    for (File f : files) {
+                        writeZip(f, parentPath, zos);
+                    }
+                } else {       //空目录则创建当前目录
+                    try {
+                        zos.putNextEntry(new ZipEntry(parentPath));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                FileInputStream fis = null;
+                try {
+                    fis = new FileInputStream(file);
+                    ZipEntry ze = new ZipEntry(parentPath + file.getName());
+                    zos.putNextEntry(ze);
+                    byte[] content = new byte[1024];
+                    int len;
+                    while ((len = fis.read(content)) != -1) {
+                        zos.write(content, 0, len);
+                        zos.flush();
+                    }
+
+                } catch (IOException e) {
+                    logger.error("创建ZIP文件失败", e);
+                } finally {
+                    IOUtils.close(fis);
+                }
+            }
+        }
     }
 }
