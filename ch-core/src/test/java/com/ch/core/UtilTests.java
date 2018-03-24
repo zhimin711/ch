@@ -111,4 +111,13 @@ public class UtilTests {
         logger.info("{}", o);
     }
 
+    @Test
+    public void testSQL() {
+        String sql = "select * \n" +
+                "-- a\n" +
+                "from ts_role; ";
+
+        logger.info("after trim comment: {}", SQLUtils.isBatch(sql));
+    }
+
 }
