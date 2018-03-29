@@ -95,17 +95,16 @@ public class EncryptUtils {
         return null;
     }
 
-    public static String md5(String str){
+    public static String md5(String str) {
         return MD5(str);
     }
 
     private static String MD5(String s) {
         try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            MessageDigest md = MessageDigest.getInstance(ALGORITHM_MD5);
             byte[] bytes = md.digest(s.getBytes("utf-8"));
             return toHex(bytes);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -114,9 +113,9 @@ public class EncryptUtils {
 
         final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
         StringBuilder ret = new StringBuilder(bytes.length * 2);
-        for (int i=0; i<bytes.length; i++) {
-            ret.append(HEX_DIGITS[(bytes[i] >> 4) & 0x0f]);
-            ret.append(HEX_DIGITS[bytes[i] & 0x0f]);
+        for (byte aByte : bytes) {
+            ret.append(HEX_DIGITS[(aByte >> 4) & 0x0f]);
+            ret.append(HEX_DIGITS[aByte & 0x0f]);
         }
         return ret.toString();
     }
