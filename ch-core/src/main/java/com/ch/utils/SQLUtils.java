@@ -13,6 +13,7 @@ public class SQLUtils {
 
     private final static String[] patternList = {".*(update|UPDATE) .*(set|SET) .*", ".*(delete|DELETE) .*(from|FROM) .*", ".*(drop|DROP) .*", ".*(alter|ALTER) .*(table|TABLE) .*", ".*(truncate|TRUNCATE) .*"};
 
+    private final static String[] patternList2 = {".*(limit|LIMIT) [0-9]+,[0-9]+", ".*(limit|LIMIT) [0-9]+"};
 
     /**
      * 检查是否为查询SQL
@@ -99,5 +100,23 @@ public class SQLUtils {
             }
         }
         return sb.toString().trim();
+    }
+
+    /**
+     * 判断是否有Limit
+     *
+     * @param sql SQL
+     * @return
+     */
+    public static boolean hasLimit(String sql) {
+        if (CommonUtils.isEmpty(sql)) {
+            return false;
+        }
+        String str = trimComment(sql);
+        for (String pattern : patternList2) {
+            boolean ok = Pattern.matches(pattern, str);
+            if (ok) return true;
+        }
+        return false;
     }
 }
