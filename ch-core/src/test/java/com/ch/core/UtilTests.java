@@ -43,6 +43,9 @@ public class UtilTests {
         logger.info("{}", CommonUtils.isEquals(o, o));
         o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
         logger.info("{}", o);
+        for (int i = 0; i < 10; i++) {
+            logger.info(EncryptUtils.md5(b));
+        }
     }
 
     @Test
