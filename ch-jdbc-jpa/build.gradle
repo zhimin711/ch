@@ -1,20 +1,11 @@
-group 'com.ch'
-version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
 apply from: '../uploadArchives.gradle'
-
-sourceCompatibility = 1.8
 
 ext {
     jpaVersion = '1.10.1.RELEASE'
 }
-repositories {
-    mavenCentral()
-}
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
     compile(project(':ch-core'))
 
     compile("org.springframework.data:spring-data-jpa:$jpaVersion") {

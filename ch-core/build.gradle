@@ -1,15 +1,5 @@
-group 'com.ch'
-version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
 apply from: '../uploadArchives.gradle'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
 
 ext {
     slf4jVersion = '1.7.25'
