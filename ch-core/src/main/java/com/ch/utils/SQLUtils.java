@@ -8,12 +8,15 @@ public class SQLUtils {
     }
 
     public enum Type {
-        SELECT, UPDATE, CREATE, DELETE, UNKNOW, DROP, ALTER, TRUNCATE
+        SELECT, UPDATE, CREATE, DELETE, UNKNOWN, DROP, ALTER, TRUNCATE
     }
 
     private final static String[] patternList = {".*(update|UPDATE) .*(set|SET) .*", ".*(delete|DELETE) .*(from|FROM) .*", ".*(drop|DROP) .*", ".*(alter|ALTER) .*(table|TABLE) .*", ".*(truncate|TRUNCATE) .*"};
 
     private final static String[] patternList2 = {".*(limit|LIMIT) [0-9]+,[0-9]+", ".*(limit|LIMIT) [0-9]+"};
+
+    private final static String[] patternAvailable = {".*(update|UPDATE) .*(set|SET) .*", ".*(insert into|INSERT INTO) .*", ".*(select|SELECT) .*(from|FROM) .*"};
+
 
     /**
      * 检查是否为查询SQL
@@ -21,7 +24,7 @@ public class SQLUtils {
      * @param sql SQL
      * @return
      */
-    public static boolean isSelectSql(String sql) {
+    public static boolean isSelect(String sql) {
         if (CommonUtils.isEmpty(sql)) {
             return false;
         }
@@ -31,6 +34,34 @@ public class SQLUtils {
             if (ok) return false;
         }
         return true;
+    }
+
+    /**
+     * 检查是否为查询SQL
+     *
+     * @param sql SQL
+     * @return
+     */
+    public static boolean isInsert(String sql) {
+        if (StringUtils.isBlank(sql)) {
+            return false;
+        }
+        String str = trimComment(sql);
+        return Pattern.matches(patternAvailable[1], str);
+    }
+
+    /**
+     * 检查是否为查询SQL
+     *
+     * @param sql SQL
+     * @return
+     */
+    public static boolean isUpdate(String sql) {
+        if (StringUtils.isBlank(sql)) {
+            return false;
+        }
+        String str = trimComment(sql);
+        return Pattern.matches(patternAvailable[0], str);
     }
 
     /**
@@ -57,7 +88,7 @@ public class SQLUtils {
         } else if (str.startsWith("truncate") || str.startsWith("TRUNCATE")) {
             return Type.TRUNCATE;
         }
-        return Type.UNKNOW;
+        return Type.UNKNOWN;
     }
 
     /**

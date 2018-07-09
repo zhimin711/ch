@@ -9,7 +9,7 @@ public enum FileType {
     PNG("image/gif"),//
     GIF("image/gif"),//
     TXT("text/plain"),//
-    UNKNOW("");
+    UNKNOWN("");
 
     private final String code;
 

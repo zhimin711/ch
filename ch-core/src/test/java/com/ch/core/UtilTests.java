@@ -115,9 +115,48 @@ public class UtilTests {
     public void testSQL() {
         String sql = "select * \n" +
                 "-- a\n" +
-                "from ts_role; ";
+                "from ts_role limit 1000,1";
 
-        logger.info("after trim comment: {}", SQLUtils.isBatch(sql));
+        sql = "update tt_temp_require_mainline t \n" +
+                "LEFT JOIN tt_planning_requirements_line t1\n" +
+                "on t.require_plan_id = t1.require_plan_id\n" +
+                "set t.line_manage_id = t1.linemanage_id,t.business_mode=t1.business_model,t.deal_status=0\n" +
+                "WHERE t.is_delete = 0\n" +
+                "and t.line_id = t1.line_id\n" +
+                "and t.require_id in(18051964189908,\n" +
+                "18051964189970,\n" +
+                "18052064189909,\n" +
+                "18052064189971,\n" +
+                "18052164189910,\n" +
+                "18052164189972,\n" +
+                "18052264189911,\n" +
+                "18052264189973,\n" +
+                "18052364189912,\n" +
+                "18052364189974,\n" +
+                "18052464189913,\n" +
+                "18052464189975,\n" +
+                "18052564189914,\n" +
+                "18052564189976,\n" +
+                "18052664189915,\n" +
+                "18052664189977,\n" +
+                "18052764189916,\n" +
+                "18052764189978,\n" +
+                "18052864189917,\n" +
+                "18052864189979,\n" +
+                "18052964189918,\n" +
+                "18052964189980,\n" +
+                "18053064189919,\n" +
+                "18053064189981,\n" +
+                "18051864189907,\n" +
+                "18051864189969,\n" +
+                "18051764189968\n" +
+                ")";
+
+        logger.info("after trim comment: {}", SQLUtils.isUpdate(sql));
+
+        logger.info("{}",new String(sql.getBytes()));
+        logger.info("{}",EncryptUtils.md5(sql));
+        logger.info("{}",EncryptUtils.md5(new String(sql.getBytes())));
     }
 
 }
