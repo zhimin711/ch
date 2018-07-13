@@ -1,12 +1,12 @@
 package com.ch.utils;
 
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,7 +17,9 @@ public class BeanUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
 
-    private BeanUtils(){}
+    private BeanUtils() {
+    }
+
     /**
      * set target object of property value
      *
@@ -109,7 +111,7 @@ public class BeanUtils {
      */
     public static Map<String, String> getDeclaredFieldValueMap(Object bean) {
         Class<?> cls = bean.getClass();
-        Map<String, String> valueMap = Maps.newHashMap();
+        Map<String, String> valueMap = new HashMap<>();
         // 取出bean里的所有方法
         Method[] methods = cls.getDeclaredMethods();
         Field[] fields = cls.getDeclaredFields();
@@ -151,7 +153,7 @@ public class BeanUtils {
      */
     public static Map<String, String> getKeyValueMap(Object bean) {
         Class<?> cls = bean.getClass();
-        Map<String, String> valueMap = Maps.newHashMap();
+        Map<String, String> valueMap = new HashMap<>();
         // 取出bean里的所有方法
         Method[] methods = cls.getMethods();
 
