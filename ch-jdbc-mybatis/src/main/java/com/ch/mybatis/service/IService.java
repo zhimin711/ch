@@ -9,7 +9,7 @@ import java.util.List;
  * 描述：com.ch.jdbc.support
  *
  * @author 80002023
- *         2017/2/14.
+ * 2017/2/14.
  * @version 1.0
  * @since 1.8
  */
@@ -30,6 +30,14 @@ public interface IService<ID extends Serializable, T> {
      * @return 记录条数
      */
     int update(T record);
+
+    /**
+     * 根据对象主键更新记录(包含Null)
+     *
+     * @param record 对象记录
+     * @return 更新记录数
+     */
+    int updateWithNull(T record);
 
     /**
      * 根据主键删除记录

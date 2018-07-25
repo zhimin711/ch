@@ -38,6 +38,13 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     }
 
     @Override
+    public int updateWithNull(T record) {
+        checkMapper();
+        checkParam(record);
+        return getMapper().updateByPrimaryKey(record);
+    }
+
+    @Override
     public int delete(ID id) {
         checkMapper();
         checkParam(id);
