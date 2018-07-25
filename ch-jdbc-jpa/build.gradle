@@ -1,6 +1,4 @@
 
-apply from: '../uploadArchives.gradle'
-
 ext {
     jpaVersion = '1.10.1.RELEASE'
 }

@@ -1,6 +1,4 @@
 
-apply from: '../uploadArchives.gradle'
-
 ext {
     slf4jVersion = '1.7.25'
     jacksonVersion = '2.9.2'

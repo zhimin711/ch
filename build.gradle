@@ -6,6 +6,7 @@ allprojects {
 subprojects {
 
     apply plugin: 'java'
+    apply from: '../uploadArchives.gradle'
 
     sourceCompatibility = 1.8
     [compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"

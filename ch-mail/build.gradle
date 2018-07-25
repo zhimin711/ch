@@ -1,6 +1,3 @@
-
-apply from: '../uploadArchives.gradle'
-
 dependencies {
     compile(project(':ch-core'))
 //    compile 'com.sun.mail:javax.mail:1.5.6'
