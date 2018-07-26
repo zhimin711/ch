@@ -10,12 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * BeanUtils
- * Created by 80002023 on 2017/4/26.
+ * 对象工具
+ *
+ * @author 01370603
+ * @date 2017/4/26.
  */
 public class BeanUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
+    private final static Logger logger = LoggerFactory.getLogger(BeanUtils.class);
 
     private BeanUtils() {
     }
@@ -242,5 +244,42 @@ public class BeanUtils {
         }
         return "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
     }
+
+    /**
+     * 根据方法名取属性值
+     *
+     * @param obj    目标对象
+     * @param method 方法名
+     * @param <T>    返回类型
+     * @return 属性值
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getValueByMethodName(Object obj, String method) {
+        try {
+            Method m = obj.getClass().getMethod(method);
+            return (T) m.invoke(obj);
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    /**
+     * 根据属性名取属性值
+     *
+     * @param obj       目标对象
+     * @param fieldName 属性名
+     * @param <T>       返回类型
+     * @return 属性值
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T getValueByProperty(Object obj, String fieldName) {
+        try {
+            Method m = obj.getClass().getMethod(getGetMethodName(fieldName));
+            return (T) m.invoke(obj);
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
 
 }
