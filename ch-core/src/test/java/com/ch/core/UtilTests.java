@@ -117,11 +117,11 @@ public class UtilTests {
 
     @Test
     public void testSQL() {
-        String sql = "select * \n" +
+        String sql = "select * # af\n" +
                 "-- a\n" +
-                "from ts_role; ";
+                "from ts_role; -- a";
 
-        logger.info("after trim comment: {}", SQLUtils.isBatch(sql));
+        logger.info("after trim comment: {}", SQLUtils.trimComment(sql));
     }
 
     @Test

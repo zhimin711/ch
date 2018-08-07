@@ -8,7 +8,7 @@ public class SQLUtils {
     }
 
     public enum Type {
-        SELECT, UPDATE, CREATE, DELETE, UNKNOW, DROP, ALTER, TRUNCATE
+        SELECT, UPDATE, CREATE, DELETE, UNKNOWN, DROP, ALTER, TRUNCATE
     }
 
     private final static String[] patternList = {".*(update|UPDATE) .*(set|SET) .*", ".*(delete|DELETE) .*(from|FROM) .*", ".*(drop|DROP) .*", ".*(alter|ALTER) .*(table|TABLE) .*", ".*(truncate|TRUNCATE) .*"};
@@ -57,7 +57,7 @@ public class SQLUtils {
         } else if (str.startsWith("truncate") || str.startsWith("TRUNCATE")) {
             return Type.TRUNCATE;
         }
-        return Type.UNKNOW;
+        return Type.UNKNOWN;
     }
 
     /**
@@ -94,7 +94,15 @@ public class SQLUtils {
             if (line.startsWith("/*")) {
                 i = 1;
             } else if (i == -1 && !line.startsWith("-- ") && !line.startsWith("#")) {
-                sb.append(line);
+                if (line.contains("-- ") || line.contains("#")) {
+                    int end = line.indexOf("-- ");
+                    if (end < 0) {
+                        end = line.indexOf("#");
+                    }
+                    sb.append(line.substring(0, end));
+                } else {
+                    sb.append(line);
+                }
             } else if (line.endsWith("*/")) {
                 i = -1;
             }

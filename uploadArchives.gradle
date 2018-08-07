@@ -26,7 +26,7 @@ artifacts {
 
 //如果希望gradle install，安装到.m2本地仓库，参考下面的内容
 install {
-    group 'api'
+    group 'maven'
     repositories.mavenInstaller {
         pom.version = "$project.version"
         pom.artifactId = "$project.name"
@@ -36,7 +36,7 @@ install {
 
 //上传到nexus
 uploadArchives {
-    group 'api'
+    group 'maven'
     repositories {
         mavenDeployer {
             repository(url: "http://127.0.0.1:8081/repository/maven-releases/") {
