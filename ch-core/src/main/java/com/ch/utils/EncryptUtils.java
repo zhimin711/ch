@@ -1,6 +1,7 @@
 package com.ch.utils;
 
 import com.alibaba.druid.filter.config.ConfigTools;
+import com.ch.exception.InvalidArgumentException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,6 +144,9 @@ public class EncryptUtils {
      */
     public static String encryptDES(String source, String password) {
         try {
+            if (CommonUtils.isEmpty(password) || password.length() % 8 != 0) {
+                throw new InvalidArgumentException("invalid password must be not null or length not 8*");
+            }
             DESKeySpec desKey = new DESKeySpec(password.getBytes());
             //创建一个密匙工厂，使用KeySpec
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(AlgorithmType.DES.code);
@@ -151,7 +155,7 @@ public class EncryptUtils {
         } catch (Throwable e) {
             logger.error("DES encrypt error!", e);
         }
-        return null;
+        return source;
     }
 
     /**
@@ -163,6 +167,9 @@ public class EncryptUtils {
      */
     public static String decryptDES(String source, String password) {
         try {
+            if (CommonUtils.isEmpty(password) || password.length() % 8 != 0) {
+                throw new InvalidArgumentException("invalid password must be not null or length not 8*");
+            }
             DESKeySpec desKey = new DESKeySpec(password.getBytes());
             //创建一个密匙工厂，然后用它把DESKeySpec转换成
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(AlgorithmType.DES.code);
@@ -171,7 +178,7 @@ public class EncryptUtils {
         } catch (Throwable e) {
             logger.error("DES decrypt error!", e);
         }
-        return null;
+        return source;
     }
 
 
