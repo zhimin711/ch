@@ -135,4 +135,18 @@ public class UtilTests {
         }
     }
 
+
+    @Test
+    public void testEncrypt() {
+        String str = "L21udC90bXBcMjAxOC0wOC0wOFw4YWY2YmVjZDY1MTgxOWU0MDE2NTE4MWQwNGYxMDAwMS56aXA=";
+        String s1 = EncryptUtils.encryptDES(str, "12345668");
+        String s2 = EncryptUtils.encryptAES(str, "12345668");
+
+        logger.info("PlanText   : {}", str);
+        logger.info("DES encrypt: {}", s1);
+        logger.info("DES decrypt: {}", EncryptUtils.decryptDES(s1, "12345678"));
+        logger.info("AES encrypt: {}", s2);
+        logger.info("AES decrypt: {}", EncryptUtils.decryptAES(s2, "12345678"));
+    }
+
 }
