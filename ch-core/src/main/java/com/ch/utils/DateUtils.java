@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.exception.InvalidArgumentException;
+import com.ch.error.InvalidArgumentException;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

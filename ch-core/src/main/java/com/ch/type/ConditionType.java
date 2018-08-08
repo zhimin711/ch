@@ -32,7 +32,7 @@ public enum ConditionType {
     /**
      * <=小于等于
      */
-    LESS_THAN_OR_EQUALTO,
+    LESS_THAN_OR_EQUAL_TO,
     /**
      * 包含
      */

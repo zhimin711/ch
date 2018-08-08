@@ -25,20 +25,24 @@ public class DefaultThreadPool {
 
 //    private final static BlockingQueue<Runnable> QUEUE;
 
-    private final static ExecutorService POOL;
+    private static ExecutorService executor;
 
     static {
 //        QUEUE = new ArrayBlockingQueue<>(10000);
-//        POOL = new ThreadPoolExecutor(10, 30, 50, TimeUnit.MILLISECONDS, QUEUE);
-        int num = Runtime.getRuntime().availableProcessors() / 2;
-        POOL = createFixedPool(num);
+//        executor = new ThreadPoolExecutor(10, 30, 50, TimeUnit.MILLISECONDS, QUEUE);
+//        int num = Runtime.getRuntime().availableProcessors() / 2;
+//        executor = createFixedPool(num);
     }
 
     private static ExecutorService getInstance() {
-        return POOL;
+        if (executor == null || executor.isShutdown()) {
+            int num = Runtime.getRuntime().availableProcessors() / 2;
+            executor = createFixedPool(num);
+        }
+        return executor;
     }
 
-    private static ExecutorService createFixedPool(int num) {
+    private static synchronized ExecutorService createFixedPool(int num) {
         return Executors.newFixedThreadPool(num);
     }
 

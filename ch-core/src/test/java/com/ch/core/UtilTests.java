@@ -129,7 +129,7 @@ public class UtilTests {
         KeyValue kv = new KeyValue("a", "a1");
         try {
             Method m = kv.getClass().getMethod("getValue", String.class);
-            logger.info("{}:{}", kv.getValue(), String.valueOf(m.invoke(kv, "a2")));
+//            logger.info("{}:{}", kv.getValue(), String.valueOf(m.invoke(kv, "a2")));
         } catch (Exception e) {
             e.printStackTrace();
         }

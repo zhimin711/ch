@@ -1,6 +1,6 @@
 package com.ch.helper.tools;
 
-import com.ch.exception.OutOfLimitException;
+import com.ch.error.OutOfLimitException;
 import com.ch.helper.pojo.FileInfo;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.FileUtils;

@@ -1,6 +1,6 @@
 package com.ch.shiro.security.filters;
 
-import com.ch.http.HttpResult;
+import com.ch.result.HttpResult;
 import com.ch.shiro.utils.ServletUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;

@@ -1,4 +1,4 @@
-package com.ch.http;
+package com.ch.result;
 
 import com.ch.Constants;
 import com.ch.utils.CommonUtils;
@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
  * 描述：com.zh.http
  *
  * @author 80002023
- *         2017/2/5.
+ * 2017/2/5.
  * @version 1.0
  * @since 1.8
  */
-public abstract class BaseResult<T> {
+public class BaseResult<T> implements Serializable {
 
     /**
      * 请求状态
      */
     private int status;
     /**
-     * 记录集合
+     * 记录集合(包含错误)
      */
     private Collection<T> records;
     /**
@@ -152,7 +152,7 @@ public abstract class BaseResult<T> {
 
         public void setCode(String code) {
             if (StringUtils.isBlank(code)) {
-                code = ErrorCode.ERROR.getCode();
+                code = ErrorCode.UNKNOWN.getCode();
             }
             this.code = code;
         }

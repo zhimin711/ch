@@ -1,6 +1,6 @@
 package com.ch.jpa.service;
 
-import com.ch.http.PageResult;
+import com.ch.result.PageResult;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

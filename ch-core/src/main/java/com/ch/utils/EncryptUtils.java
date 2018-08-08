@@ -1,7 +1,7 @@
 package com.ch.utils;
 
 import com.alibaba.druid.filter.config.ConfigTools;
-import com.ch.exception.InvalidArgumentException;
+import com.ch.error.InvalidArgumentException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

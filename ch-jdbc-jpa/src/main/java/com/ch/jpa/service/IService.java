@@ -1,6 +1,6 @@
 package com.ch.jpa.service;
 
-import com.ch.http.PageResult;
+import com.ch.result.PageResult;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.ch.mail;
 
-import com.ch.exception.ConfigException;
+import com.ch.error.ConfigException;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
 import org.slf4j.Logger;
@@ -11,10 +11,8 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.UnknownHostException;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**

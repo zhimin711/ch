@@ -14,7 +14,7 @@ public class KeyValue {
 
     private String key;
     private String value;
-    private Date expires;
+    private Date date;
 
     public KeyValue() {
     }
@@ -24,10 +24,10 @@ public class KeyValue {
         this.value = value;
     }
 
-    public KeyValue(String key, String value, Date expires) {
+    public KeyValue(String key, String value, Date date) {
         this.key = key;
         this.value = value;
-        this.expires = expires;
+        this.date = date;
     }
 
     public String getKey() {
@@ -46,11 +46,11 @@ public class KeyValue {
         this.value = value;
     }
 
-    public Date getExpires() {
-        return expires;
+    public Date getDate() {
+        return date;
     }
 
-    public void setExpires(Date expires) {
-        this.expires = expires;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

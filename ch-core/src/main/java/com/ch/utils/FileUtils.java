@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.exception.OutOfLimitException;
+import com.ch.error.OutOfLimitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

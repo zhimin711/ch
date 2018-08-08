@@ -1,4 +1,4 @@
-package com.ch.http;
+package com.ch.result;
 
 import com.ch.Constants;
 

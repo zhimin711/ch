@@ -1,16 +1,16 @@
-package com.ch.exception;
+package com.ch.error;
 
 /**
  * 未知异常
  * Created by 01370603 on 2017/11/10.
  */
-public class UnknowException extends RuntimeException {
+public class InvalidArgumentException extends RuntimeException {
 
     /**
      * Constructs an <code>OutOfLimitException</code> with no
      * detail message.
      */
-    public UnknowException() {
+    public InvalidArgumentException() {
         super();
     }
 
@@ -20,7 +20,7 @@ public class UnknowException extends RuntimeException {
      *
      * @param s the detail message.
      */
-    public UnknowException(String s) {
+    public InvalidArgumentException(String s) {
         super(s);
     }
 }

@@ -1,4 +1,4 @@
-package com.ch.http;
+package com.ch.result;
 
 import com.ch.Constants;
 
@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * 描述：封装HTTP请求结果
  *
- * @author 80002023
+ * @author zhimin
  *         2017/2/5.
  * @version 1.0
  * @since 1.8
