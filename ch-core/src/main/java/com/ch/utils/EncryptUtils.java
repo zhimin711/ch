@@ -1,6 +1,7 @@
 package com.ch.utils;
 
 import com.alibaba.druid.filter.config.ConfigTools;
+import com.alibaba.druid.util.Base64;
 import com.ch.exception.InvalidArgumentException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Base64;
 
 /**
  * 描述：com.ch.utils
@@ -174,7 +174,7 @@ public class EncryptUtils {
             //创建一个密匙工厂，然后用它把DESKeySpec转换成
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(AlgorithmType.DES.code);
             SecretKey secureKey = keyFactory.generateSecret(desKey);
-            return new String(decrypt(decodeBase64(source.getBytes()), AlgorithmType.DES, secureKey));
+            return new String(decrypt(decodeBase64(source), AlgorithmType.DES, secureKey));
         } catch (Throwable e) {
             logger.error("DES decrypt error!", e);
         }
@@ -223,7 +223,7 @@ public class EncryptUtils {
             SecretKey secretKey = keyGenerator.generateKey();// 根据用户密码，生成一个密钥
             byte[] enCodeFormat = secretKey.getEncoded();// 返回基本编码格式的密钥
             SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, AlgorithmType.AES.code);// 转换为AES专用密钥
-            return new String(decrypt(decodeBase64(source.getBytes()), AlgorithmType.AES, secretKeySpec));
+            return new String(decrypt(decodeBase64(source), AlgorithmType.AES, secretKeySpec));
         } catch (Throwable e) {
             logger.error("AES decrypt error!", e);
         }
@@ -298,7 +298,8 @@ public class EncryptUtils {
      * @return
      */
     public static String encodeBase64(String str) {
-        return new String(Base64.getEncoder().encode(str.getBytes()));
+
+        return Base64.byteArrayToBase64(str.getBytes());
     }
 
     /**
@@ -306,23 +307,24 @@ public class EncryptUtils {
      * @return
      */
     public static String encodeBase64(byte[] str) {
-        return new String(Base64.getEncoder().encode(str));
+        return Base64.byteArrayToBase64(str);
     }
 
     /**
      * @param str
      * @return
      */
-    public static String decodeBase64(String str) {
-        return new String(Base64.getDecoder().decode(str.getBytes()));
+    public static byte[] decodeBase64(String str) {
+        return Base64.base64ToByteArray(str);
     }
+
 
     /**
      * @param str
      * @return
      */
-    public static byte[] decodeBase64(byte[] str) {
-        return Base64.getDecoder().decode(str);
+    public static String decodeBase64ToString(String str) {
+        return new String(Base64.base64ToByteArray(str));
     }
 
 }

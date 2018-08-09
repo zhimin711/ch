@@ -142,12 +142,14 @@ public class UtilTests {
         String pwd = "123";
         String s1 = EncryptUtils.encryptDES(str, pwd);
         String s2 = EncryptUtils.encryptAES(str, pwd);
+        s2 = "13Ye5vq/9TWfRaboK7WkzOCVkDyXtzVeT/iPzxaQ+bWLDKcDmQs/f8ppei02tR5qDvzJHBvdxiKLQeddjbXLUNHLqu+aSCBvgktBO6qTzvM=";
 
         logger.info("PlanText   : {}", str);
         logger.info("DES encrypt: {}", s1);
         logger.info("DES decrypt: {}", EncryptUtils.decryptDES(s1, pwd));
         logger.info("AES encrypt: {}", s2);
         logger.info("AES decrypt: {}", EncryptUtils.decryptAES(s2, pwd));
+        logger.info("AES decodeBase64: {}", EncryptUtils.decodeBase64ToString(EncryptUtils.decryptAES(s2, pwd)));
     }
 
 }
