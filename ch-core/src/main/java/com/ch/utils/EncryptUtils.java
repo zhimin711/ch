@@ -12,9 +12,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
@@ -30,7 +30,15 @@ public class EncryptUtils {
     private final static Logger logger = LoggerFactory.getLogger(EncryptUtils.class);
 
     public enum AlgorithmType {
-        MD5("MD5"), AES("AES"), DES("DES"), SHA_1("SHA-1"), SHA_256("SHA-256"), SHA_348("SHA-348"), SHA_512("SHA-512");
+        MD5("MD5"),
+        AES("AES"),
+        /**
+         * AES_CBC
+         * "算法/模式/补码方式"
+         */
+        AES_CBC("AES/CBC/PKCS5Padding"),
+        DES("DES"), SHA_1("SHA-1"),
+        SHA_256("SHA-256"), SHA_348("SHA-348"), SHA_512("SHA-512");
         private final String code;
 
         AlgorithmType(String code) {
@@ -104,7 +112,7 @@ public class EncryptUtils {
     public static String[] genKeyPair(int keySize) {
         try {
             return ConfigTools.genKeyPair(keySize);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
             logger.error("Config tool genKeyPair error!", e);
         }
         return null;
@@ -183,7 +191,7 @@ public class EncryptUtils {
 
 
     /**
-     * 加密
+     * 加密AES
      *
      * @param source   byte[]
      * @param password String
@@ -204,7 +212,7 @@ public class EncryptUtils {
         } catch (Throwable e) {
             logger.error("AES encrypt error!", e);
         }
-        return null;
+        return source;
     }
 
     /**
@@ -226,6 +234,60 @@ public class EncryptUtils {
             return new String(decrypt(decodeBase64(source), AlgorithmType.AES, secretKeySpec));
         } catch (Throwable e) {
             logger.error("AES decrypt error!", e);
+        }
+        return null;
+    }
+
+
+    /**
+     * 加密AES CBC
+     * 使用CBC模式，需要一个向量iv，可增加加密算法的强度
+     *
+     * @param source   String
+     * @param password String
+     * @param iv       String
+     * @return String
+     */
+    public static String encryptAESCBC(String source, String password, String iv) {
+        try {
+            if (CommonUtils.isEmpty(password) || password.length() != 16) {
+                throw new InvalidArgumentException("password must be not null or length not equals 16!");
+            }
+
+            SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(), AlgorithmType.AES.code);
+            Cipher cipher = Cipher.getInstance(AlgorithmType.AES_CBC.code);
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes());
+            cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParameterSpec);
+            byte[] encrypted = cipher.doFinal(source.getBytes());
+            return encodeBase64(encrypted);
+        } catch (Throwable e) {
+            logger.error("AES CBC encrypt error!", e);
+        }
+        return source;
+    }
+
+    /**
+     * 加密AES_CBC
+     * //使用CBC模式，需要一个向量iv，可增加加密算法的强度
+     *
+     * @param source   byte[]
+     * @param password String
+     * @return byte[]
+     */
+    public static String decryptAESCBC(String source, String password, String iv) {
+        try {
+            if (CommonUtils.isEmpty(password) || password.length() != 16) {
+                throw new InvalidArgumentException("password must be not null or length not equals 16!");
+            }
+            SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(), AlgorithmType.AES.code);
+            Cipher cipher = Cipher.getInstance(AlgorithmType.AES_CBC.code);
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes());
+            cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParameterSpec);
+            byte[] encrypted = decodeBase64(source);//先用bAES64解密
+            byte[] original = cipher.doFinal(encrypted);
+            return new String(original);
+        } catch (Throwable e) {
+            logger.error("AES CBC decrypt error!", e);
         }
         return null;
     }
