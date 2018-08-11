@@ -15,10 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 描述：com.ch.cloud.admin.security
+ * 描述：登录授权过滤 auth Filter
+ * com.ch.cloud.shiro.security
  *
  * @author 80002023
- *         2017/2/28.
+ * 2017/2/28.
  * @version 1.0
  * @since 1.8
  */

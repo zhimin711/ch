@@ -13,10 +13,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 描述：com.ch.cloud.admin.security
+ * 描述：表授权过滤 Access Filter
+ * com.ch.cloud.shiro.security
  *
  * @author 80002023
- *         2017/2/28.
+ * 2017/2/28.
  * @version 1.0
  * @since 1.8
  */
@@ -26,9 +27,9 @@ public class AccessFilter extends AccessControlFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
-        Subject subject = getSubject(servletRequest, servletResponse);
         String url = getPathWithinApplication(servletRequest);
         logger.info("AccessFilter isAccessAllowed. url: {}", url);
+        Subject subject = getSubject(servletRequest, servletResponse);
         return "admin".equals(subject.getPrincipal()) || subject.isPermitted(url);
     }
 
