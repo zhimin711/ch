@@ -28,11 +28,15 @@ public class ShiroSecurityUtils {
     }
 
     public static boolean isSuperAdmin(Subject subject) {
-        if(subject == null) return false;
-        String username = (String) subject.getPrincipal();
+        if (subject == null) return false;
         PrincipalCollection principalCollection = subject.getPrincipals();
+        return principalCollection instanceof AuthPrincipals && isSuperAdmin(principalCollection);
+    }
+
+    public static boolean isSuperAdmin(PrincipalCollection principalCollection) {
+        if (principalCollection == null) return false;
         if (principalCollection instanceof AuthPrincipals) {
-            Collection collection = principalCollection.fromRealm(username);
+            Collection collection = principalCollection.fromRealm(principalCollection.getPrimaryPrincipal().toString());
             AuthPrincipals.Principal principal = (AuthPrincipals.Principal) collection.iterator().next();
             return principal.isSuperAdmin();
         }
