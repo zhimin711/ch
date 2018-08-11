@@ -1,7 +1,9 @@
 package com.ch.shiro.security.filters;
 
 import com.ch.http.HttpResult;
+import com.ch.shiro.authc.AuthPrincipals;
 import com.ch.shiro.utils.ServletUtils;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -11,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 
 /**
  * 描述：表授权过滤 Access Filter
@@ -30,7 +33,15 @@ public class AccessFilter extends AccessControlFilter {
         String url = getPathWithinApplication(servletRequest);
         logger.info("AccessFilter isAccessAllowed. url: {}", url);
         Subject subject = getSubject(servletRequest, servletResponse);
-        return "admin".equals(subject.getPrincipal()) || subject.isPermitted(url);
+        PrincipalCollection principals = subject.getPrincipals();
+        if (principals instanceof AuthPrincipals) {
+            Collection collection = principals.fromRealm(subject.getPrincipal().toString());
+            AuthPrincipals.Principal principal = (AuthPrincipals.Principal) collection.iterator().next();
+            if (principal.isSuperAdmin()) {
+                return true;
+            }
+        }
+        return subject.isPermitted(url);
     }
 
     @Override
