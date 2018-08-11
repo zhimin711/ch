@@ -1,10 +1,7 @@
 package com.ch.shiro.security.filters;
 
 import com.ch.http.HttpResult;
-import com.ch.shiro.authc.AuthPrincipals;
 import com.ch.shiro.utils.ServletUtils;
-import com.ch.shiro.utils.ShiroSecurityUtils;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.apache.shiro.web.util.WebUtils;
@@ -14,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
 
 /**
  * 描述：表授权过滤 Access Filter
@@ -32,14 +28,16 @@ public class AccessFilter extends AccessControlFilter {
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
         String url = getPathWithinApplication(servletRequest);
-        logger.info("AccessFilter isAccessAllowed. url: {}", url);
+        logger.debug("AccessFilter isAccessAllowed. url: {}", url);
+
         Subject subject = getSubject(servletRequest, servletResponse);
-        return ShiroSecurityUtils.isSuperAdmin(subject) || subject.isPermitted(url);
+        return subject.isPermitted(url);
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        logger.info("AccessFilter onAccessDenied ...");
+        logger.debug("AccessFilter onAccessDenied ...");
+
         if (ServletUtils.isAjax(WebUtils.toHttp(servletRequest))) {
             HttpResult result = new HttpResult();
             result.newError("403", "UNAUTHORIZED", "No Permission!");

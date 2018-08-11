@@ -21,53 +21,7 @@ public class AuthPrincipals implements PrincipalCollection {
 
     public AuthPrincipals(String username) {
         Collection principals = this.getPrincipalsLazy(username);
-        principals.add(new Principal(username, false));
-    }
-
-    public AuthPrincipals(String username, boolean superAdmin) {
-        Collection principals = this.getPrincipalsLazy(username);
-        principals.add(new Principal(username, superAdmin));
-    }
-
-    public class Principal {
-
-        private String userId;
-        private String username;
-        private String phone;
-        private String email;
-        private boolean superAdmin = false;
-
-        public Principal(String username, boolean superAdmin) {
-            this.username = username;
-            this.superAdmin = superAdmin;
-        }
-
-        public Principal(String username, String userId, String mobile, String email) {
-            this.username = username;
-            this.userId = userId;
-            this.phone = mobile;
-            this.email = email;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public boolean isSuperAdmin() {
-            return superAdmin;
-        }
+        principals.add(new Principal(username));
     }
 
     public Object getPrimaryPrincipal() {
