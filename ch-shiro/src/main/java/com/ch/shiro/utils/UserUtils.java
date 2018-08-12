@@ -59,7 +59,12 @@ public class UserUtils {
         return getSubject().hasRole(SUPER_ADMIN);
     }
 
+    public static boolean hasRole(String code) {
+        return getSubject().hasRole(code);
+    }
+
     private static Subject getSubject() {
         return SecurityUtils.getSubject();
     }
+
 }
