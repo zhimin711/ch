@@ -4,6 +4,8 @@ import com.ch.shiro.authc.Principal;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -65,6 +67,16 @@ public class UserUtils {
 
     private static Subject getSubject() {
         return SecurityUtils.getSubject();
+    }
+
+
+    public static Realm getCurrRealm() {
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        return rsm.getRealms().iterator().next();
+    }
+
+    public static String getCurrRealmName() {
+        return getSubject().getPrincipals().getRealmNames().iterator().next();
     }
 
 }
