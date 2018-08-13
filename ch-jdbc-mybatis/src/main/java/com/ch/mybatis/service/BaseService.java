@@ -81,13 +81,13 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
 
     private void checkMapper() {
         if (CommonUtils.isEmpty(getMapper())) {
-            throw new MybatisException("抽象类 接口为空");
+            throw new MybatisException("Mapper接口为空!");
         }
     }
 
-    private void checkParam(Object param) {
+    protected void checkParam(Object param) {
         if (CommonUtils.isEmpty(param)) {
-            throw new MybatisException("抽象类 参数为空");
+            throw new MybatisException("参数为空!");
         }
     }
 

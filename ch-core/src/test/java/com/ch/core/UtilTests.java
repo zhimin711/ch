@@ -139,15 +139,22 @@ public class UtilTests {
     @Test
     public void testEncrypt() {
         String str = "L21udC90bXBcMjAxOC0wOC0wOFw4YWY2YmVjZDY1MTgxOWU0MDE2NTE4MWQwNGYxMDAwMS56aXA=";
-        String pwd = "123";
-        String s1 = EncryptUtils.encryptDES(str, pwd);
-        String s2 = EncryptUtils.encryptAES(str, pwd);
+        String pwd = EncryptUtils.generate(16);//"abcdefgabcdefg12"
+        String iv = EncryptUtils.generate(16);
+//        String s1 = EncryptUtils.encryptDES(str, pwd);
+//        String s2 = EncryptUtils.encryptAES(str, pwd);
+        String s3 = EncryptUtils.encryptAESCBC(str, pwd, iv);
 
         logger.info("PlanText   : {}", str);
-        logger.info("DES encrypt: {}", s1);
-        logger.info("DES decrypt: {}", EncryptUtils.decryptDES(s1, pwd));
-        logger.info("AES encrypt: {}", s2);
-        logger.info("AES decrypt: {}", EncryptUtils.decryptAES(s2, pwd));
+        logger.info("pwd        : {}", pwd);
+        logger.info("iv         : {}", iv);
+//        logger.info("DES encrypt: {}", s1);
+//        logger.info("DES decrypt: {}", EncryptUtils.decryptDES(s1, pwd));
+//        logger.info("AES encrypt: {}", s2);
+//        logger.info("AES decrypt: {}", EncryptUtils.decryptAES(s2, pwd));
+        logger.info("AES CBC encrypt: {}", s3);
+        logger.info("AES CBC decrypt: {}", EncryptUtils.decryptAESCBC(s3, pwd, iv));
+//        logger.info("AES decodeBase64: {}", EncryptUtils.decodeBase64ToString(EncryptUtils.decryptAES(s2, pwd)));
     }
 
 }

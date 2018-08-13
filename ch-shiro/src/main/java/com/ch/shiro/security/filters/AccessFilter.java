@@ -13,10 +13,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 描述：com.ch.cloud.admin.security
+ * 描述：表授权过滤 Access Filter
+ * com.ch.cloud.shiro.security
  *
  * @author 80002023
- *         2017/2/28.
+ * 2017/2/28.
  * @version 1.0
  * @since 1.8
  */
@@ -26,15 +27,17 @@ public class AccessFilter extends AccessControlFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
-        Subject subject = getSubject(servletRequest, servletResponse);
         String url = getPathWithinApplication(servletRequest);
-        logger.info("AccessFilter isAccessAllowed. url: {}", url);
-        return "admin".equals(subject.getPrincipal()) || subject.isPermitted(url);
+        logger.debug("AccessFilter isAccessAllowed. url: {}", url);
+
+        Subject subject = getSubject(servletRequest, servletResponse);
+        return subject.isPermitted(url);
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        logger.info("AccessFilter onAccessDenied ...");
+        logger.debug("AccessFilter onAccessDenied ...");
+
         if (ServletUtils.isAjax(WebUtils.toHttp(servletRequest))) {
             HttpResult result = new HttpResult();
             result.newError("403", "UNAUTHORIZED", "No Permission!");

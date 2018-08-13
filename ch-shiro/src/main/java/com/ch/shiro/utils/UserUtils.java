@@ -1,7 +1,11 @@
 package com.ch.shiro.utils;
 
+import com.ch.shiro.authc.Principal;
+import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.Subject;
 
 /**
@@ -10,6 +14,21 @@ import org.apache.shiro.subject.Subject;
  */
 public class UserUtils {
 
+    public static final String SUPER_ADMIN = "SUPER_ADMIN";
+
+    private UserUtils() {
+    }
+
+    public static String getUsername(Object principal) {
+        if (CommonUtils.isEmpty(principal)) return null;
+        if (principal instanceof String) {
+            return (String) principal;
+        } else if (principal instanceof Principal) {
+            return ((Principal) principal).getUsername();
+        }
+        return null;
+    }
+
     /**
      * 获取当前登录用户名
      *
@@ -17,9 +36,9 @@ public class UserUtils {
      */
     public static String getCurrentUsername() {
         try {
-            Subject subject = SecurityUtils.getSubject();
+            Subject subject = getSubject();
             if (subject.isAuthenticated()) {
-                return (String) subject.getPrincipal();
+                return getUsername(subject.getPrincipal());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,4 +56,27 @@ public class UserUtils {
         String username = getCurrentUsername();
         return StringUtils.isNotBlank(username) ? username : defaultUsername;
     }
+
+    public static boolean isSuperAdmin() {
+        return getSubject().hasRole(SUPER_ADMIN);
+    }
+
+    public static boolean hasRole(String code) {
+        return getSubject().hasRole(code);
+    }
+
+    private static Subject getSubject() {
+        return SecurityUtils.getSubject();
+    }
+
+
+    public static Realm getCurrRealm() {
+        RealmSecurityManager rsm = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        return rsm.getRealms().iterator().next();
+    }
+
+    public static String getCurrRealmName() {
+        return getSubject().getPrincipals().getRealmNames().iterator().next();
+    }
+
 }
