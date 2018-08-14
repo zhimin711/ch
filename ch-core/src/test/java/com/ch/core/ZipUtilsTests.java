@@ -16,8 +16,8 @@ public class ZipUtilsTests {
 
     @Test
     public void testZipFile() {
-        String srcPath = "D:\\mnt\\tmp\\2018-08-14\\8af6becd6536435001653649435b0001";
-        String zipPath = "D:\\mnt\\tmp\\2018-08-14\\8af6becd6536435001653649435b0001.zip";
+        String srcPath = "D:\\mnt\\tmp\\2018-08-14\\8af6becd653643500165364350a30000";
+        String zipPath = "D:\\mnt\\tmp\\2018-08-14\\8af6becd653643500165364350a30000.zip";
 
         ZipUtils.zipFile(srcPath, zipPath);
     }
