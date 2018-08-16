@@ -180,17 +180,15 @@ public class ZipUtils {
             if (!srcFile.exists()) {
                 throw new FileNotFoundException("源文件或目录不存在！");
             }
-            if (srcFile.isDirectory()) {
+            if (srcFile.isDirectory()) {//处理文件夹
                 File[] files = srcFile.listFiles();
-                if (CommonUtils.isEmpty(files)) {
-                    return;
+                if (files != null && files.length != 0) {
+                    for (File f : files) {
+                        writeZipFile(zos, f, null);
+                    }
                 }
-                for (File f : files) {
-                    writeZipFile(f, "", zos);
-                }
-            } else {
-                writeZipFile(new File(sourcePath), "", zos);
-            }
+            } else
+                writeZipFile(zos, new File(sourcePath), null);
         } catch (FileNotFoundException e) {
             logger.error("创建ZIP文件失败", e);
         } finally {
@@ -198,30 +196,33 @@ public class ZipUtils {
         }
     }
 
-    private static void writeZipFile(File file, String parentPath, org.apache.tools.zip.ZipOutputStream zos) {
+    private static void writeZipFile(org.apache.tools.zip.ZipOutputStream zos, final File file, final String parentPath) {
         if (!file.exists()) {
             return;
         }
+        String fileName = file.getName();
+        try {
+            fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+        } catch (UnsupportedEncodingException ignored) {
+        }
+        String path = CommonUtils.isEmpty(parentPath) ? fileName : parentPath + File.separator + file.getName();
         if (file.isDirectory()) {//处理文件夹
-            parentPath += file.getName() + File.separator;
             File[] files = file.listFiles();
             if (files != null && files.length != 0) {
                 for (File f : files) {
-                    writeZipFile(f, parentPath, zos);
+                    writeZipFile(zos, f, path);
                 }
-            } else {       //空目录则创建当前目录
-                try {
-                    zos.putNextEntry(new org.apache.tools.zip.ZipEntry(parentPath));
-                } catch (IOException e) {
-                    e.printStackTrace();
+            } else {
+                try {//空目录则创建当前目录
+                    zos.putNextEntry(new org.apache.tools.zip.ZipEntry(path));
+                } catch (IOException ignored) {
                 }
             }
         } else {
             FileInputStream fis = null;
             try {
                 fis = new FileInputStream(file);
-                org.apache.tools.zip.ZipEntry ze = new org.apache.tools.zip.ZipEntry(parentPath + file.getName());
-                zos.putNextEntry(ze);
+                zos.putNextEntry(new org.apache.tools.zip.ZipEntry(path));
                 byte[] content = new byte[1024];
                 int len;
                 while ((len = fis.read(content)) != -1) {
@@ -259,7 +260,12 @@ public class ZipUtils {
     private static void writeZip(File file, String parentPath, ZipOutputStream zos) {
         if (file.exists()) {
             if (file.isDirectory()) {//处理文件夹
-                parentPath += file.getName() + File.separator;
+                String tmpName = file.getName();
+                try {
+                    tmpName = new String(tmpName.getBytes("UTF-8"), "iso-8859-1");
+                } catch (UnsupportedEncodingException ignored) {
+                }
+                parentPath += tmpName + File.separator;
                 File[] files = file.listFiles();
                 if (files != null && files.length != 0) {
                     for (File f : files) {
