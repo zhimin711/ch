@@ -3,6 +3,7 @@ package com.ch.mybatis.service;
 import com.github.pagehelper.PageInfo;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,6 +47,8 @@ public interface IService<ID extends Serializable, T> {
      * @return 记录条数
      */
     int delete(ID id);
+
+    int delete(Collection<ID> id);
 
     /**
      * 根据主键查询记录

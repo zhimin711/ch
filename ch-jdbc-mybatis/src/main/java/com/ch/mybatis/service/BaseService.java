@@ -6,8 +6,12 @@ import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.mapperhelper.EntityHelper;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,6 +34,12 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
         return getMapper().insertSelective(record);
     }
 
+    protected Example getExample() {
+        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        EntityHelper.getPKColumns(entityClass);
+        return new Example(entityClass);
+    }
+
     @Override
     public int update(T record) {
         checkMapper();
@@ -50,6 +60,17 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
         checkParam(id);
         return getMapper().deleteByPrimaryKey(id);
     }
+
+
+    @Override
+    public int delete(Collection<ID> ids) {
+        checkMapper();
+        checkParam(ids);
+        Example e = getExample();
+        e.createCriteria().andIn("", ids);
+        return getMapper().deleteByExample(e);
+    }
+
 
     @Override
     public T find(ID id) {
