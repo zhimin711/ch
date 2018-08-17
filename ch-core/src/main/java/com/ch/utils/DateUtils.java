@@ -1,6 +1,7 @@
 package com.ch.utils;
 
 import com.ch.exception.InvalidArgumentException;
+import com.ch.type.DateRule;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,9 +87,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
          */
         DATETIME_YMDHM_CN("yyyy-MM-dd HH:mm"), //
         /**
+         * 年-月
+         */
+        DATE_MONTH_SHORT("yyyyMM"), //
+        /**
          * 年-月-日 小时
          */
-        DATE_HOUR("yyyyMMddHH"), //
+        DATE_HOUR_SHORT("yyyyMMddHH"), //
         /**
          * 年月日小时分钟秒
          */
@@ -371,7 +376,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return String
      */
     public static String getWeekInYear() {
-        return (new SimpleDateFormat("ww")).format(new Date());
+        return getWeekInYear(currentTime());
+    }
+
+
+    /**
+     * 得到当前日期是一年中的第几个星期
+     *
+     * @return String
+     */
+    public static String getWeekInYear(Date date) {
+        return (new SimpleDateFormat("ww")).format(date);
     }
 
 
@@ -540,7 +555,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取指定日期开始日间 0点0分0秒
+     * 获取指定日期开始日间 0点0分0秒0毫秒
      *
      * @param date 指定日期
      * @return
@@ -557,7 +572,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获取指定日期结束日间 23点59分59秒
+     * 获取指定日期结束日间 23点59分59秒999毫秒
      *
      * @param date 指定日期
      * @return
@@ -573,7 +588,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return c.getTime();
     }
 
+
+    /**
+     * 清除指定日期毫秒
+     *
+     * @param date 指定日期
+     * @return
+     */
+    public static Date clearMillisecond(Date date) {
+        assert date != null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.MILLISECOND, 0);
+        return c.getTime();
+    }
+
     protected static final String[] WEEK_CN = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+    protected static final String[] QUARTERLY_CN = {"春季", "夏季", "秋季", "冬季"};
 
     /**
      * 获日期取周中文名称
@@ -689,4 +720,77 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return sb.toString();
     }
 
+    /**
+     * 根据时间规则计算下一下日期
+     *
+     * @param type 规划
+     * @param date 计划日期
+     * @param n    偏移量
+     * @return 日期
+     */
+    public static Date calc(DateRule type, final Date date, int n) {
+        Date nextDate;
+        if (type == DateRule.DAY) {
+            nextDate = DateUtils.addDays(date, n);
+        } else if (type == DateRule.WEEK) {
+            nextDate = DateUtils.addWeeks(date, n);
+        } else if (type == DateRule.MONTH) {
+            nextDate = DateUtils.addMonths(date, n);
+        } else if (type == DateRule.QUARTERLY) {
+            nextDate = DateUtils.addMonths(date, n * 3);
+        } else if (type == DateRule.YEAR) {
+            nextDate = DateUtils.addYears(date, n);
+        } else {
+            throw new RuntimeException("未知规则无法计算!");
+        }
+        return nextDate;
+    }
+
+    /**
+     * 根据时间规则计算下一下日期
+     *
+     * @param type 规划
+     * @param date 计划日期
+     * @return 日期
+     */
+    public static String format(DateRule type, final Date date) {
+        String str;
+        if (type == DateRule.DAY) {
+            str = DateUtils.format(date, Pattern.DATE_SHORT);
+        } else if (type == DateRule.WEEK) {
+            str = DateUtils.format(date, Pattern.YEAR) + getWeekInYear(date);
+        } else if (type == DateRule.MONTH) {
+            str = DateUtils.format(date, Pattern.DATE_MONTH_SHORT);
+        } else if (type == DateRule.QUARTERLY) {
+            str = DateUtils.format(date, Pattern.YEAR) + getQuarterly(date);
+        } else if (type == DateRule.YEAR) {
+            str = DateUtils.format(date, Pattern.YEAR);
+        } else {
+            throw new RuntimeException("未知规则无法计算!");
+        }
+        return str;
+    }
+
+
+    /**
+     * 当前季度号
+     *
+     * @return
+     */
+    public static String getQuarterly(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int currentMonth = c.get(Calendar.MONTH) + 1;
+        int i = 0;
+        if (currentMonth >= 1 && currentMonth <= 3) {
+            i = 1;
+        } else if (currentMonth >= 4 && currentMonth <= 6) {
+            i = 2;
+        } else if (currentMonth >= 7 && currentMonth <= 9) {
+            i = 3;
+        } else if (currentMonth >= 10 && currentMonth <= 12) {
+            i = 4;
+        }
+        return String.format("%2d", i);
+    }
 }
