@@ -35,7 +35,7 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     }
 
     protected Example getExample() {
-        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         EntityHelper.getPKColumns(entityClass);
         return new Example(entityClass);
     }
