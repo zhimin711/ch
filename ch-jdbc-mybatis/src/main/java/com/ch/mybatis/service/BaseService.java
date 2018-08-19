@@ -25,7 +25,26 @@ import java.util.List;
 
 public abstract class BaseService<ID extends Serializable, T> implements IService<ID, T> {
 
-    public abstract Mapper<T> getMapper();
+    protected abstract Mapper<T> getMapper();
+
+    private void checkMapper() {
+        if (CommonUtils.isEmpty(getMapper())) {
+            throw new MybatisException("Mapper接口为空!");
+        }
+    }
+
+    protected void checkParam(Object param) {
+        if (CommonUtils.isEmpty(param)) {
+            throw new MybatisException("参数为空!");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected Example getExample() {
+        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        EntityHelper.getPKColumns(entityClass);
+        return new Example(entityClass);
+    }
 
     @Override
     public int save(T record) {
@@ -34,11 +53,6 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
         return getMapper().insertSelective(record);
     }
 
-    protected Example getExample() {
-        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        EntityHelper.getPKColumns(entityClass);
-        return new Example(entityClass);
-    }
 
     @Override
     public int update(T record) {
@@ -98,18 +112,6 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     public List<T> findAll() {
         checkMapper();
         return getMapper().selectAll();
-    }
-
-    private void checkMapper() {
-        if (CommonUtils.isEmpty(getMapper())) {
-            throw new MybatisException("Mapper接口为空!");
-        }
-    }
-
-    protected void checkParam(Object param) {
-        if (CommonUtils.isEmpty(param)) {
-            throw new MybatisException("参数为空!");
-        }
     }
 
     @Override
