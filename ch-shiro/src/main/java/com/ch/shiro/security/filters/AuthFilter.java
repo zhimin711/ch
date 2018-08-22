@@ -30,7 +30,7 @@ public class AuthFilter extends AuthorizationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest servletRequest, ServletResponse servletResponse, Object o) throws Exception {
-        logger.debug("AuthFilter.isAccessAllowed...");
+//        logger.debug("AuthFilter.isAccessAllowed...");
         Subject subject = getSubject(servletRequest, servletResponse);
         return subject.getPrincipal() != null;
     }

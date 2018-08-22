@@ -37,7 +37,7 @@ public class AccessFilter extends AccessControlFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
-        logger.debug("AccessFilter onAccessDenied ...");
+        logger.error("AccessFilter onAccessDenied ...");
 
         if (ServletUtils.isAjax(WebUtils.toHttp(servletRequest))) {
             HttpResult result = new HttpResult();
