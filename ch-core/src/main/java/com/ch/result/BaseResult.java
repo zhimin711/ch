@@ -20,7 +20,7 @@ public class BaseResult<T> implements Serializable {
     /**
      * 请求状态
      */
-    private Status status;
+    private int status;
 
 
     /**
@@ -81,11 +81,11 @@ public class BaseResult<T> implements Serializable {
     }
 
     public int getStatus() {
-        return status.getNum();
+        return status;
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        this.status = status.getNum();
     }
 
     public Error getError() {

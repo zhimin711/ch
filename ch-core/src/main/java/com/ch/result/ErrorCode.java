@@ -10,6 +10,7 @@ package com.ch.result;
  */
 public enum ErrorCode {
     DEFAULT("0", "默认错误"),//不使用
+    ARGS("10", "参数错误"),//不使用
     ADD("100", "添加失败"),//
     CREATE("101", "创建失败"),//
     UPDATE("102", "更新失败"),//
@@ -18,6 +19,7 @@ public enum ErrorCode {
     USERNAME("201", "账号错误"),//
     PASSWORD("202", "密码错误"),//
     NOT_ALLOWED("300", "不允许"),//
+    NOT_EXISTS("301", "不存在"),//
     NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
 
