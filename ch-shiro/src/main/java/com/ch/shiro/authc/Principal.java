@@ -1,9 +1,10 @@
 package com.ch.shiro.authc;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * desc:
+ * desc: 自定义Shiro身份信息
  *
  * @author zhimin
  * @date 2018/8/11 下午10:28
@@ -14,6 +15,7 @@ public class Principal implements Serializable {
     private String username;
     private String phone;
     private String email;
+    private List<String> codes;
 
     public Principal(String username) {
         this.username = username;
@@ -40,5 +42,13 @@ public class Principal implements Serializable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public List<String> getCodes() {
+        return codes;
+    }
+
+    public void setCodes(List<String> codes) {
+        this.codes = codes;
     }
 }
