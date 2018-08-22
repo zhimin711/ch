@@ -15,7 +15,7 @@ public enum Status {
     NO(0, "0", "否"), //否
     HAS(1, "1", "有"), //有
     NON(0, "0", "空"), //空
-    UNKNOW(-1, "-1", "未知");
+    UNKNOWN(-1, "-1", "未知");
 
     private final Integer num;
     private final String code;
@@ -41,7 +41,7 @@ public enum Status {
 
     public static Status fromValue(Object value) {
         if (value == null) {
-            return UNKNOW;
+            return UNKNOWN;
         }
         String tmp;
         if(value instanceof Number){
@@ -49,7 +49,7 @@ public enum Status {
         }else if(value instanceof String){
             tmp = (String) value;
         }else {
-            return UNKNOW;
+            return UNKNOWN;
         }
         switch (tmp){
             case "0":
@@ -75,7 +75,7 @@ public enum Status {
             case "空":
                 return NON;
             default:
-                return UNKNOW;
+                return UNKNOWN;
         }
     }
 }
