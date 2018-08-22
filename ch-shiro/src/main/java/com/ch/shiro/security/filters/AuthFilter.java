@@ -1,5 +1,6 @@
 package com.ch.shiro.security.filters;
 
+import com.ch.result.ErrorCode;
 import com.ch.result.HttpResult;
 import com.ch.shiro.utils.ServletUtils;
 import org.apache.shiro.subject.Subject;
@@ -42,7 +43,7 @@ public class AuthFilter extends AuthorizationFilter {
             // if request ajax
             if (ServletUtils.isAjax(WebUtils.toHttp(request))) {
                 HttpResult<String> result = new HttpResult<>();
-                result.newError("100", "NOT_LOGIN", "您还没有登录!");
+                result.setError(ErrorCode.NOT_LOGIN);
                 ServletUtils.write(WebUtils.toHttp(response), result);
             } else {
                 saveRequestAndRedirectToLogin(request, response);

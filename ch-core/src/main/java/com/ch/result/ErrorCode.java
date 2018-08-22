@@ -14,10 +14,11 @@ public enum ErrorCode {
     CREATE("101", "创建失败"),//
     UPDATE("102", "更新失败"),//
     DELETE("103", "删除失败"),//
-    USERNAME("200", "账号错误"),//
-    PASSWORD("201", "密码错误"),//
+    NOT_LOGIN("200", "未登录"),//
+    USERNAME("201", "账号错误"),//
+    PASSWORD("202", "密码错误"),//
     NOT_ALLOWED("300", "不允许"),//
-    NOT_AUTH("403", "未授权"),//
+    NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
 
     private final String code;
@@ -45,10 +46,11 @@ public enum ErrorCode {
             case "105":
                 break;
             case "200":
-                return USERNAME;
+                return NOT_LOGIN;
             case "201":
-                return PASSWORD;
+                return USERNAME;
             case "202":
+                return PASSWORD;
             case "203":
             case "204":
             case "205":

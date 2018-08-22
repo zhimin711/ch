@@ -1,5 +1,6 @@
 package com.ch.shiro.security.filters;
 
+import com.ch.result.ErrorCode;
 import com.ch.result.HttpResult;
 import com.ch.shiro.utils.ServletUtils;
 import org.apache.shiro.subject.Subject;
@@ -40,7 +41,7 @@ public class AccessFilter extends AccessControlFilter {
 
         if (ServletUtils.isAjax(WebUtils.toHttp(servletRequest))) {
             HttpResult result = new HttpResult();
-            result.newError("403", "UNAUTHORIZED", "No Permission!");
+            result.setError(ErrorCode.NOT_AUTH);
             ServletUtils.write(WebUtils.toHttp(servletResponse), result);
         } else {
             WebUtils.toHttp(servletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED);
