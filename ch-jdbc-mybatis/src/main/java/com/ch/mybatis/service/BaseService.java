@@ -6,8 +6,12 @@ import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.mapperhelper.EntityHelper;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +25,26 @@ import java.util.List;
 
 public abstract class BaseService<ID extends Serializable, T> implements IService<ID, T> {
 
-    public abstract Mapper<T> getMapper();
+    protected abstract Mapper<T> getMapper();
+
+    private void checkMapper() {
+        if (CommonUtils.isEmpty(getMapper())) {
+            throw new MybatisException("Mapper接口为空!");
+        }
+    }
+
+    protected void checkParam(Object param) {
+        if (CommonUtils.isEmpty(param)) {
+            throw new MybatisException("参数为空!");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected Example getExample() {
+        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        EntityHelper.getPKColumns(entityClass);
+        return new Example(entityClass);
+    }
 
     @Override
     public int save(T record) {
@@ -29,6 +52,7 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
         checkParam(record);
         return getMapper().insertSelective(record);
     }
+
 
     @Override
     public int update(T record) {
@@ -50,6 +74,17 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
         checkParam(id);
         return getMapper().deleteByPrimaryKey(id);
     }
+
+
+    @Override
+    public int delete(Collection<ID> ids) {
+        checkMapper();
+        checkParam(ids);
+        Example e = getExample();
+        e.createCriteria().andIn("", ids);
+        return getMapper().deleteByExample(e);
+    }
+
 
     @Override
     public T find(ID id) {
@@ -77,18 +112,6 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     public List<T> findAll() {
         checkMapper();
         return getMapper().selectAll();
-    }
-
-    private void checkMapper() {
-        if (CommonUtils.isEmpty(getMapper())) {
-            throw new MybatisException("Mapper接口为空!");
-        }
-    }
-
-    protected void checkParam(Object param) {
-        if (CommonUtils.isEmpty(param)) {
-            throw new MybatisException("参数为空!");
-        }
     }
 
     @Override

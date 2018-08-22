@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.ch.type.DateRule;
 import com.ch.error.InvalidArgumentException;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
