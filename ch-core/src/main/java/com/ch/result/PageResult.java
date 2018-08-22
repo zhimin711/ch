@@ -1,6 +1,6 @@
 package com.ch.result;
 
-import com.ch.Constants;
+import com.ch.type.Status;
 
 import java.util.Collection;
 
@@ -17,18 +17,18 @@ public class PageResult<T> extends BaseResult<T> {
     /**
      * 当前页
      */
-    public int pageNum = 1;
+    private int pageNum = 1;
     /**
      * 每页记录数
      */
-    public int pageSize = 10;
+    private int pageSize = 10;
     /**
      * 总页数
      */
-    public long total;
+    private long total = 0;
 
     public PageResult() {
-        super(Constants.FAILED);
+        super(Status.FAILED);
     }
 
     /**
@@ -44,5 +44,17 @@ public class PageResult<T> extends BaseResult<T> {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.total = total;
+    }
+
+    public int getPageNum() {
+        return pageNum;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public long getTotal() {
+        return total;
     }
 }

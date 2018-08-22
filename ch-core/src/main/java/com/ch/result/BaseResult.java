@@ -1,14 +1,11 @@
 package com.ch.result;
 
-import com.ch.Constants;
-import com.ch.utils.CommonUtils;
-import com.ch.utils.StringUtils;
+import com.ch.pojo.Error;
+import com.ch.type.Status;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 描述：com.zh.http
@@ -23,31 +20,34 @@ public class BaseResult<T> implements Serializable {
     /**
      * 请求状态
      */
-    private int status;
+    private Status status;
+
+
     /**
      * 记录集合(包含错误)
      */
-    private Collection<T> records;
+    private Collection<T> rows;
+
     /**
-     * 请求错误集合
+     * 请求错误信息
      */
-    private Set<Error> errors;
+    private Error error;
 
     /**
      * @param status 请求状态
      */
-    public BaseResult(int status) {
+    public BaseResult(Status status) {
         setStatus(status);
     }
 
     /**
      * 根据记录集合创建一个请求结果
      *
-     * @param records 记录集合
+     * @param rows 记录集合
      */
-    public BaseResult(Collection<T> records) {
-        setStatus(Constants.SUCCESS);
-        setRecords(records);
+    public BaseResult(Collection<T> rows) {
+        setStatus(Status.SUCCESS);
+        setRows(rows);
     }
 
     /**
@@ -56,7 +56,7 @@ public class BaseResult<T> implements Serializable {
      * @param record 记录
      */
     public BaseResult(T record) {
-        setStatus(Constants.SUCCESS);
+        setStatus(Status.SUCCESS);
         this.put(record);
     }
 
@@ -66,111 +66,38 @@ public class BaseResult<T> implements Serializable {
      * @param record 记录
      */
     public void put(T record) {
-        if (records == null) {
-            records = new HashSet<T>();
+        if (rows == null) {
+            rows = new HashSet<T>();
         }
-        records.add(record);
+        rows.add(record);
     }
 
-    /**
-     * 创建一个错误放入当前结果
-     *
-     * @param code 错误码
-     * @param name 名称
-     * @param msg  消息
-     */
-    public void newError(String code, String name, String msg) {
-        if (errors == null) {
-            errors = new HashSet<>();
-        } else {
-            errors = errors.stream().filter(r -> !CommonUtils.isEquals(code, r.getCode())).collect(Collectors.toSet());
-        }
-
-        errors.add(new Error(code, name, msg));
+    public Collection<T> getRows() {
+        return rows;
     }
 
-    /**
-     * 使用一个已知错误放入请求结果
-     *
-     * @param error 错误
-     * @param msg   消息
-     */
-    public void newError(ErrorCode error, String msg) {
-        if (errors == null) {
-            errors = new HashSet<>();
-        } else {
-            errors = errors.stream().filter(r -> !CommonUtils.isEquals(error.getCode(), r.getCode())).collect(Collectors.toSet());
-        }
-
-        errors.add(new Error(error.getCode(), error.getName(), msg));
+    public void setRows(Collection<T> rows) {
+        this.rows = rows;
     }
-
 
     public int getStatus() {
-        return status;
+        return status.getNum();
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public Collection<T> getRecords() {
-        return records;
+    public Error getError() {
+        return error;
     }
 
-    public void setRecords(Collection<T> records) {
-        this.records = records;
+    public void setError(ErrorCode error) {
+        this.error = new Error(error.getCode(), error.getName());
     }
 
-    public Set<Error> getErrors() {
-        return errors;
-    }
 
-    public void setErrors(Set<Error> errors) {
-        this.errors = errors;
-    }
-
-    class Error implements Serializable {
-
-        String code;
-        String name;
-        String msg;
-
-        public Error() {
-            setCode(null);
-        }
-
-        public Error(String code, String name, String msg) {
-            setCode(code);
-            setName(name);
-            setMsg(msg);
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            if (StringUtils.isBlank(code)) {
-                code = ErrorCode.UNKNOWN.getCode();
-            }
-            this.code = code;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
+    public void setError(ErrorCode error, String msg) {
+        this.error = new Error(error.getCode(), msg);
     }
 }
