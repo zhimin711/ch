@@ -1,6 +1,7 @@
 package com.ch.result;
 
-import com.ch.pojo.Error;
+import com.ch.err.ErrorCode;
+import com.ch.err.Error;
 import com.ch.type.Status;
 
 import java.io.Serializable;

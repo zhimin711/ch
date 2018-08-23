@@ -1,6 +1,6 @@
 package com.ch.mail;
 
-import com.ch.error.ConfigException;
+import com.ch.err.ConfigException;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
 import org.slf4j.Logger;

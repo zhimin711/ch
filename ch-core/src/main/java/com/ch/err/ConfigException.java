@@ -1,16 +1,16 @@
-package com.ch.error;
+package com.ch.err;
 
 /**
  * 未知异常
  * Created by 01370603 on 2017/11/10.
  */
-public class InvalidArgumentException extends RuntimeException {
+public class ConfigException extends RuntimeException {
 
     /**
      * Constructs an <code>OutOfLimitException</code> with no
      * detail message.
      */
-    public InvalidArgumentException() {
+    public ConfigException() {
         super();
     }
 
@@ -20,7 +20,7 @@ public class InvalidArgumentException extends RuntimeException {
      *
      * @param s the detail message.
      */
-    public InvalidArgumentException(String s) {
+    public ConfigException(String s) {
         super(s);
     }
 }

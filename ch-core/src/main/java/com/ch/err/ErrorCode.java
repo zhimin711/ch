@@ -1,4 +1,4 @@
-package com.ch.result;
+package com.ch.err;
 
 /**
  * 描述：定义错误枚举类
@@ -36,6 +36,8 @@ public enum ErrorCode {
            return UNKNOWN;
         }
         switch (code) {
+            case "10":
+                return ARGS;
             case "100":
                 return ADD;
             case "101":
@@ -59,6 +61,8 @@ public enum ErrorCode {
                 break;
             case "300":
                 return NOT_ALLOWED;
+            case "301":
+                return NOT_EXISTS;
             case "403":
                 return NOT_AUTH;
             default:

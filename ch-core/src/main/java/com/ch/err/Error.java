@@ -1,4 +1,4 @@
-package com.ch.pojo;
+package com.ch.err;
 
 import java.io.Serializable;
 

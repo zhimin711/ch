@@ -1,6 +1,6 @@
 package com.ch.shiro.security.filters;
 
-import com.ch.result.ErrorCode;
+import com.ch.err.ErrorCode;
 import com.ch.result.HttpResult;
 import com.ch.shiro.utils.ServletUtils;
 import org.apache.shiro.subject.Subject;
@@ -53,7 +53,7 @@ public class AuthFilter extends AuthorizationFilter {
             // If subject is known but not authorized, redirect to the unauthorized URL if there is one
             // If no unauthorized URL is specified, just return an unauthorized HTTP status code
             String unauthorizedUrl = getUnauthorizedUrl();
-            //SHIRO-142 - ensure that redirect _or_ error code occurs - both cannot happen due to response commit:
+            //SHIRO-142 - ensure that redirect _or_ err code occurs - both cannot happen due to response commit:
             if (StringUtils.hasText(unauthorizedUrl)) {
                 WebUtils.issueRedirect(request, response, unauthorizedUrl);
             } else {

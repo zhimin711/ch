@@ -1,4 +1,4 @@
-package com.ch.error;
+package com.ch.err;
 
 /**
  * 超出限制异常
