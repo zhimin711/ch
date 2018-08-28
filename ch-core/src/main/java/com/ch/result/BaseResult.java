@@ -5,6 +5,7 @@ import com.ch.err.Error;
 import com.ch.type.Status;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -27,7 +28,7 @@ public class BaseResult<T> implements Serializable {
     /**
      * 记录集合(包含错误)
      */
-    private Collection<T> rows;
+    private Collection<T> rows = new ArrayList<>();
 
     /**
      * 请求错误信息

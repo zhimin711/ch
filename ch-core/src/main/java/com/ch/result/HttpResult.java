@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class HttpResult<T> extends BaseResult<T> {
 
-    public String param = "";
+    private String param = "";
 
     public HttpResult() {
         super(Status.FAILED);
@@ -24,11 +24,29 @@ public class HttpResult<T> extends BaseResult<T> {
         super(status);
     }
 
+    public HttpResult(Status status, String param) {
+        super(status);
+        this.param = param;
+    }
+
     public HttpResult(Collection<T> records) {
         super(records);
     }
 
+    public HttpResult(Collection<T> records, String param) {
+        super(records);
+        this.param = param;
+    }
+
     public HttpResult(T record) {
         super(record);
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
     }
 }

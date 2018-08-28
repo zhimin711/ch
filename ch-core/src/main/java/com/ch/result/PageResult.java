@@ -3,12 +3,13 @@ package com.ch.result;
 import com.ch.type.Status;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 描述：封装HTTP请求分页结果
  *
  * @author 80002023
- *         2017/2/5.
+ * 2017/2/5.
  * @version 1.0
  * @since 1.8
  */
@@ -29,6 +30,18 @@ public class PageResult<T> extends BaseResult<T> {
 
     public PageResult() {
         super(Status.FAILED);
+    }
+
+    /**
+     * 构造结果
+     *
+     * @param pageNum  当前页
+     * @param pageSize 每页记录数
+     */
+    public PageResult(int pageNum, int pageSize) {
+        super(Status.SUCCESS);
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
     }
 
     /**
