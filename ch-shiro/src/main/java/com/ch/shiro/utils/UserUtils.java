@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * 用户工具类
- * Created by zhimin on 2017/3/18.
+ * Shiro 用户工具类
+ *
+ * @author zhimin
+ * @date 2017/3/18 16:52
  */
 public class UserUtils {
 
@@ -47,7 +49,7 @@ public class UserUtils {
                 return getUsername(subject.getPrincipal());
             }
         } catch (Exception e) {
-            logger.error("get current username failed!",e);
+            logger.error("get current username failed!", e);
         }
         return "";
     }
@@ -76,7 +78,7 @@ public class UserUtils {
                 return ((Principal) subject.getPrincipal()).getCodes();
             }
         } catch (Exception e) {
-            logger.error("get current username sys codes failed!",e);
+            logger.error("get current username sys codes failed!", e);
         }
         return Lists.newArrayList();
     }
