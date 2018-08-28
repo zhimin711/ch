@@ -24,7 +24,7 @@ public class Constants {
     /**
      * int status
      */
-    public final static int UNKNOW = -1;
+    public final static int UNKNOWN = -1;
     public final static int FAILED = 0;
     public final static int SUCCESS = 1;
     public final static int ERROR = 2;

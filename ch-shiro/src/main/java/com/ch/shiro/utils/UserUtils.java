@@ -3,10 +3,13 @@ package com.ch.shiro.utils;
 import com.ch.shiro.authc.Principal;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
+import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.Subject;
+
+import java.util.List;
 
 /**
  * 用户工具类
@@ -56,6 +59,25 @@ public class UserUtils {
         String username = getCurrentUsername();
         return StringUtils.isNotBlank(username) ? username : defaultUsername;
     }
+
+
+    /**
+     * 获取当前登录用户名数据权限Code
+     *
+     * @return 当前登录用户名
+     */
+    public static List<String> getCodes() {
+        try {
+            Subject subject = getSubject();
+            if (subject.isAuthenticated() && subject.getPrincipal() instanceof Principal) {
+                return ((Principal) subject.getPrincipal()).getCodes();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Lists.newArrayList();
+    }
+
 
     public static boolean isSuperAdmin() {
         return getSubject().hasRole(SUPER_ADMIN);
