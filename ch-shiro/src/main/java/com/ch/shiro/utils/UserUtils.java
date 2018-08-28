@@ -8,6 +8,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.mgt.RealmSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ import java.util.List;
  */
 public class UserUtils {
 
+    private static Logger logger = LoggerFactory.getLogger(ServletUtils.class);
     public static final String SUPER_ADMIN = "SUPER_ADMIN";
 
     private UserUtils() {
@@ -44,7 +47,7 @@ public class UserUtils {
                 return getUsername(subject.getPrincipal());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("get current username failed!",e);
         }
         return "";
     }
@@ -73,7 +76,7 @@ public class UserUtils {
                 return ((Principal) subject.getPrincipal()).getCodes();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("get current username sys codes failed!",e);
         }
         return Lists.newArrayList();
     }
