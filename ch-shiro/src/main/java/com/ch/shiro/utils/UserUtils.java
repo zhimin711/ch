@@ -83,6 +83,15 @@ public class UserUtils {
         return Lists.newArrayList();
     }
 
+    /**
+     * 判断当前用户是否拥有代码
+     *
+     * @param code 系统代码
+     * @return
+     */
+    public static boolean hasCode(String code) {
+        return getCodes().contains(code);
+    }
 
     public static boolean isSuperAdmin() {
         return getSubject().hasRole(SUPER_ADMIN);
