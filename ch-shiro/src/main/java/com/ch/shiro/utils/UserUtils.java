@@ -90,7 +90,7 @@ public class UserUtils {
      * @return
      */
     public static boolean hasCode(String code) {
-        return getCodes().contains(code);
+        return CommonUtils.isNotEmpty(code) && getCodes().contains(code);
     }
 
     public static boolean isSuperAdmin() {
@@ -98,7 +98,7 @@ public class UserUtils {
     }
 
     public static boolean hasRole(String code) {
-        return getSubject().hasRole(code);
+        return CommonUtils.isNotEmpty(code) && getSubject().hasRole(code);
     }
 
     private static Subject getSubject() {
