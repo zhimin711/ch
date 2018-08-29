@@ -4,14 +4,14 @@ package com.ch.err;
  * 未知异常
  * Created by 01370603 on 2017/11/10.
  */
-public class UnknownException extends RuntimeException {
+public class UnknownException extends BaseException {
 
     /**
      * Constructs an <code>OutOfLimitException</code> with no
      * detail message.
      */
     public UnknownException() {
-        super();
+        super(ErrorCode.UNKNOWN);
     }
 
     /**
@@ -21,6 +21,7 @@ public class UnknownException extends RuntimeException {
      * @param s the detail message.
      */
     public UnknownException(String s) {
-        super(s);
+        super(ErrorCode.UNKNOWN, s);
     }
+
 }

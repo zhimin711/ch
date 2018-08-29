@@ -28,13 +28,36 @@ public class SSHHelper extends ServerHelper {
     }
 
 
+    /**
+     * @param command
+     * @return
+     * @throws Exception
+     */
     public ResInfo sendCmd(String command) throws Exception {
         return sendCmd(command, 0);
     }
 
-    public ResInfo sendCmd(String command, int limit) throws Exception {
-        return sendCmd(command, limit, 0);
+    /**
+     * @param command
+     * @param timeout
+     * @return
+     * @throws Exception
+     */
+    public ResInfo sendCmd(String command, int timeout) throws Exception {
+        return sendCmd(command, timeout, 0, 0);
     }
+
+    /**
+     * @param command
+     * @param timeout
+     * @param limit
+     * @return
+     * @throws Exception
+     */
+    public ResInfo sendCmd(String command, int timeout, int limit) throws Exception {
+        return sendCmd(command, timeout, limit, 0);
+    }
+
 
     /**
      * 执行命令，返回执行结果
@@ -45,7 +68,7 @@ public class SSHHelper extends ServerHelper {
      * @return String 执行命令后的返回
      * @throws Exception
      */
-    public ResInfo sendCmd(String command, int limit, int delay) throws Exception {
+    public ResInfo sendCmd(String command, int timeout, int limit, int delay) throws Exception {
         ResInfo result;
         byte[] tmp = new byte[1024]; //读数据缓存
         StringBuilder strBuffer = new StringBuilder();  //执行SSH返回的结果
@@ -60,8 +83,7 @@ public class SSHHelper extends ServerHelper {
         InputStream errStream = ssh.getErrStream();
 
         ssh.setCommand(command);
-        ssh.connect();
-
+        ssh.connect(timeout);
         try {
 
             int countLine = 0;
