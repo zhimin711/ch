@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SQLUtils {
@@ -8,10 +9,14 @@ public class SQLUtils {
     }
 
     public enum Type {
-        SELECT, UPDATE, CREATE, DELETE, UNKNOWN, DROP, ALTER, TRUNCATE
+        INSERT, SELECT, UPDATE, CREATE, DELETE, UNKNOWN, DROP, ALTER, TRUNCATE
     }
 
-    private final static String[] patternList = {".*(update|UPDATE) .*(set|SET) .*", ".*(delete|DELETE) .*(from|FROM) .*", ".*(drop|DROP) .*", ".*(alter|ALTER) .*(table|TABLE) .*", ".*(truncate|TRUNCATE) .*"};
+    private final static String[] patternList = {
+            ".*(insert|INSERT) .*(value|VALUE|values|VALUES) .*", ".*(update|UPDATE) .*(set|SET) .*",
+            ".*(delete|DELETE) .*(from|FROM) .*", ".*(drop|DROP) .*",
+            ".*(alter|ALTER) .*(table|TABLE) .*", ".*(truncate|TRUNCATE) .*"
+    };
 
     private final static String[] patternList2 = {".*(limit|LIMIT) [0-9]+,[0-9]+", ".*(limit|LIMIT) [0-9]+"};
 
@@ -41,20 +46,22 @@ public class SQLUtils {
      */
     public static Type parseType(String sql) {
         String str = trimComment(sql);
-
-        if (str.startsWith("select") || str.startsWith("SELECT")) {
+        str = str.toUpperCase();
+        if (str.startsWith("INSERT")) {
+            return Type.INSERT;
+        } else if (str.startsWith("SELECT")) {
             return Type.SELECT;
-        } else if (str.startsWith("update") || str.startsWith("UPDATE")) {
+        } else if (str.startsWith("UPDATE")) {
             return Type.UPDATE;
-        } else if (str.startsWith("create") || str.startsWith("CREATE")) {
+        } else if (str.startsWith("CREATE")) {
             return Type.CREATE;
-        } else if (str.startsWith("delete") || str.startsWith("DELETE")) {
+        } else if (str.startsWith("DELETE")) {
             return Type.DELETE;
-        } else if (str.startsWith("drop") || str.startsWith("DROP")) {
+        } else if (str.startsWith("DROP")) {
             return Type.DROP;
-        } else if (str.startsWith("alter") || str.startsWith("ALTER")) {
+        } else if (str.startsWith("ALTER")) {
             return Type.ALTER;
-        } else if (str.startsWith("truncate") || str.startsWith("TRUNCATE")) {
+        } else if (str.startsWith("TRUNCATE")) {
             return Type.TRUNCATE;
         }
         return Type.UNKNOWN;
