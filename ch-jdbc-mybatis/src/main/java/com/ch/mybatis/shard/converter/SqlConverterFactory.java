@@ -64,7 +64,7 @@ public class SqlConverterFactory {
      * @throws ShardException 解析sql失败会抛出ShardException
      */
     public String convert(String sql, Object params, String mapperId) throws ShardException {
-        Statement statement = null;
+        Statement statement;
         try {
             statement = pm.parse(new StringReader(sql));
         } catch (JSQLParserException e) {

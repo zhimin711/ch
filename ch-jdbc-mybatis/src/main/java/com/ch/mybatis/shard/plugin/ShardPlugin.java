@@ -1,11 +1,5 @@
 package com.ch.mybatis.shard.plugin;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.ch.mybatis.shard.builder.ShardConfigHolder;
 import com.ch.mybatis.shard.builder.ShardConfigParser;
 import com.ch.mybatis.shard.converter.SqlConverterFactory;
@@ -17,11 +11,14 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Intercepts;
-import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.plugin.Plugin;
-import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.plugin.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 
 /**
@@ -60,8 +57,9 @@ public class ShardPlugin implements Interceptor {
             Object params = statementHandler.getBoundSql().getParameterObject();
 
             SqlConverterFactory cf = SqlConverterFactory.getInstance();
+//            sql = prepareSqlWhere(sql);
             sql = cf.convert(sql, params, mapperId);
-            sql = prepareSql(sql);
+            sql = prepareSqlLimit(sql);
             if (log.isDebugEnabled()) {
                 log.debug("Converted Sql [" + mapperId + "]:" + sql);
             }
@@ -70,7 +68,44 @@ public class ShardPlugin implements Interceptor {
         return invocation.proceed();
     }
 
-    private String prepareSql(String sql) {
+    private String prepareSqlWhere(String sql) {
+        String[] partSql = sql.split("(?i)where");
+
+        StringBuilder sb = new StringBuilder();
+        Stream.of(partSql).forEach(r -> {
+            String tmp = r.trim();
+            if (!tmp.startsWith("(")) {
+                sb.append(r);
+                return;
+            }
+            tmp = tmp.substring(1);
+            sb.append(" WHERE ").append(trimLastChar(-1, tmp));
+        });
+        return sb.toString();
+    }
+
+    private String trimLastChar(int s, String tmp) {
+        int start;
+        if (s == -1 && !tmp.contains("(")) {
+            return tmp.replace(")", " ");
+        }
+        StringBuilder sb = new StringBuilder();
+        if (s == -1) {
+            start = tmp.indexOf("(");
+            sb.append(tmp.substring(0, start + 1));
+            sb.append(trimLastChar(1, tmp.substring(start + 1)));
+        } else if (s == 1) {
+            start = tmp.indexOf(")");
+            sb.append(tmp.substring(0, start + 1));
+            sb.append(trimLastChar(0, tmp.substring(start + 1)));
+        } else {
+            sb.append(tmp.replace(")", " "));
+        }
+
+        return sb.toString();
+    }
+
+    private String prepareSqlLimit(String sql) {
         if (CommonUtils.isEmpty(this.direct)) {
             return sql;
         }

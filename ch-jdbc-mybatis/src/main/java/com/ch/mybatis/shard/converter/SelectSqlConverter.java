@@ -55,9 +55,7 @@ public class SelectSqlConverter extends AbstractSqlConverter {
             plainSelect.getFromItem().accept(this);
 
             if (plainSelect.getJoins() != null) {
-                for (Iterator joinsIt = plainSelect.getJoins().iterator(); joinsIt
-                        .hasNext(); ) {
-                    Join join = (Join) joinsIt.next();
+                for (Join join : plainSelect.getJoins()) {
                     join.getRightItem().accept(this);
                 }
             }
@@ -142,7 +140,7 @@ public class SelectSqlConverter extends AbstractSqlConverter {
 
         public void visit(InExpression inExpression) {
             inExpression.getLeftExpression().accept(this);
-
+if(inExpression.getLeftItemsList() != null)
             inExpression.getLeftItemsList().accept(this);
         }
 
@@ -191,6 +189,16 @@ public class SelectSqlConverter extends AbstractSqlConverter {
 
         public void visit(NotEqualsTo notEqualsTo) {
             visitBinaryExpression(notEqualsTo);
+        }
+
+        @Override
+        public void visit(BitwiseRightShift aThis) {
+
+        }
+
+        @Override
+        public void visit(BitwiseLeftShift aThis) {
+
         }
 
         public void visit(NullValue nullValue) {
@@ -271,8 +279,13 @@ public class SelectSqlConverter extends AbstractSqlConverter {
 
         public void visit(SubJoin subjoin) {
             subjoin.getLeft().accept(this);
-            subjoin.getJoin().getRightItem().accept(this);
+
+//            subjoin.getJoin().getRightItem().accept(this);
+            for (Join join : subjoin.getJoinList()) {
+                join.getRightItem().accept(this);
+            }
         }
+
 
         @Override
         public void visit(LateralSubSelect lateralSubSelect) {
@@ -281,6 +294,15 @@ public class SelectSqlConverter extends AbstractSqlConverter {
 
         @Override
         public void visit(ValuesList valuesList) {
+        }
+
+        @Override
+        public void visit(TableFunction tableFunction) {
+
+        }
+
+        @Override
+        public void visit(ParenthesisFromItem aThis) {
 
         }
 
@@ -323,11 +345,6 @@ public class SelectSqlConverter extends AbstractSqlConverter {
         }
 
         @Override
-        public void visit(WithinGroupExpression withinGroupExpression) {
-
-        }
-
-        @Override
         public void visit(ExtractExpression extractExpression) {
 
         }
@@ -349,6 +366,11 @@ public class SelectSqlConverter extends AbstractSqlConverter {
 
         @Override
         public void visit(JsonExpression jsonExpression) {
+
+        }
+
+        @Override
+        public void visit(JsonOperator jsonExpr) {
 
         }
 
@@ -378,12 +400,38 @@ public class SelectSqlConverter extends AbstractSqlConverter {
         }
 
         @Override
+        public void visit(ValueListExpression valueList) {
+
+        }
+
+        @Override
         public void visit(RowConstructor rowConstructor) {
+
+        }
+
+        @Override
+        public void visit(OracleHint hint) {
+
+        }
+
+        @Override
+        public void visit(TimeKeyExpression timeKeyExpression) {
+
+        }
+
+        @Override
+        public void visit(DateTimeLiteralExpression literal) {
+
+        }
+
+        @Override
+        public void visit(NotExpression aThis) {
 
         }
 
         public void visit(StringValue stringValue) {
         }
+
     }
 
 }
