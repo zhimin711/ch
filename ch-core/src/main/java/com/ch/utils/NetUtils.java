@@ -3,8 +3,6 @@ package com.ch.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +10,7 @@ import java.util.regex.Pattern;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -40,6 +38,7 @@ public class NetUtils {
      * @return 域名或IP地址
      */
     public static String parseUrl(String url) {
+        logger.debug(url);
         if (isURL(url)) {
             int start = 0;
             if (url.startsWith(HTTP_PROTOCOL)) {
@@ -104,32 +103,4 @@ public class NetUtils {
         return matcher.matches();
     }
 
-    /**
-     * 获取本机IP
-     *
-     * @return 本机IP
-     */
-    public static String getLocalIp() {
-        try {
-            InetAddress address = InetAddress.getLocalHost();
-            return address.getHostAddress();
-        } catch (UnknownHostException e) {
-            logger.error("get local host ip error!", e);
-        }
-        return "255.255.255.255";
-    }
-
-    /**
-     * 获取本机IP byte[]
-     *
-     * @return 本机IP byte[]
-     */
-    public static byte[] getLocalAddress() {
-        try {
-            return InetAddress.getLocalHost().getAddress();
-        } catch (UnknownHostException e) {
-            logger.error("get local host ip byte error!", e);
-        }
-        return null;
-    }
 }

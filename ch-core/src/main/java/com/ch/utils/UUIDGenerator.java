@@ -22,8 +22,8 @@ public class UUIDGenerator {
     static {
         int ipAddress;
         try {
-            logger.info("This Server IP: {}", NetUtils.getLocalIp());
-            ipAddress = ipToInt(NetUtils.getLocalAddress());
+            logger.info("This Server IP: {}", PlatformUtils.getLocalIp());
+            ipAddress = ipToInt(PlatformUtils.getLocalAddress());
         } catch (Exception e) {
             ipAddress = 0;
         }
