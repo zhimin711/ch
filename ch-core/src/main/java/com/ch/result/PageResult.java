@@ -1,5 +1,6 @@
 package com.ch.result;
 
+import com.ch.err.ErrorCode;
 import com.ch.type.Status;
 
 import java.util.Collection;
@@ -30,6 +31,14 @@ public class PageResult<T> extends BaseResult<T> {
 
     public PageResult() {
         super(Status.FAILED);
+    }
+
+    public PageResult(ErrorCode error) {
+        super(error);
+    }
+
+    public PageResult(ErrorCode error, String msg) {
+        super(error, msg);
     }
 
     /**

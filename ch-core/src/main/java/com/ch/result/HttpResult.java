@@ -1,5 +1,6 @@
 package com.ch.result;
 
+import com.ch.err.ErrorCode;
 import com.ch.type.Status;
 
 import java.util.Collection;
@@ -23,6 +24,15 @@ public class HttpResult<T> extends BaseResult<T> {
     public HttpResult(Status status) {
         super(status);
     }
+
+    public HttpResult(ErrorCode error) {
+        super(error);
+    }
+
+    public HttpResult(ErrorCode error, String msg) {
+        super(error, msg);
+    }
+
 
     public HttpResult(Status status, String param) {
         super(status);
