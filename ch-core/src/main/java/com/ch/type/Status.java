@@ -78,4 +78,8 @@ public enum Status {
                 return UNKNOWN;
         }
     }
+
+    public static boolean isSuccess(Object value){
+        return Status.fromValue(value) == Status.SUCCESS;
+    }
 }
