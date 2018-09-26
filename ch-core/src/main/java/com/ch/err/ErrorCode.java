@@ -20,6 +20,7 @@ public enum ErrorCode {
     PASSWORD("202", "密码错误"),//
     NOT_ALLOWED("300", "不允许"),//
     NOT_EXISTS("301", "不存在"),//
+    EXISTS("303", "已存在"),//
     NON_NULL("302", "不为空"),//
     NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
@@ -66,6 +67,8 @@ public enum ErrorCode {
                 return NOT_EXISTS;
             case "302":
                 return NON_NULL;
+            case "303":
+                return EXISTS;
             case "403":
                 return NOT_AUTH;
             default:
