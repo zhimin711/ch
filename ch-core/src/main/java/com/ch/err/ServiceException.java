@@ -1,19 +1,19 @@
 package com.ch.err;
 
 /**
- * 无效参数运行时异常
+ * 服务运行时异常
  *
  * @author zhimin
  * @date 2018/8/13 上午8:48
  */
-public class InvalidArgumentException extends BaseException {
+public class ServiceException extends BaseException {
 
     /**
      * Constructs an <code>BaseException</code> with no
      * detail message.
      */
-    public InvalidArgumentException() {
-        super(ErrorCode.ARGS);
+    public ServiceException() {
+        super(ErrorCode.DEFAULT);
     }
 
     /**
@@ -22,7 +22,7 @@ public class InvalidArgumentException extends BaseException {
      *
      * @param error ErrorCode message.
      */
-    public InvalidArgumentException(ErrorCode error) {
+    public ServiceException(ErrorCode error) {
         super(error, error.getName());
     }
 
@@ -33,7 +33,7 @@ public class InvalidArgumentException extends BaseException {
      * @param error ErrorCode message.
      * @param s     the detail message.
      */
-    public InvalidArgumentException(ErrorCode error, String s) {
+    public ServiceException(ErrorCode error, String s) {
         super(error, s);
     }
 
@@ -43,8 +43,8 @@ public class InvalidArgumentException extends BaseException {
      *
      * @param s the detail message.
      */
-    public InvalidArgumentException(String s) {
-        super(ErrorCode.ARGS, s);
+    public ServiceException(String s) {
+        super(ErrorCode.DEFAULT, s);
     }
 
 }
