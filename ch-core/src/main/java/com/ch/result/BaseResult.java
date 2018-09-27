@@ -113,4 +113,12 @@ public class BaseResult<T> implements Serializable {
     public void setError(ErrorCode error, String msg) {
         this.error = new Error(error.getCode(), msg);
     }
+
+    public boolean isSuccess() {
+        return Status.isSuccess(status);
+    }
+
+    public boolean isEmpty() {
+        return rows == null || rows.isEmpty();
+    }
 }
