@@ -89,7 +89,8 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     @Override
     public T find(ID id) {
         checkMapper();
-        checkParam(id);
+//        checkParam(id);
+        if (id == null) return null;
         return getMapper().selectByPrimaryKey(id);
     }
 
