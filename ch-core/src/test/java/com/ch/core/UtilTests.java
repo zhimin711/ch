@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -122,14 +121,19 @@ public class UtilTests {
                 "from ts_role; -- a";
 
         logger.info("after trim comment: {}", SQLUtils.trimComment(sql));
+
+        sql = StringUtils.formatSort(1, 3);
+        logger.info("formatSort: {}", sql);
     }
 
     @Test
     public void testBean() {
         KeyValue kv = new KeyValue("a", "a1");
         try {
-            Method m = kv.getClass().getMethod("getValue", String.class);
+//            Method m = kv.getClass().getMethod("getValue", String.class);
 //            logger.info("{}:{}", kv.getValue(), String.valueOf(m.invoke(kv, "a2")));
+
+            logger.info("{}:{}", PlatformUtils.getHostName(), PlatformUtils.getCanonicalHostName());
         } catch (Exception e) {
             e.printStackTrace();
         }
