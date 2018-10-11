@@ -153,6 +153,27 @@ public class JsonUtils {
     }
 
     /**
+     * use gson plugin format object to json and Without Expose
+     *
+     * @param object 任意对象
+     * @return json Json格式化字符串
+     */
+    public static String toJsonDateFormat(Object object, DateUtils.Pattern pattern) {
+        if (object == null) {
+            return null;
+        }
+        try {
+            GsonBuilder gb = new GsonBuilder().setDateFormat(pattern.getValue());
+            gb.excludeFieldsWithoutExposeAnnotation();
+            Gson gson = gb.create();
+            return gson.toJson(object);
+        } catch (Exception e) {
+            logger.error("use gson plugin format object to json and Without date format error!", e);
+        }
+        return "";
+    }
+
+    /**
      * 解析Json反射对象
      * parse json to class
      *
