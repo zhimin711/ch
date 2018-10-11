@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * ssh登录linux以后的一些操作方式
@@ -100,7 +101,7 @@ public class SSHHelper extends ServerHelper {
                 while (stdStream.available() > 0) {
                     int i = stdStream.read(tmp, 0, 1024);
                     if (i < 0) break;
-                    strBuffer.append(new String(tmp, 0, i));
+                    strBuffer.append(new String(tmp, 0, i, "UTF-8"));
 //                    logger.info(new String(tmp, 0, i));
                     countLine++;
                     if (countLine > 1000) {
@@ -121,7 +122,7 @@ public class SSHHelper extends ServerHelper {
         } finally {
             closeChannel();
         }
-
+        logger.debug(result.toString());
         return result;
     }
 
