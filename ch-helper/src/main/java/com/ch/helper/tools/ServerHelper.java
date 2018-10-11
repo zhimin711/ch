@@ -57,6 +57,7 @@ public abstract class ServerHelper {
             session.setConfig("StrictHostKeyChecking", "no");
             //30秒连接超时
             session.setTimeout(timeout);
+
             session.connect();
         } catch (JSchException e) {
             logger.error("Server Helper 获取连接发生错误!", e);

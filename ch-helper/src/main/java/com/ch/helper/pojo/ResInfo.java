@@ -61,7 +61,13 @@ public class ResInfo {
 
     @Override
     public String toString() {
-        return "ResInfo [exitStatus=" + exitStatus + ", outRes=" + outRes + ", errRes=" + errRes + "]";
+        String tmp = outRes;
+        if (outRes != null) {
+            String[] strArr = outRes.split("\n");
+            tmp = strArr[0];
+            if(strArr.length>1) tmp+= " .....";
+        }
+        return "ResInfo [exitStatus=" + exitStatus + ", outRes=" + tmp + ", errRes=" + errRes + "]";
     }
 
     public void clear() {
