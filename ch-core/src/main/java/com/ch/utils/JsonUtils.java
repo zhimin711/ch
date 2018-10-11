@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,7 @@ import java.util.Map;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
@@ -70,29 +69,11 @@ public class JsonUtils {
             case JACKSON:
                 return toJsonOfJackson(object);
             default:
-                return toJson3(object);
+                return toJsonOfJackson(object);
 
         }
     }
 
-
-    /**
-     * use org.json plugin format object to json
-     *
-     * @param object 任意对象
-     * @return json Json格式化字符串
-     */
-    private static String toJson3(Object object) {
-        if (object == null) {
-            return null;
-        }
-        try {
-            return new JSONObject(object).toString();
-        } catch (Exception e) {
-            logger.error("use org.json format object to json string error!", e);
-        }
-        return null;
-    }
 
     /**
      * use gson plugin format object to json
