@@ -31,7 +31,7 @@ public class JsonUtils {
      * 工具类型
      */
     public enum ToolType {
-        GSON, JACKSON, JSON
+        GSON, JACKSON
     }
 
     /**
@@ -144,7 +144,8 @@ public class JsonUtils {
             return null;
         }
         try {
-            GsonBuilder gb = new GsonBuilder().setDateFormat(pattern.getValue());
+            GsonBuilder gb = new GsonBuilder();
+            gb.setDateFormat(pattern.getValue());
             gb.excludeFieldsWithoutExposeAnnotation();
             Gson gson = gb.create();
             return gson.toJson(object);
@@ -179,7 +180,6 @@ public class JsonUtils {
             case GSON:
                 return newInstance().fromJson(json, new TypeToken<T>() {
                 }.getType());
-            case JSON:
             case JACKSON:
                 return fromJson(json);
         }
@@ -285,7 +285,6 @@ public class JsonUtils {
         try {
             List<T> records = newInstance().fromJson(arrayJson, typeOfT);
             if (records != null) {
-//                logger.info("fromJson: string to list size {}", records.size());
                 return records;
             }
         } catch (Exception e) {

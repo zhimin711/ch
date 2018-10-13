@@ -109,7 +109,6 @@ public class BaseResult<T> implements Serializable {
         this.error = new Error(error.getCode(), error.getName());
     }
 
-
     public void setError(ErrorCode error, String msg) {
         this.error = new Error(error.getCode(), msg);
     }
@@ -120,5 +119,12 @@ public class BaseResult<T> implements Serializable {
 
     public boolean isEmpty() {
         return rows == null || rows.isEmpty();
+    }
+
+    public T get() {
+        if (isEmpty()) {
+            return null;
+        }
+        return rows.iterator().next();
     }
 }
