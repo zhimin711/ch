@@ -146,7 +146,8 @@ public class JsonUtils {
         try {
             GsonBuilder gb = new GsonBuilder();
             gb.setDateFormat(pattern.getValue());
-            gb.excludeFieldsWithoutExposeAnnotation();
+//            gb.excludeFieldsWithoutExposeAnnotation();
+//            gb.addSerializationExclusionStrategy()
             Gson gson = gb.create();
             return gson.toJson(object);
         } catch (Exception e) {
