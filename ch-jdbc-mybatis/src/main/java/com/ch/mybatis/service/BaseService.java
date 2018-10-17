@@ -6,6 +6,7 @@ import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 描述：com.ch.jdbc.support
@@ -42,7 +44,6 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     @SuppressWarnings("unchecked")
     protected Example getExample() {
         Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        EntityHelper.getPKColumns(entityClass);
         return new Example(entityClass);
     }
 
@@ -71,17 +72,26 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     @Override
     public int delete(ID id) {
         checkMapper();
-        checkParam(id);
+//        checkParam(id);
+        if (id == null) return 0;
         return getMapper().deleteByPrimaryKey(id);
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
     public int delete(Collection<ID> ids) {
         checkMapper();
-        checkParam(ids);
+//        checkParam(ids);
+        if (ids == null) return 0;
+        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        Set<EntityColumn> pkSet = EntityHelper.getPKColumns(entityClass);
+        if (pkSet == null || pkSet.isEmpty() || pkSet.size() > 1) {
+            throw new MybatisException("no or multi pk columns, this method is not support!");
+        }
+        EntityColumn pkColumn = pkSet.iterator().next();
         Example e = getExample();
-        e.createCriteria().andIn("", ids);
+        e.createCriteria().andIn(pkColumn.getProperty(), ids);
         return getMapper().deleteByExample(e);
     }
 
