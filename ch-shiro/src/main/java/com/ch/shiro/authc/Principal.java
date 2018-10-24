@@ -13,6 +13,7 @@ public class Principal implements Serializable {
 
     private String userId;
     private String username;
+    private String realName;
     private String phone;
     private String email;
     private List<String> codes;
@@ -21,9 +22,10 @@ public class Principal implements Serializable {
         this.username = username;
     }
 
-    public Principal(String username, String userId, String mobile, String email) {
+    public Principal(String username, String userId, String realName, String mobile, String email) {
         this.username = username;
         this.userId = userId;
+        this.realName = realName;
         this.phone = mobile;
         this.email = email;
     }
@@ -50,5 +52,13 @@ public class Principal implements Serializable {
 
     public void setCodes(List<String> codes) {
         this.codes = codes;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 }

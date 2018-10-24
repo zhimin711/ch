@@ -13,10 +13,10 @@ public class AuthPrincipals implements PrincipalCollection {
 
     private Map<String, Set> realmPrincipals;
 
-    public AuthPrincipals(String username, String userId, String mobile, String email) {
+    public AuthPrincipals(String username, String userId, String realName, String mobile, String email) {
 
         Collection principals = this.getPrincipalsLazy(username);
-        principals.add(new Principal(username, userId, mobile, email));
+        principals.add(new Principal(username, userId, realName, mobile, email));
     }
 
     public AuthPrincipals(String username) {
