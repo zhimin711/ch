@@ -70,7 +70,6 @@ public abstract class AbstractShiroConfig {
     }
 
 
-
     @Bean
     public PasswordService passwordService() {
         return new DefaultPasswordService();

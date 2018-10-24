@@ -45,7 +45,7 @@ public class UserUtils {
     public static String getCurrentUsername() {
         try {
             Subject subject = getSubject();
-            if (subject.isAuthenticated()) {
+            if (subject.isRemembered() || subject.isAuthenticated()) {
                 return getUsername(subject.getPrincipal());
             }
         } catch (Exception e) {
