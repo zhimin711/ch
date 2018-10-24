@@ -1,5 +1,7 @@
 package com.ch.shiro.utils;
 
+import com.ch.err.ErrorCode;
+import com.ch.err.UnknownException;
 import com.ch.shiro.authc.Principal;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.StringUtils;
@@ -50,6 +52,27 @@ public class UserUtils {
             }
         } catch (Exception e) {
             logger.error("get current username failed!", e);
+        }
+        return "";
+    }
+
+    /**
+     * 获取当前用户昵称
+     *
+     * @return 当前用户名昵称
+     */
+    public static String getNickname() {
+        try {
+            Subject subject = getSubject();
+            if (subject.isRemembered() || subject.isAuthenticated()) {
+                Object principal = subject.getPrincipal();
+                if (principal instanceof Principal) {
+                    return ((Principal) principal).getNickname();
+                }
+            }
+            throw new UnknownException();
+        } catch (Exception e) {
+            logger.error("get current Nickname failed!", e);
         }
         return "";
     }
