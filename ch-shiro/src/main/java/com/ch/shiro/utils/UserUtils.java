@@ -97,7 +97,7 @@ public class UserUtils {
     public static List<String> getCodes() {
         try {
             Subject subject = getSubject();
-            if (subject.isAuthenticated() && subject.getPrincipal() instanceof Principal) {
+            if ((subject.isRemembered() || subject.isAuthenticated()) && subject.getPrincipal() instanceof Principal) {
                 return ((Principal) subject.getPrincipal()).getCodes();
             }
         } catch (Exception e) {
