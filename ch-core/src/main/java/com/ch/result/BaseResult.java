@@ -105,6 +105,10 @@ public class BaseResult<T> implements Serializable {
         return error;
     }
 
+    public void setError(Error error) {
+        this.error = error;
+    }
+
     public void setError(ErrorCode error) {
         this.error = new Error(error.getCode(), error.getName());
     }
