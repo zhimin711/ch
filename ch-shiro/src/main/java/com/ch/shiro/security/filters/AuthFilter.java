@@ -42,8 +42,7 @@ public class AuthFilter extends AuthorizationFilter {
         if (subject.getPrincipal() == null) {
             // if request ajax
             if (ServletUtils.isAjax(WebUtils.toHttp(request))) {
-                HttpResult<String> result = new HttpResult<>();
-                result.setError(ErrorCode.NOT_LOGIN);
+                HttpResult<String> result = new HttpResult<>(ErrorCode.NOT_LOGIN);
                 logger.debug("request ajax...{}", JsonUtils.toJson(result));
                 ServletUtils.write(WebUtils.toHttp(response), result);
             } else {

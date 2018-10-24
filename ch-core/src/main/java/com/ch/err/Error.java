@@ -18,6 +18,12 @@ public class Error implements Serializable {
         this.name = name;
     }
 
+
+    public Error(ErrorCode errorCode) {
+        this.code = errorCode.getCode();
+        this.name = errorCode.getName();
+    }
+
     public String getCode() {
         return code;
     }

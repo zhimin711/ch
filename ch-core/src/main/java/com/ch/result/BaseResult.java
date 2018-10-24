@@ -45,12 +45,12 @@ public class BaseResult<T> implements Serializable {
 
     public BaseResult(ErrorCode error) {
         setStatus(Status.ERROR);
-        setError(error);
+        this.error = new Error(error);
     }
 
     public BaseResult(ErrorCode error, String msg) {
         setStatus(Status.ERROR);
-        setError(error, msg);
+        this.error = new Error(error.getCode(), msg);
     }
 
     /**
@@ -107,10 +107,6 @@ public class BaseResult<T> implements Serializable {
 
     public void setError(Error error) {
         this.error = error;
-    }
-
-    public void setError(ErrorCode error) {
-        this.error = new Error(error.getCode(), error.getName());
     }
 
     public void setError(ErrorCode error, String msg) {
