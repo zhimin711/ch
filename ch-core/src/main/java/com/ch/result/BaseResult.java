@@ -45,7 +45,7 @@ public class BaseResult<T> implements Serializable {
 
     public BaseResult(ErrorCode error) {
         setStatus(Status.ERROR);
-        this.error = new Error(error);
+        this.error = new Error(error.getCode(), error.getName());
     }
 
     public BaseResult(ErrorCode error, String msg) {
@@ -107,6 +107,10 @@ public class BaseResult<T> implements Serializable {
 
     public void setError(Error error) {
         this.error = error;
+    }
+
+    public void newError(ErrorCode error) {
+        this.error = new Error(error.getCode(), error.getName());
     }
 
     public void setError(ErrorCode error, String msg) {

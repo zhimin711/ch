@@ -22,10 +22,10 @@ public class Error implements Serializable {
     }
 
 
-    public Error(ErrorCode errorCode) {
-        this.code = errorCode.getCode();
-        this.name = errorCode.getName();
-    }
+//    public Error(ErrorCode errorCode) {
+//        this.code = errorCode.getCode();
+//        this.name = errorCode.getName();
+//    }
 
     public String getCode() {
         return code;
