@@ -13,6 +13,9 @@ public class Error implements Serializable {
     private String code;
     private String name;
 
+    public Error() {
+    }
+
     public Error(String code, String name) {
         this.code = code;
         this.name = name;
