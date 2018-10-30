@@ -13,12 +13,12 @@ public class SQLUtils {
     }
 
     private final static String[] patternList = {
-            ".*(insert|INSERT) .*(value|VALUE|values|VALUES) .*", ".*(update|UPDATE) .*(set|SET) .*",
-            ".*(delete|DELETE) .*(from|FROM) .*", ".*(drop|DROP) .*",
-            ".*(alter|ALTER) .*(table|TABLE) .*", ".*(truncate|TRUNCATE) .*"
+            ".*((?i)insert) .*((?i)value|(?i)values) .*", ".*((?i)update) .*((?i)set) .*",
+            ".*((?i)delete) .*((?i)from) .*", ".*((?i)drop) .*",
+            ".*((?i)alter) .*", ".*((?i)truncate) .*"
     };
 
-    private final static String[] patternList2 = {".*(limit|LIMIT) [0-9]+,[0-9]+", ".*(limit|LIMIT) [0-9]+"};
+    private final static String[] patternList2 = {".*((?i)limit) [0-9]+,[0-9]+", ".*((?i)limit) [0-9]+"};
 
     /**
      * 检查是否为查询SQL
@@ -26,7 +26,7 @@ public class SQLUtils {
      * @param sql SQL
      * @return
      */
-    public static boolean isSelectSql(String sql) {
+    public static boolean isSelect(String sql) {
         if (CommonUtils.isEmpty(sql)) {
             return false;
         }
@@ -94,13 +94,15 @@ public class SQLUtils {
         String[] lines = tmp.split("\n");
         StringBuilder sb = new StringBuilder();
         int i = -1;
-        for (String line : lines) {
-            if (CommonUtils.isEmpty(line)) {
+        for (String l : lines) {
+            if (CommonUtils.isEmpty(l)) {
                 continue;
             }
+            String line = l.trim();
             if (line.startsWith("/*")) {
                 i = 1;
             } else if (i == -1 && !line.startsWith("-- ") && !line.startsWith("#")) {
+                sb.append(" ");
                 if (line.contains("-- ") || line.contains("#")) {
                     int end = line.indexOf("-- ");
                     if (end < 0) {

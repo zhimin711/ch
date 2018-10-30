@@ -4,8 +4,6 @@ import com.ch.pojo.KeyValue;
 import com.ch.utils.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,12 +92,12 @@ public class UtilTests {
     public void testJson() throws Exception {
         o = new KeyValue("a", "b", DateUtils.currentTime());
         System.out.println(JsonUtils.toJson(o));
-        System.out.println(new JSONObject(o).toString());
+//        System.out.println(new JSONObject(o).toString());
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(mapper.writeValueAsString(o));
 //        KeyValue tmp = mapper.readValue("{\"expires\":\"2017-08-15\",\"value\":\"[{\"b\":\"b\"}]\",\"key\":\"a\"}", KeyValue.class);
-        JSONArray data = new JSONArray("[]");
-        System.out.println(data.toString(1));
+//        JSONArray data = new JSONArray("[]");
+//        System.out.println(data.toString(1));
     }
 
     @Test
