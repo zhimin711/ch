@@ -48,7 +48,7 @@ public class ResInfo {
     }
 
     /**
-     * 当exitStuts=0 && errRes="" &&outREs=""返回true
+     * 当exitStuts=0 && errRes="" &&outRes=""返回true
      *
      * @return
      */
@@ -59,13 +59,17 @@ public class ResInfo {
         return false;
     }
 
+    public boolean isNotAllow() {
+        return (this.getExitStatus() == 1 && this.getErrRes() != null && this.getErrRes().trim().endsWith("Permission denied"));
+    }
+
     @Override
     public String toString() {
         String tmp = outRes;
         if (outRes != null) {
             String[] strArr = outRes.split("\n");
             tmp = strArr[0];
-            if(strArr.length>1) tmp+= " .....";
+            if (strArr.length > 1) tmp += " .....";
         }
         return "ResInfo [exitStatus=" + exitStatus + ", outRes=" + tmp + ", errRes=" + errRes + "]";
     }
