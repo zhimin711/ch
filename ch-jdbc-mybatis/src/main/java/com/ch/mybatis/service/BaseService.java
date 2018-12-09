@@ -6,6 +6,7 @@ import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.ids.DeleteByIdsMapper;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
@@ -83,7 +84,7 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     public int delete(Collection<ID> ids) {
         checkMapper();
 //        checkParam(ids);
-        if (ids == null) return 0;
+        if (ids == null || ids.isEmpty()) return 0;
         Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         Set<EntityColumn> pkSet = EntityHelper.getPKColumns(entityClass);
         if (pkSet == null || pkSet.isEmpty() || pkSet.size() > 1) {
@@ -149,7 +150,7 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
     public PageInfo<T> findPage(T record, int pageNum, int pageSize) {
         checkMapper();
         checkParam(record);
-        PageHelper.startPage(pageNum, pageSize, true, true, false);
+        PageHelper.startPage(pageNum, pageSize);
         List<T> records = getMapper().select(record);
         return new PageInfo<>(records);
     }
