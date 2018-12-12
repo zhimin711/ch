@@ -116,9 +116,10 @@ public class UtilTests {
     public void testSQL() {
         String sql = "select * # af\n" +
                 "-- a\n" +
-                "from ts_role; -- a";
+                "from ts_role limit  11";
 
         logger.info("after trim comment: {}", SQLUtils.trimComment(sql));
+        logger.info("sql has limit: {}", SQLUtils.hasLimit(sql));
 
         sql = StringUtils.formatSort(1, 3);
         logger.info("formatSort: {}", sql);

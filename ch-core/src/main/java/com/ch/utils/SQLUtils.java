@@ -18,7 +18,7 @@ public class SQLUtils {
             ".*((?i)alter) .*", ".*((?i)truncate) .*"
     };
 
-    private final static String[] patternList2 = {".*((?i)limit) [0-9]+,[0-9]+", ".*((?i)limit) [0-9]+"};
+    private final static String[] patternList2 = {".*((?i)limit)\\s+[0-9]+,[0-9]+", ".*((?i)limit)\\s+[0-9]+"};
 
     /**
      * 检查是否为查询SQL
