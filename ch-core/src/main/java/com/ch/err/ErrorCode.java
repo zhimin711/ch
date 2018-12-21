@@ -18,10 +18,12 @@ public enum ErrorCode {
     NOT_LOGIN("200", "未登录"),//
     USERNAME("201", "账号错误"),//
     PASSWORD("202", "密码错误"),//
+    USERNAME_OR_PASSWORD("203", "账号或密码不正确"),//
     NOT_ALLOWED("300", "不允许"),//
     NOT_EXISTS("301", "不存在"),//
-    EXISTS("303", "已存在"),//
     NON_NULL("302", "不为空"),//
+    EXISTS("303", "已存在"),//
+    INVALID("304", "无效"),//
     NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
 
@@ -58,6 +60,7 @@ public enum ErrorCode {
             case "202":
                 return PASSWORD;
             case "203":
+                return USERNAME_OR_PASSWORD;
             case "204":
             case "205":
                 break;
@@ -68,6 +71,10 @@ public enum ErrorCode {
             case "302":
                 return NON_NULL;
             case "303":
+                return EXISTS;
+            case "304":
+                return INVALID;
+            case "305":
                 return EXISTS;
             case "403":
                 return NOT_AUTH;
