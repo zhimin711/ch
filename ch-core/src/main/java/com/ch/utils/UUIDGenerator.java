@@ -4,12 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
+import java.util.Random;
 
 /**
  * 描述：生成类似hibernate中uuid 32位主键序列
  *
  * @author 80002023
- *         2017/3/21.
+ * 2017/3/21.
  * @version 1.0
  * @since 1.8
  */
@@ -31,6 +32,7 @@ public class UUIDGenerator {
     }
 
     private static short counter = (short) 0;
+    private static short m = (short) 10;
     private static final int JVM = (int) (System.currentTimeMillis() >>> 8);
 
     public UUIDGenerator() {
@@ -52,7 +54,17 @@ public class UUIDGenerator {
     public static short getCount() {
         synchronized (UUIDGenerator.class) {
             if (counter < 0)
-                counter = 0;
+                counter = 1;
+            return counter++;
+        }
+    }
+
+    public static short getLimitCount(int len) {
+        int limit = m ^ len;
+        synchronized (UUIDGenerator.class) {
+            if (counter < 0 || counter >= limit) {
+                counter = 1;
+            }
             return counter++;
         }
     }
@@ -85,12 +97,33 @@ public class UUIDGenerator {
         return buf.toString();
     }
 
+    public static String formatZero(short shortValue) {
+        return String.format("%04d", shortValue);
+    }
+
     public static String generate() {
         return format(getIP()) + sep +
                 format(getJVM()) + sep +
                 format(getHiTime()) + sep +
                 format(getLoTime()) + sep +
                 format(getCount());
+    }
+
+
+    public static String generate(String prefix) {
+        return prefix + sep + format(getIP()).toUpperCase() + sep + DateUtils.format(DateUtils.currentTime(), DateUtils.Pattern.DATETIME_SHORT) + formatZero(getLimitCount(4));
+    }
+
+    /**
+     * 按模块生成交易序号
+     *
+     * @param prefix    前缀
+     * @param separator M-手机 T-pc:R-需求 C-竞价 T-招标
+     * @return String code
+     */
+    public static String generateCode(String prefix, String separator) {
+        return prefix + "-" + separator + "-" + DateUtils.format(DateUtils.currentTime(), DateUtils.Pattern.DATETIME_FULL_SHORT)
+                + (new Random().nextInt(900) + 100);
     }
 
 }

@@ -107,6 +107,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
          */
         DATETIME_FULL("yyyy-MM-dd HH:mm:ss.SSS"),
         /**
+         * 年月日小时分钟秒.毫秒(yyyyMMddHHmmssSSS)
+         */
+        DATETIME_FULL_SHORT("yyyyMMddHHmmssSSS"),
+        /**
          * 月-日 小时:分钟:秒.毫秒(MM-dd HH:mm:ss.SSS)
          */
         DATETIME_MDHMSS("MM-dd HH:mm:ss.SSS"), //

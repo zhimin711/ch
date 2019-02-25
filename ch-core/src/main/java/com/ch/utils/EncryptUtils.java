@@ -14,6 +14,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 
@@ -125,7 +126,7 @@ public class EncryptUtils {
     private static String MD5(String s) {
         try {
             MessageDigest md = MessageDigest.getInstance(AlgorithmType.MD5.code);
-            byte[] bytes = md.digest(s.getBytes("utf-8"));
+            byte[] bytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
             return toHex(bytes);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -136,7 +137,7 @@ public class EncryptUtils {
         try {
             MessageDigest md = MessageDigest.getInstance(type.code);
 
-            byte[] bytes = md.digest(s.getBytes("utf-8"));
+            byte[] bytes = md.digest(s.getBytes(StandardCharsets.UTF_8));
             return toHex(bytes);
         } catch (Exception e) {
             throw new RuntimeException(e);
