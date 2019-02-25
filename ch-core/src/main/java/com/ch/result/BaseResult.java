@@ -1,7 +1,6 @@
 package com.ch.result;
 
-import com.ch.err.Error;
-import com.ch.err.ErrorCode;
+import com.ch.e.IError;
 import com.ch.type.Status;
 
 import java.io.Serializable;
@@ -43,12 +42,12 @@ public class BaseResult<T> implements Serializable {
     }
 
 
-    public BaseResult(ErrorCode error) {
+    public BaseResult(IError error) {
         setStatus(Status.ERROR);
         this.error = new Error(error.getCode(), error.getName());
     }
 
-    public BaseResult(ErrorCode error, String msg) {
+    public BaseResult(IError error, String msg) {
         setStatus(Status.ERROR);
         this.error = new Error(error.getCode(), msg);
     }
@@ -109,11 +108,11 @@ public class BaseResult<T> implements Serializable {
         this.error = error;
     }
 
-    public void newError(ErrorCode error) {
+    public void newError(IError error) {
         this.error = new Error(error.getCode(), error.getName());
     }
 
-    public void setError(ErrorCode error, String msg) {
+    public void setError(IError error, String msg) {
         this.error = new Error(error.getCode(), msg);
     }
 

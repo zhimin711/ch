@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.err.OutOfLimitException;
+import com.ch.e.Error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
  * 描述：文件工具类
  *
  * @author 80002023
- *         2017/3/6.
+ * 2017/3/6.
  * @version 1.0
  * @since 1.8
  */
@@ -131,7 +131,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
                 if (i < 0) break;
                 builder.append(new String(tmp, 0, i));
                 if (builder.length() / ONE_MB > 100) {
-                    throw new OutOfLimitException("File input is  too large!");
+                    throw ExceptionUtils.create(Error.OUT_OF_LIMIT, "File input is too large!");
                 }
             }
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.err.InvalidArgumentException;
+import com.ch.e.Error;
 import com.ch.type.DateRule;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -212,6 +212,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return parseTimestamp(new Long(timestamp));
     }
 
+    /**
+     * 解析时间截
+     *
+     * @param timestamp
+     * @return
+     */
     public static Date parseTimestamp(Long timestamp) {
         if (CommonUtils.isEmpty(timestamp)) {
             return null;
@@ -672,6 +678,37 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return c.get(t);
     }
 
+    public static Date addHours(Date date, int hours) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR_OF_DAY, hours);
+        return cal.getTime();
+    }
+
+    public static Date addMinutes(Date date, int minutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, minutes);
+        return cal.getTime();
+    }
+
+    /**
+     * 计算两个日期之间的工作日数
+     *
+     * @param start    开始日期
+     * @param end      结束日期
+     * @param workdays 适用工作日（1周日2周一3周二4周三5周四6周五7周六）
+     * @return 工作日数
+     */
+    public static int workdays(Date start, Date end, Set<Integer> workdays) {
+        if (workdays == null) return 0;
+        StringBuilder str = new StringBuilder();
+        for (Integer workday : workdays) {
+            str.append(workday.toString());
+        }
+        return workdays(start, end, str.toString());
+    }
+
     /**
      * 计算两个日期之间的工作日数
      *
@@ -681,26 +718,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 工作日数
      */
     public static int workdays(Date start, Date end, String workday) {
-        if (start == null || end == null) {
-            throw new InvalidArgumentException("start ro end date is require!");
-        }
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(start);
-        int count = 0;
-        while (cal.getTime().before(addDays(end, 1))) {
-            Integer tmp = getOfType(cal.getTime(), Calendar.DAY_OF_WEEK);
-            if (tmp != null && workday.contains(tmp.toString())) {
-                count++;
-            }
-            cal.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        return count;
+        return workDate(start, end, workday).size();
     }
 
     /**
      * 1234567转中文
      *
-     * @param workday
+     * @param workday 适用工作日
      * @param separator 分割符
      * @return
      */
@@ -719,6 +743,35 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
         return sb.toString();
     }
+
+    /**
+     * 计算两个日期之间的工作日期
+     *
+     * @param start   开始日期
+     * @param end     结束日期
+     * @param workday 适用工作日（1周日2周一3周二4周三5周四6周五7周六）
+     * @return 工作日数
+     */
+    public static List<Date> workDate(Date start, Date end, String workday) {
+        if (start == null || end == null) {
+            throw ExceptionUtils.create(Error.ARGS);
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        List<Date> dateList = new ArrayList<>();
+        while (cal.getTime().before(addDays(end, 1))) {
+            int week = getOfType(cal.getTime(), Calendar.DAY_OF_WEEK) - 1;
+            if (week < 1) {
+                week = 7;
+            }
+            if (workday.contains(Integer.toString(week))) {
+                dateList.add(cal.getTime());
+            }
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        return dateList;
+    }
+
 
     /**
      * 根据时间规则计算下一下日期

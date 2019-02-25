@@ -1,7 +1,8 @@
 package com.ch.mail;
 
-import com.ch.err.ConfigException;
+import com.ch.e.Error;
 import com.ch.utils.CommonUtils;
+import com.ch.utils.ExceptionUtils;
 import com.ch.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +46,7 @@ public class MailUtils {
     public static Address[] convertAddress(String[] addresses) {
         if (addresses == null) return new Address[]{};
 //        Stream.of(addresses).filter(CommonUtils::isEmail).forEach(System.out::println);
-        Address[] addressesArr = Stream.of(addresses).filter(CommonUtils::isEmail).map(r -> {
+        return Stream.of(addresses).filter(CommonUtils::isEmail).map(r -> {
             try {
                 return new InternetAddress(r);
             } catch (AddressException e) {
@@ -53,7 +54,6 @@ public class MailUtils {
             }
             return null;
         }).filter(Objects::nonNull).toArray(Address[]::new);
-        return addressesArr;
     }
 
     /**
@@ -93,11 +93,11 @@ public class MailUtils {
         String username = (String) properties.get("mail.auth.username");
         String password = (String) properties.get("mail.auth.password");
         if (StringUtils.isBlank(host)) {
-            throw new ConfigException("Mail host must require!");
+            throw ExceptionUtils.create(Error.CONFIG,"Mail host must require!");
         }
         config.setMailServerHost(host.trim());
         if (StringUtils.isBlank(port)) {
-            throw new ConfigException("Mail port must require!");
+            throw ExceptionUtils.create(Error.CONFIG,"Mail port must require!");
         }
         config.setMailServerHost(port.trim());
         if (CommonUtils.isEquals(auth, "true")) {

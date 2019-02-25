@@ -1,16 +1,18 @@
-package com.ch.err;
+package com.ch.e;
 
 /**
  * 描述：定义错误枚举类
  *
- * @author 80002023
- * 2017/3/10.
+ * @author zhimin.ma
+ * 2019/3/10.
  * @version 1.0
  * @since 1.8
  */
-public enum ErrorCode {
+public enum Error implements IError {
     DEFAULT("0", "默认错误"),//不使用
-    ARGS("10", "参数错误"),//不使用
+    ARGS("10", "参数错误/无效"),//
+    CONFIG("11", "配置错误/无效"),//
+    CONNECT("12", "连接错误/无效"),//
     ADD("100", "添加失败"),//
     CREATE("101", "创建失败"),//
     UPDATE("102", "更新失败"),//
@@ -24,24 +26,29 @@ public enum ErrorCode {
     NON_NULL("302", "不为空"),//
     EXISTS("303", "已存在"),//
     INVALID("304", "无效"),//
+    OUT_OF_LIMIT("305", "溢出/超出限制"),//
     NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
 
     private final String code;
     private final String name;
 
-    ErrorCode(String code, String name) {
+    Error(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static ErrorCode fromCode(String code) {
-        if(code == null){
-           return UNKNOWN;
+    public static Error fromCode(String code) {
+        if (code == null) {
+            return UNKNOWN;
         }
         switch (code) {
             case "10":
                 return ARGS;
+            case "11":
+                return CONFIG;
+            case "12":
+                return CONNECT;
             case "100":
                 return ADD;
             case "101":
@@ -75,7 +82,7 @@ public enum ErrorCode {
             case "304":
                 return INVALID;
             case "305":
-                return EXISTS;
+                return OUT_OF_LIMIT;
             case "403":
                 return NOT_AUTH;
             default:
@@ -84,6 +91,11 @@ public enum ErrorCode {
         return UNKNOWN;
     }
 
+
+    @Override
+    public Type getType() {
+        return Type.PUBLIC;
+    }
 
     public String getCode() {
         return code;

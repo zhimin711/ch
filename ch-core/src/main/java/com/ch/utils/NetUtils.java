@@ -30,6 +30,28 @@ public class NetUtils {
      */
     public final static String REGEX_IP = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
 
+    /**
+     * 网址最后"/"处理
+     *
+     * @param url 字符串
+     * @return true or false
+     */
+    public static String urlHandler(final String url) {
+        if (!CommonUtils.isNotEmpty(url)) {
+            return "";
+        }
+        String tmp = url;
+        if (!tmp.startsWith("/")) {
+            tmp = "/" + tmp;
+        }
+        if (tmp.endsWith("/")) {
+            tmp = tmp.substring(0, tmp.length() - 1);
+        } else if (tmp.endsWith("*") && !tmp.endsWith("/*") && !tmp.endsWith(".*")) {
+            tmp = tmp.substring(0, tmp.length() - 1);
+        }
+//        logger.info("url[{}] handler [{}]", url, tmp);
+        return tmp;
+    }
 
     /**
      * 解析网址,返回根网址

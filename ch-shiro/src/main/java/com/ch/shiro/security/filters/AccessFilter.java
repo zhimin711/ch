@@ -1,6 +1,6 @@
 package com.ch.shiro.security.filters;
 
-import com.ch.err.ErrorCode;
+import com.ch.e.Error;
 import com.ch.result.HttpResult;
 import com.ch.shiro.utils.ServletUtils;
 import org.apache.shiro.subject.Subject;
@@ -40,7 +40,7 @@ public class AccessFilter extends AccessControlFilter {
         logger.error("AccessFilter onAccessDenied ...");
 
         if (ServletUtils.isAjax(WebUtils.toHttp(servletRequest))) {
-            HttpResult result = new HttpResult(ErrorCode.NOT_AUTH);
+            HttpResult result = new HttpResult(Error.NOT_AUTH);
             ServletUtils.write(WebUtils.toHttp(servletResponse), result);
         } else {
             WebUtils.toHttp(servletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED);

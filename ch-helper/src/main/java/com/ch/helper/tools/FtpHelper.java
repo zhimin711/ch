@@ -1,11 +1,8 @@
 package com.ch.helper.tools;
 
-import com.ch.err.OutOfLimitException;
+import com.ch.e.Error;
 import com.ch.helper.pojo.FileInfo;
-import com.ch.utils.CommonUtils;
-import com.ch.utils.FileUtils;
-import com.ch.utils.IOUtils;
-import com.ch.utils.PlatformUtils;
+import com.ch.utils.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
@@ -62,7 +59,7 @@ public class FtpHelper {
         if (!FTPReply.isPositiveCompletion(reply)) {
             logger.error("FTP server refused connection.");
             disconnect();
-            throw new OutOfLimitException("FTP server refused connection!");
+            throw ExceptionUtils.create(Error.CONNECT,"FTP server refused connection!");
         }
     }
 

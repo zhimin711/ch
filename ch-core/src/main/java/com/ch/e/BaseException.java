@@ -1,18 +1,18 @@
-package com.ch.err;
+package com.ch.e;
 
 /**
- * 未知异常
+ * 基本异常
  * Created by 01370603 on 2017/11/10.
  */
-public abstract class BaseException extends RuntimeException {
+public class BaseException extends RuntimeException {
 
-    private ErrorCode error;
+    private IError error;
 
     /**
      * Constructs an <code>OutOfLimitException</code> with no
      * detail message.
      */
-    public BaseException(ErrorCode error) {
+    public BaseException(IError error) {
         super();
         this.error = error;
     }
@@ -21,15 +21,15 @@ public abstract class BaseException extends RuntimeException {
      * Constructs an <code>OutOfLimitException</code> class
      * with the specified detail message.
      *
-     * @param error ErrorCode.
+     * @param error Error.
      * @param s     the detail message.
      */
-    public BaseException(ErrorCode error, String s) {
+    public BaseException(IError error, String s) {
         super(s);
         this.error = error;
     }
 
-    public ErrorCode getError() {
+    public IError getError() {
         return error;
     }
 }

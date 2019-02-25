@@ -1,10 +1,9 @@
 package com.ch.result;
 
-import com.ch.err.ErrorCode;
+import com.ch.e.IError;
 import com.ch.type.Status;
 
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * 描述：封装HTTP请求分页结果
@@ -33,11 +32,11 @@ public class PageResult<T> extends BaseResult<T> {
         super(Status.FAILED);
     }
 
-    public PageResult(ErrorCode error) {
+    public PageResult(IError error) {
         super(error);
     }
 
-    public PageResult(ErrorCode error, String msg) {
+    public PageResult(IError error, String msg) {
         super(error, msg);
     }
 
@@ -68,6 +67,18 @@ public class PageResult<T> extends BaseResult<T> {
         this.total = total;
     }
 
+    /**
+     * 构造结果
+     *
+     * @param records 记录数
+     * @param total   总数
+     */
+    public PageResult(Collection<T> records, long total) {
+        super(Status.SUCCESS);
+        this.total = total;
+        this.setRows(records);
+    }
+
     public int getPageNum() {
         return pageNum;
     }
@@ -78,5 +89,9 @@ public class PageResult<T> extends BaseResult<T> {
 
     public long getTotal() {
         return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
     }
 }

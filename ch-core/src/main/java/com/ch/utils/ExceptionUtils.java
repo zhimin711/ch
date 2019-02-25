@@ -1,5 +1,7 @@
 package com.ch.utils;
 
+import com.ch.e.BaseException;
+import com.ch.e.IError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,28 @@ import java.io.StringWriter;
 public class ExceptionUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(ExceptionUtils.class);
+
+    /**
+     * 创建异常
+     *
+     * @param error 错误
+     * @return
+     */
+    public static BaseException create(IError error) {
+        return new BaseException(error);
+    }
+
+    /**
+     * 创建异常
+     *
+     * @param error 错误
+     * @param msg   自定义错误信息
+     * @return
+     */
+    public static BaseException create(IError error, String msg) {
+        return new BaseException(error, msg);
+    }
+
 
     /**
      * 抓取异常信息

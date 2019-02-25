@@ -1,4 +1,4 @@
-package com.ch.err;
+package com.ch.result;
 
 import java.io.Serializable;
 
@@ -20,12 +20,6 @@ public class Error implements Serializable {
         this.code = code;
         this.name = name;
     }
-
-
-//    public Error(ErrorCode errorCode) {
-//        this.code = errorCode.getCode();
-//        this.name = errorCode.getName();
-//    }
 
     public String getCode() {
         return code;

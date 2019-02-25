@@ -102,28 +102,6 @@ public class CommonUtils {
         return false;
     }
 
-    /**
-     * 网址最后"/"处理
-     *
-     * @param url 字符串
-     * @return true or false
-     */
-    public static String urlHandler(final String url) {
-        if (!isNotEmpty(url)) {
-            return "";
-        }
-        String tmp = url;
-        if (!tmp.startsWith("/")) {
-            tmp = "/" + tmp;
-        }
-        if (tmp.endsWith("/")) {
-            tmp = tmp.substring(0, tmp.length() - 1);
-        } else if (tmp.endsWith("*") && !tmp.endsWith("/*") && !tmp.endsWith(".*")) {
-            tmp = tmp.substring(0, tmp.length() - 1);
-        }
-//        logger.info("url[{}] handler [{}]", url, tmp);
-        return tmp;
-    }
 
     /**
      * check string is number

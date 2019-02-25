@@ -1,9 +1,9 @@
 package com.ch.shiro.utils;
 
-import com.ch.err.ErrorCode;
-import com.ch.err.UnknownException;
+import com.ch.e.Error;
 import com.ch.shiro.authc.Principal;
 import com.ch.utils.CommonUtils;
+import com.ch.utils.ExceptionUtils;
 import com.ch.utils.StringUtils;
 import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
@@ -70,7 +70,7 @@ public class UserUtils {
                     return ((Principal) principal).getNickname();
                 }
             }
-            throw new UnknownException();
+            throw ExceptionUtils.create(Error.UNKNOWN);
         } catch (Exception e) {
             logger.error("get current Nickname failed!", e);
         }
