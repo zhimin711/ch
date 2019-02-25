@@ -1,7 +1,7 @@
 package com.ch.result;
 
-import com.ch.e.BaseException;
-import com.ch.e.Error;
+import com.ch.e.CoreError;
+import com.ch.e.CoreException;
 import com.ch.type.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +32,12 @@ public class ResultUtils {
             }
             result.setStatus(Status.SUCCESS);
             result.setRows(records);
-        } catch (BaseException e) {
+        } catch (CoreException e) {
             logger.error(e.getMessage(), e);
             result.newError(e.getError());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.newError(Error.UNKNOWN);
+            result.newError(CoreError.UNKNOWN);
         }
         return result;
     }
@@ -49,12 +49,12 @@ public class ResultUtils {
             if (records == null) records = Collections.emptyList();
             result.setStatus(Status.SUCCESS);
             result.setRows(records);
-        } catch (BaseException e) {
+        } catch (CoreException e) {
             logger.error(e.getMessage(), e);
             result.newError(e.getError());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.newError(Error.UNKNOWN);
+            result.newError(CoreError.UNKNOWN);
         }
         return result;
     }
@@ -73,12 +73,12 @@ public class ResultUtils {
                 result.setTotal(page.getTotal());
             }
             result.setStatus(Status.SUCCESS);
-        } catch (BaseException e) {
+        } catch (CoreException e) {
             logger.error(e.getMessage(), e);
             result.newError(e.getError());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.newError(Error.UNKNOWN);
+            result.newError(CoreError.UNKNOWN);
         }
         return result;
     }

@@ -4,7 +4,7 @@ package com.ch.e;
  * 基本异常
  * Created by 01370603 on 2017/11/10.
  */
-public class BaseException extends RuntimeException {
+public class CoreException extends RuntimeException {
 
     private IError error;
 
@@ -12,7 +12,7 @@ public class BaseException extends RuntimeException {
      * Constructs an <code>OutOfLimitException</code> with no
      * detail message.
      */
-    public BaseException(IError error) {
+    public CoreException(IError error) {
         super();
         this.error = error;
     }
@@ -24,7 +24,7 @@ public class BaseException extends RuntimeException {
      * @param error Error.
      * @param s     the detail message.
      */
-    public BaseException(IError error, String s) {
+    public CoreException(IError error, String s) {
         super(s);
         this.error = error;
     }

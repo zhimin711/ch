@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.e.Error;
+import com.ch.e.CoreError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,7 +131,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
                 if (i < 0) break;
                 builder.append(new String(tmp, 0, i));
                 if (builder.length() / ONE_MB > 100) {
-                    throw ExceptionUtils.create(Error.OUT_OF_LIMIT, "File input is too large!");
+                    throw ExceptionUtils.create(CoreError.OUT_OF_LIMIT, "File input is too large!");
                 }
             }
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package com.ch.mail;
 
-import com.ch.e.Error;
+import com.ch.e.CoreError;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.ExceptionUtils;
 import com.ch.utils.StringUtils;
@@ -93,11 +93,11 @@ public class MailUtils {
         String username = (String) properties.get("mail.auth.username");
         String password = (String) properties.get("mail.auth.password");
         if (StringUtils.isBlank(host)) {
-            throw ExceptionUtils.create(Error.CONFIG,"Mail host must require!");
+            throw ExceptionUtils.create(CoreError.CONFIG,"Mail host must require!");
         }
         config.setMailServerHost(host.trim());
         if (StringUtils.isBlank(port)) {
-            throw ExceptionUtils.create(Error.CONFIG,"Mail port must require!");
+            throw ExceptionUtils.create(CoreError.CONFIG,"Mail port must require!");
         }
         config.setMailServerHost(port.trim());
         if (CommonUtils.isEquals(auth, "true")) {

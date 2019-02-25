@@ -1,6 +1,6 @@
 package com.ch.shiro.utils;
 
-import com.ch.e.Error;
+import com.ch.e.CoreError;
 import com.ch.shiro.authc.Principal;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.ExceptionUtils;
@@ -70,7 +70,7 @@ public class UserUtils {
                     return ((Principal) principal).getNickname();
                 }
             }
-            throw ExceptionUtils.create(Error.UNKNOWN);
+            throw ExceptionUtils.create(CoreError.UNKNOWN);
         } catch (Exception e) {
             logger.error("get current Nickname failed!", e);
         }

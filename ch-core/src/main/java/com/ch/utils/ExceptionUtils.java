@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.e.BaseException;
+import com.ch.e.CoreException;
 import com.ch.e.IError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +22,8 @@ public class ExceptionUtils {
      * @param error 错误
      * @return
      */
-    public static BaseException create(IError error) {
-        return new BaseException(error);
+    public static CoreException create(IError error) {
+        return new CoreException(error);
     }
 
     /**
@@ -33,8 +33,8 @@ public class ExceptionUtils {
      * @param msg   自定义错误信息
      * @return
      */
-    public static BaseException create(IError error, String msg) {
-        return new BaseException(error, msg);
+    public static CoreException create(IError error, String msg) {
+        return new CoreException(error, msg);
     }
 
 

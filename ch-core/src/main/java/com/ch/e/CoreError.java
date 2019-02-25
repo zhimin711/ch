@@ -8,7 +8,7 @@ package com.ch.e;
  * @version 1.0
  * @since 1.8
  */
-public enum Error implements IError {
+public enum CoreError implements IError {
     DEFAULT("0", "默认错误"),//不使用
     ARGS("10", "参数错误/无效"),//
     CONFIG("11", "配置错误/无效"),//
@@ -33,12 +33,12 @@ public enum Error implements IError {
     private final String code;
     private final String name;
 
-    Error(String code, String name) {
+    CoreError(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static Error fromCode(String code) {
+    public static CoreError fromCode(String code) {
         if (code == null) {
             return UNKNOWN;
         }

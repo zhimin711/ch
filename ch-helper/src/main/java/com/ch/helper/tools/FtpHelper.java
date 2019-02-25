@@ -1,6 +1,6 @@
 package com.ch.helper.tools;
 
-import com.ch.e.Error;
+import com.ch.e.CoreError;
 import com.ch.helper.pojo.FileInfo;
 import com.ch.utils.*;
 import com.google.common.collect.Lists;
@@ -59,7 +59,7 @@ public class FtpHelper {
         if (!FTPReply.isPositiveCompletion(reply)) {
             logger.error("FTP server refused connection.");
             disconnect();
-            throw ExceptionUtils.create(Error.CONNECT,"FTP server refused connection!");
+            throw ExceptionUtils.create(CoreError.CONNECT,"FTP server refused connection!");
         }
     }
 
