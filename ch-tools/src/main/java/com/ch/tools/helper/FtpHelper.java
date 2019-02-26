@@ -1,7 +1,7 @@
-package com.ch.helper.tools;
+package com.ch.tools.helper;
 
 import com.ch.e.CoreError;
-import com.ch.helper.pojo.FileInfo;
+import com.ch.tools.pojo.FileInfo;
 import com.ch.utils.*;
 import com.google.common.collect.Lists;
 import org.apache.commons.net.ftp.FTPClient;

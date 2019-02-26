@@ -1,13 +1,12 @@
-package com.ch.helper.tools;
+package com.ch.tools.helper;
 
-import com.ch.helper.pojo.ResInfo;
+import com.ch.tools.pojo.ResInfo;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
 
 /**
  * ssh登录linux以后的一些操作方式

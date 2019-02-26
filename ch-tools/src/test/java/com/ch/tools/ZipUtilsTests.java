@@ -1,6 +1,6 @@
-package com.ch.core;
+package com.ch.tools;
 
-import com.ch.utils.ZipUtils;
+import com.ch.tools.utils.ZipUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

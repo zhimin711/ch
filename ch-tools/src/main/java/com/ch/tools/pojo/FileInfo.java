@@ -1,4 +1,4 @@
-package com.ch.helper.pojo;
+package com.ch.tools.pojo;
 
 import java.util.Date;
 

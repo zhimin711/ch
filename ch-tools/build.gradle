@@ -7,4 +7,6 @@ dependencies {
     compile group: 'com.jcraft', name: 'jsch', version: '0.1.54'
     // https://mvnrepository.com/artifact/commons-net/commons-net
     compile group: 'commons-net', name: 'commons-net', version: '3.6'
+    
+    compile "org.apache.ant:ant:1.9.7"
 }

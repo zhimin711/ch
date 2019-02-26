@@ -1,6 +1,6 @@
-package com.ch.helper.tools;
+package com.ch.tools.helper;
 
-import com.ch.helper.pojo.ResInfo;
+import com.ch.tools.pojo.ResInfo;
 import com.ch.utils.IOUtils;
 import com.ch.utils.PlatformUtils;
 import org.slf4j.Logger;

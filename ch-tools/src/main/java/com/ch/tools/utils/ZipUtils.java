@@ -1,5 +1,8 @@
-package com.ch.utils;
+package com.ch.tools.utils;
 
+import com.ch.utils.CommonUtils;
+import com.ch.utils.FileUtils;
+import com.ch.utils.IOUtils;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

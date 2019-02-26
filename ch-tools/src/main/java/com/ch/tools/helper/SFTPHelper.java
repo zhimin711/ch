@@ -1,4 +1,4 @@
-package com.ch.helper.tools;
+package com.ch.tools.helper;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
