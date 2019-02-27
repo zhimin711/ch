@@ -14,7 +14,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.8
  */
-public interface IService<ID extends Serializable, T> {
+public interface IService<PK extends Serializable, T> {
 
     /**
      * 保存记录
@@ -46,9 +46,9 @@ public interface IService<ID extends Serializable, T> {
      * @param id 主键ID
      * @return 记录条数
      */
-    int delete(ID id);
+    int delete(PK id);
 
-    int delete(Collection<ID> id);
+    int delete(Collection<PK> id);
 
     /**
      * 根据主键查询记录
@@ -56,7 +56,7 @@ public interface IService<ID extends Serializable, T> {
      * @param id 主键ID
      * @return 对象
      */
-    T find(ID id);
+    T find(PK id);
 
     /**
      * 根据对象查询

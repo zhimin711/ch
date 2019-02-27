@@ -2,11 +2,11 @@ package com.ch.mybatis.service;
 
 import com.ch.mybatis.context.BaseMapper;
 import com.ch.mybatis.exception.MybatisException;
+import com.ch.utils.BeanUtils;
 import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import tk.mybatis.mapper.common.Mapper;
-import tk.mybatis.mapper.common.ids.DeleteByIdsMapper;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.mapperhelper.EntityHelper;
@@ -18,61 +18,79 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 描述：com.ch.jdbc.support
+ * 描述：com.ch.mybatis.support
  *
- * @author 80002023
+ * @author zhimin.ma
  * 2017/2/14.
  * @version 1.0
  * @since 1.8
+ * @param <PK> 主键
+ * @param <T> 对象
  */
-
-public abstract class BaseService<ID extends Serializable, T> implements IService<ID, T> {
+public abstract class BaseService<PK extends Serializable, T> implements IService<PK, T> {
 
     protected abstract Mapper<T> getMapper();
 
-    private void checkMapper() {
-        if (CommonUtils.isEmpty(getMapper())) {
+    @SuppressWarnings("unchecked")
+    private Class<T> getEntityClass() {
+        return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+    }
+
+    private void check() {
+        if (getMapper() == null) {
             throw new MybatisException("Mapper接口为空!");
         }
     }
 
-    protected void checkParam(Object param) {
-        if (CommonUtils.isEmpty(param)) {
-            throw new MybatisException("参数为空!");
+    protected void check(T record) {
+        if (record == null) {
+            throw new MybatisException("参数不能为空!");
         }
     }
 
-    @SuppressWarnings("unchecked")
+    private void checkPK(T record) {
+        check(record);
+        Set<EntityColumn> pkSet = EntityHelper.getPKColumns(getEntityClass());
+        if (pkSet == null || pkSet.isEmpty()) {
+            throw new MybatisException("no pk columns, this method is not support!");
+        }
+        for (EntityColumn pk : pkSet) {
+            Object value = BeanUtils.getValueByProperty(record, pk.getProperty());
+            if (CommonUtils.isEmpty(value)) {
+                throw new MybatisException(pk.getProperty() + " pk column is null!");
+            }
+        }
+    }
+
     protected Example getExample() {
-        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        return new Example(entityClass);
+        return new Example(getEntityClass());
     }
 
     @Override
     public int save(T record) {
-        checkMapper();
-        checkParam(record);
+        check();
+        check(record);
         return getMapper().insertSelective(record);
     }
 
 
     @Override
     public int update(T record) {
-        checkMapper();
-        checkParam(record);
+        check();
+        checkPK(record);
         return getMapper().updateByPrimaryKeySelective(record);
     }
 
     @Override
     public int updateWithNull(T record) {
-        checkMapper();
-        checkParam(record);
+        check();
+        checkPK(record);
         return getMapper().updateByPrimaryKey(record);
     }
 
     @Override
-    public int delete(ID id) {
-        checkMapper();
+    public int delete(PK id) {
+        check();
 //        checkParam(id);
         if (id == null) return 0;
         return getMapper().deleteByPrimaryKey(id);
@@ -81,8 +99,8 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
 
     @SuppressWarnings("unchecked")
     @Override
-    public int delete(Collection<ID> ids) {
-        checkMapper();
+    public int delete(Collection<PK> ids) {
+        check();
 //        checkParam(ids);
         if (ids == null || ids.isEmpty()) return 0;
         Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
@@ -98,38 +116,37 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
 
 
     @Override
-    public T find(ID id) {
-        checkMapper();
-//        checkParam(id);
+    public T find(PK id) {
+        check();
         if (id == null) return null;
         return getMapper().selectByPrimaryKey(id);
     }
 
     @Override
     public List<T> find(T record) {
-        checkMapper();
-        checkParam(record);
+        check();
+        check(record);
         return getMapper().select(record);
     }
 
     @Override
     public List<T> findPageList(T record, int pageNum, int pageSize) {
-        checkMapper();
-        checkParam(record);
+        check();
+        check(record);
         PageHelper.startPage(pageNum, pageSize, true, true, false);
         return getMapper().select(record);
     }
 
     @Override
     public List<T> findAll() {
-        checkMapper();
+        check();
         return getMapper().selectAll();
     }
 
     @Override
     public int batchSave(List<T> records) {
-        checkMapper();
-        checkParam(records);
+        check();
+        if(records == null) return 0;
         if (getMapper() instanceof BaseMapper) {
             return ((BaseMapper<T>) getMapper()).insertList(records);
         }
@@ -139,8 +156,8 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
 
     @Override
     public int batchUpdate(List<T> records) {
-        checkMapper();
-        checkParam(records);
+        check();
+        if(records == null) return 0;
 //        records.forEach(r -> getMapper().updateByPrimaryKeySelective(r));
         Long c = records.stream().mapToInt(r -> getMapper().updateByPrimaryKeySelective(r)).count();
         return c.intValue();
@@ -148,8 +165,8 @@ public abstract class BaseService<ID extends Serializable, T> implements IServic
 
     @Override
     public PageInfo<T> findPage(T record, int pageNum, int pageSize) {
-        checkMapper();
-        checkParam(record);
+        check();
+        check(record);
         PageHelper.startPage(pageNum, pageSize);
         List<T> records = getMapper().select(record);
         return new PageInfo<>(records);
