@@ -1,9 +1,9 @@
 dependencies {
     compile(project(':ch-core'))
 
-    compile "org.mybatis:mybatis-spring:+"
-    compile "org.mybatis:mybatis:+"
-    compile('tk.mybatis:mapper:+') {
+    compile "org.mybatis:mybatis-spring:2.0.0"
+    compile "org.mybatis:mybatis:3.5.0"
+    compile('tk.mybatis:mapper:4.+') {
 //        exclude group: 'javax.persistence', module: 'persistence-api'
     }
     compile('com.github.pagehelper:pagehelper:4.1.3')
