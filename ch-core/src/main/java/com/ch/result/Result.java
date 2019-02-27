@@ -11,12 +11,12 @@ import java.util.HashSet;
 /**
  * 描述：com.zh.http
  *
- * @author 80002023
+ * @author zhimin.ma
  * 2017/2/5.
  * @version 1.0
  * @since 1.8
  */
-public class BaseResult<T> implements Serializable {
+public class Result<T> implements Serializable {
 
     /**
      * 请求状态
@@ -37,17 +37,17 @@ public class BaseResult<T> implements Serializable {
     /**
      * @param status 请求状态
      */
-    public BaseResult(Status status) {
+    public Result(Status status) {
         setStatus(status);
     }
 
 
-    public BaseResult(IError error) {
+    public Result(IError error) {
         setStatus(Status.ERROR);
         this.error = new Error(error.getCode(), error.getName());
     }
 
-    public BaseResult(IError error, String msg) {
+    public Result(IError error, String msg) {
         setStatus(Status.ERROR);
         this.error = new Error(error.getCode(), msg);
     }
@@ -57,7 +57,7 @@ public class BaseResult<T> implements Serializable {
      *
      * @param rows 记录集合
      */
-    public BaseResult(Collection<T> rows) {
+    public Result(Collection<T> rows) {
         setStatus(Status.SUCCESS);
         setRows(rows);
     }
@@ -67,7 +67,7 @@ public class BaseResult<T> implements Serializable {
      *
      * @param record 记录
      */
-    public BaseResult(T record) {
+    public Result(T record) {
         setStatus(Status.SUCCESS);
         this.put(record);
     }

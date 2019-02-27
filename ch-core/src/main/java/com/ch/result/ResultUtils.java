@@ -22,28 +22,30 @@ public class ResultUtils {
     private ResultUtils() {
     }
 
-    public static <T> BaseResult<T> wrap(Invoker<T> invoker) {
-        BaseResult<T> result = new BaseResult<>(Status.ERROR);
+    public static <T> Result<T> wrap(Invoker<T> invoker) {
+        Result<T> result = new Result<>(Status.FAILED);
         try {
             T record = invoker.invoke();
             List<T> records = Collections.emptyList();
             if (record != null) {
                 records = Collections.singletonList(record);
             }
-            result.setStatus(Status.SUCCESS);
             result.setRows(records);
+            result.setStatus(Status.SUCCESS);
         } catch (CoreException e) {
             logger.error(e.getMessage(), e);
             result.newError(e.getError());
+            result.setStatus(Status.ERROR);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             result.newError(CoreError.UNKNOWN);
+            result.setStatus(Status.ERROR);
         }
         return result;
     }
 
-    public static <T> BaseResult<T> wrapList(InvokerList<T> invoker) {
-        BaseResult<T> result = new BaseResult<>(Status.ERROR);
+    public static <T> Result<T> wrapList(InvokerList<T> invoker) {
+        Result<T> result = new Result<>(Status.FAILED);
         try {
             List<T> records = invoker.invoke();
             if (records == null) records = Collections.emptyList();
@@ -52,9 +54,11 @@ public class ResultUtils {
         } catch (CoreException e) {
             logger.error(e.getMessage(), e);
             result.newError(e.getError());
+            result.setStatus(Status.ERROR);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             result.newError(CoreError.UNKNOWN);
+            result.setStatus(Status.ERROR);
         }
         return result;
     }
@@ -76,9 +80,11 @@ public class ResultUtils {
         } catch (CoreException e) {
             logger.error(e.getMessage(), e);
             result.newError(e.getError());
+            result.setStatus(Status.ERROR);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             result.newError(CoreError.UNKNOWN);
+            result.setStatus(Status.ERROR);
         }
         return result;
     }

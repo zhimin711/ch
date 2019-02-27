@@ -2,12 +2,14 @@ package com.ch;
 
 /**
  * 状态常量
+ *
  * @author zhimin.ma on 2019/3/20.
  */
 public enum Status {
     FAILED("0"), //失败
     SUCCESS("1"), //成功
     ERROR("2"), //错误
+    TIMEOUT("3"), //超时
     UNSELECTED("0"), //选中
     SELECTED("1"), //选中
     ENABLED("1"), //启用
@@ -51,6 +53,8 @@ public enum Status {
                 return SUCCESS;
             case "2":
                 return ERROR;
+            case "3":
+                return TIMEOUT;
             default:
                 return UNKNOWN;
         }

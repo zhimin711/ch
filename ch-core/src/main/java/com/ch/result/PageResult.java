@@ -8,12 +8,12 @@ import java.util.Collection;
 /**
  * 描述：封装HTTP请求分页结果
  *
- * @author 80002023
+ * @author zhimin.ma
  * 2017/2/5.
  * @version 1.0
  * @since 1.8
  */
-public class PageResult<T> extends BaseResult<T> {
+public class PageResult<T> extends Result<T> {
 
     /**
      * 当前页

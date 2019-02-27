@@ -1,7 +1,7 @@
 package com.ch.shiro.security.filters;
 
 import com.ch.e.CoreError;
-import com.ch.result.HttpResult;
+import com.ch.result.Result;
 import com.ch.shiro.utils.ServletUtils;
 import com.ch.utils.JSONUtils;
 import org.apache.shiro.subject.Subject;
@@ -42,7 +42,7 @@ public class AuthFilter extends AuthorizationFilter {
         if (subject.getPrincipal() == null) {
             // if request ajax
             if (ServletUtils.isAjax(WebUtils.toHttp(request))) {
-                HttpResult<String> result = new HttpResult<>(CoreError.NOT_LOGIN);
+                Result<String> result = new Result<>(CoreError.NOT_LOGIN);
                 logger.debug("request ajax...{}", JSONUtils.toJson(result));
                 ServletUtils.write(WebUtils.toHttp(response), result);
             } else {
