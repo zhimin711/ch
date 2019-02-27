@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 /**
  * 编码 Utils
- * Created by zhimin on 2017/4/4.
+ * @author zhimin on 2017/4/4.
  */
 public class CharUtils {
 

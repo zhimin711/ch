@@ -16,7 +16,7 @@ public class KeyValueUtils {
     }
 
     /**
-     * Get list keyValue by keytils
+     * Get list keyValue by key
      *
      * @param records KeyValue集合
      * @param key     Key键值

@@ -113,7 +113,7 @@ public class NetUtils {
      * @param address IP地址
      * @return true or false
      */
-    public static boolean isIP(String address) {
+    public static boolean isIPV4(String address) {
         if (CommonUtils.isEmpty(address)) {
             address = address.trim();
         }

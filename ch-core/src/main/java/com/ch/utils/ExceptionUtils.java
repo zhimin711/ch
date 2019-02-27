@@ -44,20 +44,20 @@ public class ExceptionUtils {
      * @param throwable--异常对象
      * @return
      */
-    public static String getDetailMessage(Throwable throwable) {
-        String result = "";
+    public static String fullString(Throwable throwable) {
         StringWriter sw = null;
         PrintWriter pw = null;
         try {
             sw = new StringWriter();
             pw = new PrintWriter(sw);
             throwable.printStackTrace(pw);
-            result = sw.toString();
+            return sw.toString();
         } catch (Exception e) {
-            logger.error("getDetailMessage", e);
+            logger.error("to String error!", e);
         } finally {
             IOUtils.close(sw, pw);
         }
-        return result;
+        return "";
     }
+
 }
