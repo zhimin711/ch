@@ -1,6 +1,5 @@
 package com.ch.utils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SQLUtils {
@@ -90,7 +89,8 @@ public class SQLUtils {
      * @return
      */
     public static String trimComment(String sql) {
-        String tmp = StringUtils.trim(sql);
+        if(CommonUtils.isEmpty(sql)) return "";
+        String tmp = sql.trim();
         String[] lines = tmp.split("\n");
         StringBuilder sb = new StringBuilder();
         int i = -1;

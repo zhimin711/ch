@@ -1,6 +1,8 @@
 package com.ch.type;
 
 /**
+ * 日期规则
+ *
  * @author 01370603
  * @date 2018/8/17 16:50
  */

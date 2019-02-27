@@ -1,6 +1,6 @@
 package com.ch.shiro.utils;
 
-import com.ch.utils.JsonUtils;
+import com.ch.utils.JSONUtils;
 import com.ch.utils.StringUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
@@ -166,7 +166,7 @@ public class ServletUtils {
         try {
             response.setContentType("text/html;charset=UTF-8");
             pw = response.getWriter();
-            pw.write(JsonUtils.toJson(result));
+            pw.write(JSONUtils.toJson(result));
         } catch (IOException e) {
             logger.error(e.getMessage());
         } finally {

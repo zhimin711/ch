@@ -240,7 +240,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 时间
      */
     public static Date parse(String dateStr, Pattern pattern) {
-        if (StringUtils.isBlank(dateStr)) {
+        if (CommonUtils.isEmpty(dateStr)) {
             return null;
         }
         SimpleDateFormat df = new SimpleDateFormat(pattern.getValue());
@@ -733,7 +733,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return
      */
     public static String convertWorkdays(String workday, String separator) {
-        if (StringUtils.isBlank(workday)) {
+        if (CommonUtils.isEmpty(workday)) {
             return "-";
         }
         StringBuilder sb = new StringBuilder();
@@ -741,7 +741,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             if (sb.length() > 0)
                 sb.append(separator);
             String day = String.valueOf(workday.charAt(i));
-            if (StringUtils.isNumeric(day)) {
+            if (CommonUtils.isNumeric(day)) {
                 sb.append(DateUtils.getWeek(Integer.valueOf(day)));
             }
         }

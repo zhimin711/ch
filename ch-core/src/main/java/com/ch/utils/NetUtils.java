@@ -86,7 +86,7 @@ public class NetUtils {
      * @return true or false
      */
     public static boolean isURL(String url) {
-        return StringUtils.isNotBlank(url) && (url.startsWith(HTTP_PROTOCOL) || url.startsWith(HTTPS_PROTOCOL));
+        return CommonUtils.isEmpty(url) && (url.startsWith(HTTP_PROTOCOL) || url.startsWith(HTTPS_PROTOCOL));
     }
 
     public static boolean isURL2(String url) {
@@ -114,7 +114,7 @@ public class NetUtils {
      * @return true or false
      */
     public static boolean isIP(String address) {
-        if (StringUtils.isNotBlank(address)) {
+        if (CommonUtils.isEmpty(address)) {
             address = address.trim();
         }
         if (address.length() < 7 || address.length() > 15) {

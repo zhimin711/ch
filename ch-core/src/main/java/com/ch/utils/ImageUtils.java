@@ -19,7 +19,7 @@ public class ImageUtils {
      * @return 图片名
      */
     public static String parseFileNameByUrl(String imgUrl) {
-        if (StringUtils.isNotBlank(imgUrl)) {
+        if (CommonUtils.isEmpty(imgUrl)) {
             //
             logger.info("parse file name by url", imgUrl);
             if (!imgUrl.endsWith("/")) {

@@ -1,4 +1,6 @@
-
+ext {
+    jacksonVersion = '2.9.2'
+}
 dependencies {
 
     compile(project(':ch-core'))
@@ -7,6 +9,8 @@ dependencies {
     compile group: 'com.jcraft', name: 'jsch', version: '0.1.54'
     // https://mvnrepository.com/artifact/commons-net/commons-net
     compile group: 'commons-net', name: 'commons-net', version: '3.6'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
     
     compile "org.apache.ant:ant:1.9.7"
 }

@@ -1,7 +1,5 @@
 package com.ch.utils;
 
-import com.alibaba.druid.filter.config.ConfigTools;
-import com.alibaba.druid.util.Base64;
 import com.ch.e.CoreError;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -17,11 +15,12 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * 描述：com.ch.utils
  *
- * @author 80002023
+ * @author zhimin.ma
  * 2017/2/4.
  * @version 1.0
  * @since 1.8
@@ -62,63 +61,6 @@ public class EncryptUtils {
         return RandomStringUtils.randomAlphanumeric(length);
     }
 
-    /**
-     * use config tool encrypt text by private key
-     *
-     * @param privateKey 私钥
-     * @param source     明文串
-     * @return 加密串
-     */
-    public static String encrypt(String privateKey, String source) {
-        try {
-            if (StringUtils.isNotBlank(privateKey)) {
-                return ConfigTools.encrypt(privateKey, source);
-            } else {
-                return ConfigTools.encrypt(source);
-            }
-        } catch (Exception e) {
-            logger.error("Encrypt Error!", e);
-        }
-        return source;
-    }
-
-    /**
-     * use config tool decrypt text by public key
-     *
-     * @param publicKey 公钥
-     * @param source    加密串
-     * @return 解密串
-     */
-    public static String decrypt(final String publicKey, final String source) {
-        try {
-            if (StringUtils.isNotBlank(publicKey)) {
-                return ConfigTools.decrypt(publicKey, source);
-            } else {
-                return ConfigTools.decrypt(source);
-            }
-        } catch (Exception e) {
-            logger.error("Config tool decrypt error! public key: {" + publicKey + "}, cipher text: {" + source + "}", e);
-        }
-        return source;
-    }
-
-    /**
-     * generate keypair
-     * key[0] private key
-     * key[1] public key
-     *
-     * @param keySize 钥匙算法位数
-     * @return 钥匙对（0私钥与1公钥）
-     */
-    public static String[] genKeyPair(int keySize) {
-        try {
-            return ConfigTools.genKeyPair(keySize);
-        } catch (Exception e) {
-            logger.error("Config tool genKeyPair error!", e);
-        }
-        return null;
-    }
-
     public static String md5(String str) {
         return MD5(str);
     }
@@ -154,7 +96,7 @@ public class EncryptUtils {
     public static String encryptDES(String source, String password) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() % 8 != 0) {
-                throw ExceptionUtils.create(CoreError.ARGS,"invalid password must be not null or length not 8*");
+                throw ExceptionUtils.create(CoreError.ARGS, "invalid password must be not null or length not 8*");
             }
             DESKeySpec desKey = new DESKeySpec(password.getBytes());
             //创建一个密匙工厂，使用KeySpec
@@ -177,7 +119,7 @@ public class EncryptUtils {
     public static String decryptDES(String source, String password) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() % 8 != 0) {
-                throw ExceptionUtils.create(CoreError.ARGS,"invalid password must be not null or length not 8*");
+                throw ExceptionUtils.create(CoreError.ARGS, "invalid password must be not null or length not 8*");
             }
             DESKeySpec desKey = new DESKeySpec(password.getBytes());
             //创建一个密匙工厂，然后用它把DESKeySpec转换成
@@ -252,7 +194,7 @@ public class EncryptUtils {
     public static String encryptAESCBC(String source, String password, String iv) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() != 16) {
-                throw ExceptionUtils.create(CoreError.ARGS,"password must be not null or length not equals 16!");
+                throw ExceptionUtils.create(CoreError.ARGS, "password must be not null or length not equals 16!");
             }
 
             SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(), AlgorithmType.AES.code);
@@ -278,7 +220,7 @@ public class EncryptUtils {
     public static String decryptAESCBC(String source, String password, String iv) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() != 16) {
-                throw ExceptionUtils.create(CoreError.ARGS,"password must be not null or length not equals 16!");
+                throw ExceptionUtils.create(CoreError.ARGS, "password must be not null or length not equals 16!");
             }
             SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(), AlgorithmType.AES.code);
             Cipher cipher = Cipher.getInstance(AlgorithmType.AES_CBC.code);
@@ -355,22 +297,20 @@ public class EncryptUtils {
         return ret.toString();
     }
 
-
     /**
      * @param str
      * @return
      */
-    public static String encodeBase64(String str) {
-
-        return Base64.byteArrayToBase64(str.getBytes());
+    public static String encodeBase64(byte[] str) {
+        return Base64.getEncoder().encodeToString(str);
     }
 
     /**
      * @param str
      * @return
      */
-    public static String encodeBase64(byte[] str) {
-        return Base64.byteArrayToBase64(str);
+    public static String encodeBase64(String str) {
+        return encodeBase64(str.getBytes());
     }
 
     /**
@@ -378,16 +318,15 @@ public class EncryptUtils {
      * @return
      */
     public static byte[] decodeBase64(String str) {
-        return Base64.base64ToByteArray(str);
+        return Base64.getDecoder().decode(str);
     }
-
 
     /**
      * @param str
      * @return
      */
     public static String decodeBase64ToString(String str) {
-        return new String(Base64.base64ToByteArray(str));
+        return new String(decodeBase64(str));
     }
 
 }

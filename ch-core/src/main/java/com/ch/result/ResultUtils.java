@@ -2,7 +2,7 @@ package com.ch.result;
 
 import com.ch.e.CoreError;
 import com.ch.e.CoreException;
-import com.ch.type.Status;
+import com.ch.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

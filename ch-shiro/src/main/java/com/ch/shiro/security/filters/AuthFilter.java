@@ -3,7 +3,7 @@ package com.ch.shiro.security.filters;
 import com.ch.e.CoreError;
 import com.ch.result.HttpResult;
 import com.ch.shiro.utils.ServletUtils;
-import com.ch.utils.JsonUtils;
+import com.ch.utils.JSONUtils;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.StringUtils;
 import org.apache.shiro.web.filter.authz.AuthorizationFilter;
@@ -38,12 +38,12 @@ public class AuthFilter extends AuthorizationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws IOException {
         Subject subject = getSubject(request, response);
-        logger.debug("onAccessDenied...{}", JsonUtils.toJson(subject.getPrincipal()));
+        logger.debug("onAccessDenied...{}", JSONUtils.toJson(subject.getPrincipal()));
         if (subject.getPrincipal() == null) {
             // if request ajax
             if (ServletUtils.isAjax(WebUtils.toHttp(request))) {
                 HttpResult<String> result = new HttpResult<>(CoreError.NOT_LOGIN);
-                logger.debug("request ajax...{}", JsonUtils.toJson(result));
+                logger.debug("request ajax...{}", JSONUtils.toJson(result));
                 ServletUtils.write(WebUtils.toHttp(response), result);
             } else {
                 String url = getPathWithinApplication(request);

@@ -1,7 +1,7 @@
 package com.ch.result;
 
 import com.ch.e.IError;
-import com.ch.type.Status;
+import com.ch.Status;
 
 import java.util.Collection;
 

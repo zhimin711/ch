@@ -15,10 +15,34 @@ import java.text.DecimalFormat;
  * @version 1.0
  * @since 1.8
  */
-public class FileUtils extends org.apache.commons.io.FileUtils {
+public class FileUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
 
+    /**
+     * The number of bytes in a kilobyte.
+     */
+    public static final long ONE_KB = 1024;
+    /**
+     * The number of bytes in a megabyte.
+     */
+    public static final long ONE_MB = ONE_KB * ONE_KB;
+    /**
+     * The number of bytes in a gigabyte.
+     */
+    public static final long ONE_GB = ONE_KB * ONE_MB;
+    /**
+     * The number of bytes in a terabyte.
+     */
+    public static final long ONE_TB = ONE_KB * ONE_GB;
+    /**
+     * The number of bytes in a petabyte.
+     */
+    public static final long ONE_PB = ONE_KB * ONE_TB;
+    /**
+     * The number of bytes in an exabyte.
+     */
+    public static final long ONE_EB = ONE_KB * ONE_PB;
     /**
      * 通过文件名获得扩展名(带点)
      *

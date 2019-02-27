@@ -110,8 +110,7 @@ public class CommonUtils {
      * @return true or false
      */
     public static boolean isNumeric(String str) {
-        if (StringUtils.isBlank(str)) return false;
-
+        if (isEmpty(str)) return false;
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(str).matches();
     }
@@ -123,7 +122,7 @@ public class CommonUtils {
      * @return true合法 false不合法
      */
     public static boolean isEmail(String email) {
-        if (StringUtils.isBlank(email)) return false;
+        if (isEmpty(email)) return false;
 //        Pattern p = Pattern.compile("\\w+@(\\w+.)+[a-z]{2,3}"); //简单匹配
         Pattern p = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");//复杂匹配
         return p.matcher(email).matches();
@@ -137,7 +136,7 @@ public class CommonUtils {
      */
     public static boolean isDecimal(String str) {
         String s = "0.00";
-        if (StringUtils.isNotBlank(str)) {
+        if (isEmpty(str)) {
             s = str.replaceFirst(".", "");
         }
         Pattern pattern = Pattern.compile("[0-9]*");

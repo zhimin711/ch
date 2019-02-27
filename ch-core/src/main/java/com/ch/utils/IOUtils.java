@@ -10,11 +10,11 @@ import java.io.IOException;
  * 描述：com.ch.utils
  *
  * @author 80002023
- *         2017/2/5.
+ * 2017/2/5.
  * @version 1.0
  * @since 1.8
  */
-public class IOUtils extends org.apache.commons.io.IOUtils {
+public class IOUtils {
 
     private static Logger logger = LoggerFactory.getLogger(IOUtils.class);
 
