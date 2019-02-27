@@ -2,7 +2,7 @@
 <configuration>
     <property name="LOG_PATH" value="logs"/>
     <timestamp key="currentDate" datePattern="yyyyMMdd"/>
-    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--<appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>${LOG_PATH}/${currentDate}.INFO.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH}/%d{yyyyMMdd}.INFO.log.%i</fileNamePattern>
@@ -32,7 +32,7 @@
             <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5L %logger{36} -%msg%n</Pattern>
         </layout>
     </appender>
-
+-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} => %msg%n</Pattern>
@@ -41,8 +41,8 @@
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="INFO_FILE"/>
-        <appender-ref ref="ERROR_FILE"/>
+        <!--<appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>-->
     </root>
 
 </configuration>

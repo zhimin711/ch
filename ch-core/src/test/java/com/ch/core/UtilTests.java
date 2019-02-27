@@ -158,4 +158,10 @@ public class UtilTests {
 //        logger.info("AES decodeBase64: {}", EncryptUtils.decodeBase64ToString(EncryptUtils.decryptAES(s2, pwd)));
     }
 
+    @Test
+    public void testResult() {
+        Number num1 = 0.000000000000000000f;
+        Number num2 = 0;
+        logger.info("{} == {} -> {}", num1.floatValue(), num2.floatValue(), num1.doubleValue() == num2.doubleValue());
+    }
 }

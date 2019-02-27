@@ -44,6 +44,25 @@ public class ResultUtils {
         return result;
     }
 
+    /**
+     * 装配结果（如结果为 0或为空 则为失败）
+     *
+     * @param invoker 执行接口
+     * @param <T>     执行对象
+     * @return 返回Result结果
+     */
+    public static <T> Result<T> wrapFail(Invoker<T> invoker) {
+        Result<T> result = wrap(invoker);
+        T record = result.get();
+        Number numZero = 0;
+        if (result.isEmpty()) {
+            result.setStatus(Status.FAILED);
+        } else if (record instanceof Number && ((Number) record).floatValue() == numZero.floatValue()) {
+            result.setStatus(Status.FAILED);
+        }
+        return result;
+    }
+
     public static <T> Result<T> wrapList(InvokerList<T> invoker) {
         Result<T> result = new Result<>(Status.FAILED);
         try {
