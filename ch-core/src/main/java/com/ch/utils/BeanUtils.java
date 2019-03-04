@@ -272,10 +272,25 @@ public class BeanUtils {
      * @return 属性值
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getValueByProperty(Object obj, String fieldName) {
+    public static <T> T getValue2ByProperty(Object obj, String fieldName) {
+        try {
+            return (T) getValueByProperty(obj, fieldName);
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    /**
+     * 根据属性名取属性值
+     *
+     * @param obj       目标对象
+     * @param fieldName 属性名
+     * @return 属性值
+     */
+    public static Object getValueByProperty(Object obj, String fieldName) {
         try {
             Method m = obj.getClass().getMethod(getGetMethodName(fieldName));
-            return (T) m.invoke(obj);
+            return m.invoke(obj);
         } catch (Exception ignored) {
         }
         return null;
