@@ -111,34 +111,47 @@ public class BeanUtils {
      * @param bean 目标对象
      * @return Map
      */
-    public static Map<String, String> getDeclaredFieldValueMap(Object bean) {
-        Class<?> cls = bean.getClass();
+    public static Map<String, String> getDeclaredFieldValueMap2(Object bean) {
         Map<String, String> valueMap = new HashMap<>();
+        Map<String, Object> map = getDeclaredFieldValueMap(bean);
+        if (map.isEmpty()) return valueMap;
+        map.forEach((k, v) -> {
+            if (v == null) {
+                return;
+            }
+            String tmp = v.toString();
+            if (v instanceof Date) {
+                tmp = DateUtils.format((Date) v);
+            }
+            valueMap.put(k, tmp);
+        });
+        return valueMap;
+    }
+
+
+    /**
+     * 取Bean声明的属性和值对应关系的MAP
+     *
+     * @param bean 目标对象
+     * @return Map
+     */
+    public static Map<String, Object> getDeclaredFieldValueMap(Object bean) {
+        Map<String, Object> valueMap = new HashMap<>();
+        if (bean == null) return valueMap;
+        Class<?> cls = bean.getClass();
         // 取出bean里的所有方法
         Method[] methods = cls.getDeclaredMethods();
         Field[] fields = cls.getDeclaredFields();
 
         for (Field field : fields) {
             try {
-                String fieldType = field.getType().getSimpleName();
                 String fieldGetName = getGetMethodName(field.getName());
                 if (!existsGetMethod(methods, fieldGetName)) {
                     continue;
                 }
-//                Method fieldGetMet = cls.getMethod(fieldGetName, new Class[]{});
-//                Object fieldVal = fieldGetMet.invoke(bean, new Object[]{});
-
                 Method fieldGetMet = cls.getMethod(fieldGetName);
                 Object fieldVal = fieldGetMet.invoke(bean);
-                String result = null;
-                if ("Date".equals(fieldType) || "Timestamp".equals(fieldType)) {
-                    result = DateUtils.format((Date) fieldVal);
-                } else {
-                    if (null != fieldVal) {
-                        result = String.valueOf(fieldVal);
-                    }
-                }
-                valueMap.put(field.getName(), result);
+                valueMap.put(field.getName(), fieldVal);
             } catch (Exception e) {
                 logger.error("getDeclaredFieldValueMap Error!", e);
             }
@@ -146,6 +159,7 @@ public class BeanUtils {
         return valueMap;
 
     }
+
 
     /**
      * 取Bean的属性和值对应关系的MAP
