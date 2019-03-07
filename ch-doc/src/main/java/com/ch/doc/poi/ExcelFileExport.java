@@ -21,6 +21,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * *********************************************
+ * Copyright ch.
+ * All rights reserved.
+ * Description: 数据导入、导出的列定义
+ * HISTORY
+ * *********************************************
+ * ID   DATE           PERSON          REASON
+ * *********************************************
+ *
+ * @author 01370603
+ */
 public class ExcelFileExport {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());

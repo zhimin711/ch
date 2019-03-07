@@ -22,21 +22,8 @@ import java.util.*;
 
 /**
  * 描述：POIExcel导出类（注：可用于多工作表）
- * <p>
- * <pre>
- * HISTORY
- * ****************************************************************************
- *  ID   DATE           PERSON          REASON
- *  1    2015年11月26日      	854188         Create
- * ****************************************************************************
- * </pre>
  *
- * @author 854188
- * @modify <p>
- * 修改时间：2017-01-10</br>
- * 修改人：854188</br>
- * 修改内容：新增setSheetAt方法，可根据需求导出多个sheet页
- * </p>
+ * @author 01370603
  * @since 1.0
  */
 public class POIExcelExport {
@@ -141,7 +128,7 @@ public class POIExcelExport {
     public void writeHeader(Object[] headers, int headerRowIndex) {
         Row row = sheet.createRow(headerRowIndex);// 写入第一行
         CellStyle headerStyle = getHeaderStyle(workbook);
-        Cell cell = null;
+        Cell cell;
         for (int i = 0; i < headers.length; i++) {
             cell = row.createCell(i);
             cell.setCellStyle(headerStyle);
@@ -193,15 +180,16 @@ public class POIExcelExport {
     public <T> void writeRecords(List<T> data, List<String> fieldNames, boolean sequence) {
         List<Object[]> dataList = new ArrayList<Object[]>();
         for (T entity : data) {
-            dataList.add(entityToArray(entity, fieldNames.toArray(new String[] {})));
+            dataList.add(entityToArray(entity, fieldNames.toArray(new String[]{})));
         }
         writeRows(dataList, null, sequence);
     }
+
     /**
      * 写多行数据
      *
      * @param rowValuesList 行值
-     * @param sequence       是否生成序号
+     * @param sequence      是否生成序号
      */
     public void writeRows(List<Object[]> rowValuesList, boolean sequence) {
         writeRows(rowValuesList, null, sequence);

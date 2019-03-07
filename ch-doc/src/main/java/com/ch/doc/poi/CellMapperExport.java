@@ -1,5 +1,8 @@
 package com.ch.doc.poi;
 
+/**
+ * @author 01370603
+ */
 public class CellMapperExport {
 
     private String fieldName; // 属性名称，对应实体的属性名

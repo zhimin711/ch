@@ -23,6 +23,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * *********************************************
+ * Copyright ch.
+ * All rights reserved.
+ * Description: 数据导入、导出的列定义
+ * HISTORY
+ * *********************************************
+ * ID   DATE           PERSON          REASON
+ * *********************************************
+ *
+ * @author 01370603
+ */
 public class ExcelImportTs {
     private Integer maxCount;
 

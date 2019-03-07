@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * <pre>
  * *********************************************
- * Copyright sf-express.
+ * Copyright ch.
  * All rights reserved.
- * Description: 数据导入、导出表格定义
+ * Description: 数据导入、导出的列定义
  * HISTORY
  * *********************************************
- *  ID   DATE           PERSON          REASON
+ * ID   DATE           PERSON          REASON
  * *********************************************
- * </pre>
+ *
+ * @author 01370603
  */
 public class RecordDefineTs {
 
