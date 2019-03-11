@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
 
 /**
  * 描述：com.ch.utils
@@ -38,4 +40,17 @@ public class IOUtils {
             }
         }
     }
+
+    /**
+     * Closes a URLConnection.
+     *
+     * @param conn the connection to close.
+     * @since 2.4
+     */
+    public static void close(final URLConnection conn) {
+        if (conn instanceof HttpURLConnection) {
+            ((HttpURLConnection) conn).disconnect();
+        }
+    }
+
 }

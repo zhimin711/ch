@@ -142,7 +142,6 @@ public class BeanUtils {
         // 取出bean里的所有方法
         Method[] methods = cls.getDeclaredMethods();
         Field[] fields = cls.getDeclaredFields();
-
         for (Field field : fields) {
             try {
                 String fieldGetName = getGetMethodName(field.getName());
