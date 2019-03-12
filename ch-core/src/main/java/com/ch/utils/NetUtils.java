@@ -29,14 +29,16 @@ public class NetUtils {
      * 判断IP格式和范围
      */
     public final static String REGEX_IP = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+    public final static String REGEX_DOMAIN = "^((http://)|(https://))?([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}(/)";
+    public final static String REGEX_DOMAIN2 = "^((http|https)://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$";
 
     /**
-     * 网址最后"/"处理
+     * 相对网址开始最后"/"处理
      *
      * @param url 字符串
      * @return true or false
      */
-    public static String urlHandler(final String url) {
+    public static String handlerSuffix(final String url) {
         if (!CommonUtils.isNotEmpty(url)) {
             return "";
         }
@@ -49,8 +51,63 @@ public class NetUtils {
         } else if (tmp.endsWith("*") && !tmp.endsWith("/*") && !tmp.endsWith(".*")) {
             tmp = tmp.substring(0, tmp.length() - 1);
         }
-//        logger.info("url[{}] handler [{}]", url, tmp);
         return tmp;
+    }
+
+    public static String trim(final String url) {
+        if (!CommonUtils.isNotEmpty(url)) {
+            return "";
+        }
+        String tmp = url.trim();
+        if (isProtocolURL(url)) {
+            String base = parseBaseUrl(url);
+            String suffix = parseSuffixUrl(url);
+            suffix = suffix.replaceAll("//", "/");
+            if (base.endsWith("/") && suffix.startsWith("/")) {
+                tmp = base + suffix.substring(1);
+            }
+        } else {
+            tmp = tmp.replaceAll("//", "/");
+        }
+        return tmp;
+    }
+
+    /**
+     * 解析网址,返回根网址
+     *
+     * @param url HTTP或HTTPS网络地址
+     * @return 域名或IP地址
+     */
+    public static String parseBaseUrl(String url) {
+        logger.debug(url);
+        Pattern p = Pattern.compile(REGEX_DOMAIN);
+        Matcher m = p.matcher(url);
+        if (m.find()) {
+            //匹配结果
+            return m.group();
+        }
+        //替换
+        return "";
+    }
+
+    /**
+     * 解析网址,返回根网址
+     *
+     * @param url HTTP或HTTPS网络地址
+     * @return 域名或IP地址
+     */
+    public static String parseSuffixUrl(String url) {
+        logger.debug(url);
+        Pattern p = Pattern.compile(REGEX_DOMAIN);
+        Matcher m = p.matcher(url);
+        if (m.find()) {
+            //匹配结果
+            return url.replaceAll(REGEX_DOMAIN, "");
+        }
+        p = Pattern.compile(REGEX_DOMAIN2);
+        m = p.matcher(url);
+        if (m.find()) return url.replaceAll(REGEX_DOMAIN2, "");
+        return "";
     }
 
     /**
@@ -61,7 +118,7 @@ public class NetUtils {
      */
     public static String parseUrl(String url) {
         logger.debug(url);
-        if (isURL(url)) {
+        if (isProtocolURL(url)) {
             int start = 0;
             if (url.startsWith(HTTP_PROTOCOL)) {
                 start = 7;
@@ -79,20 +136,24 @@ public class NetUtils {
         return "";
     }
 
+
     /**
      * 判断是否是网址
      *
      * @param url HTTP或HTTPS网络地址
      * @return true or false
      */
-    public static boolean isURL(String url) {
-        return CommonUtils.isEmpty(url) && (url.startsWith(HTTP_PROTOCOL) || url.startsWith(HTTPS_PROTOCOL));
+    public static boolean isProtocolURL(String url) {
+        return CommonUtils.isNotEmpty(url) && (url.startsWith(HTTP_PROTOCOL) || url.startsWith(HTTPS_PROTOCOL));
     }
 
     public static boolean isURL2(String url) {
-        String p = "^((http|https)://)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?$";
-        Pattern pattern = Pattern.compile(p);
+        Pattern pattern = Pattern.compile(REGEX_DOMAIN);
+        return pattern.matcher(url).find();
+    }
 
+    public static boolean isURL3(String url) {
+        Pattern pattern = Pattern.compile(REGEX_DOMAIN2);
         return pattern.matcher(url).find();
     }
 

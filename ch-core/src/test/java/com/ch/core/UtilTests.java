@@ -164,4 +164,15 @@ public class UtilTests {
         Number num2 = 0;
         logger.info("{} == {} -> {}", num1.floatValue(), num2.floatValue(), num1.doubleValue() == num2.doubleValue());
     }
+
+    @Test
+    public void testNetUtils() {
+
+        String url = "http://sfecp.sit.sf-express.com/ecp/";
+
+        logger.info("url protocol correct: {} \n base: {} \n suffix: {}", NetUtils.isProtocolURL(url), NetUtils.parseBaseUrl(url), NetUtils.parseSuffixUrl(url));
+
+        url = "http://www.r5k.com/books/z2_81_81780/984118/";
+        System.out.println(NetUtils.trim(url));
+    }
 }
