@@ -79,7 +79,7 @@ public class NetUtils {
      * @return 域名或IP地址
      */
     public static String parseBaseUrl(String url) {
-        logger.debug(url);
+        logger.debug("parseBaseUrl: {}", url);
         Pattern p = Pattern.compile(REGEX_DOMAIN);
         Matcher m = p.matcher(url);
         if (m.find()) {
@@ -97,7 +97,7 @@ public class NetUtils {
      * @return 域名或IP地址
      */
     public static String parseSuffixUrl(String url) {
-        logger.debug(url);
+        logger.debug("parseSuffixUrl: {}", url);
         Pattern p = Pattern.compile(REGEX_DOMAIN);
         Matcher m = p.matcher(url);
         if (m.find()) {
