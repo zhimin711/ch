@@ -1,6 +1,6 @@
 package com.ch.mybatis.utils;
 
-import com.ch.utils.BeanUtils;
+import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -48,14 +48,14 @@ public class ExampleUtils {
         if (record == null) return c.get();
 
         Stream.of(BASE).forEach(r -> {
-            Object v = BeanUtils.getValueByProperty(record, r);
+            Object v = BeanExtUtils.getValueByProperty(record, r);
             if (v != null) {
                 criteria.andEqualTo(r, v);
                 c.addAndGet(1);
             }
         });
         Stream.of(LIKE).forEach(r -> {
-            Object v = BeanUtils.getValueByProperty(record, r);
+            Object v = BeanExtUtils.getValueByProperty(record, r);
             if (v != null) {
                 criteria.andLike(r, "%" + v + "%");
                 c.addAndGet(1);

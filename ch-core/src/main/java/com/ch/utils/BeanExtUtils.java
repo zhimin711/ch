@@ -15,11 +15,11 @@ import java.util.Map;
  * @author 01370603
  * @date 2017/4/26.
  */
-public class BeanUtils {
+public class BeanExtUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(BeanUtils.class);
+    private final static Logger logger = LoggerFactory.getLogger(BeanExtUtils.class);
 
-    private BeanUtils() {
+    private BeanExtUtils() {
     }
 
     /**

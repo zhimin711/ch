@@ -76,14 +76,14 @@ public class UtilTests {
 
     @Test
     public void testFile() {
-        o = FileUtils.convertSize(22209L);
+        o = FileExtUtils.convertSize(22209L);
         System.out.println(o);
         Date currTime = DateUtils.currentTime();
         String dateStr = DateUtils.format(currTime, DateUtils.Pattern.DATE_SHORT);
         String uuid = UUIDGenerator.generate();
         File file = new File("D:\\opt\\" + dateStr + File.separator + uuid + "\\demo.txt");
         System.out.println(file.getParent());
-        boolean ok = FileUtils.create(file);
+        boolean ok = FileExtUtils.create(file);
         System.out.println(ok);
     }
 

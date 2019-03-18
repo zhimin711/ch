@@ -1,7 +1,9 @@
 package com.ch.mybatis.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface TableMapper {
 
     void create(@Param("sourceName") String sourceName, @Param("targetName") String targetName);

@@ -15,9 +15,9 @@ import java.text.DecimalFormat;
  * @version 1.0
  * @since 1.8
  */
-public class FileUtils {
+public class FileExtUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(FileUtils.class);
+    private final static Logger logger = LoggerFactory.getLogger(FileExtUtils.class);
 
     /**
      * The number of bytes in a kilobyte.

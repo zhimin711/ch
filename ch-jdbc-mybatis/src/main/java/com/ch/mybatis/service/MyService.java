@@ -2,7 +2,7 @@ package com.ch.mybatis.service;
 
 import com.ch.mybatis.context.BaseMapper;
 import com.ch.mybatis.exception.MybatisException;
-import com.ch.utils.BeanUtils;
+import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -63,7 +63,7 @@ public abstract class MyService<PK extends Serializable, T> implements IService<
             throw new MybatisException("no pk columns, this method is not support!");
         }
         for (EntityColumn pk : pkSet) {
-            Object value = BeanUtils.getValueByProperty(record, pk.getProperty());
+            Object value = BeanExtUtils.getValueByProperty(record, pk.getProperty());
             if (CommonUtils.isEmpty(value)) {
                 throw new MybatisException(pk.getProperty() + " pk column is null!");
             }

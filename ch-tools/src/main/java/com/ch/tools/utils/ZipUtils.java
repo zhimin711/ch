@@ -1,13 +1,14 @@
 package com.ch.tools.utils;
 
 import com.ch.utils.CommonUtils;
-import com.ch.utils.FileUtils;
+import com.ch.utils.FileExtUtils;
 import com.ch.utils.IOUtils;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -83,8 +84,8 @@ public class ZipUtils {
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null
                     && !entry.isDirectory()) {
-                FileUtils.create(extractDir);
-                File target = new File(extractDir, UUID.randomUUID().toString() + FileUtils.getFileExtension(entry.getName()));
+                FileExtUtils.create(extractDir);
+                File target = new File(extractDir, UUID.randomUUID().toString() + FileExtUtils.getFileExtension(entry.getName()));
                 // 写入文件
                 bos = new BufferedOutputStream(new FileOutputStream(target));
                 int read;
@@ -135,15 +136,15 @@ public class ZipUtils {
             org.apache.tools.zip.ZipEntry zipEntry;
             InputStream in = null;
             OutputStream os = null;
-            FileUtils.create(targetDir);
+            FileExtUtils.create(targetDir);
             while (e.hasMoreElements()) {
                 zipEntry = (org.apache.tools.zip.ZipEntry) e.nextElement();
                 String entryName = zipEntry.getName();
                 logger.info("unzip File name: {}", entryName);
-                if (CommonUtils.isNotEmpty(extensions) && !extensions.contains(FileUtils.getFileExtensionName(entryName))) {
+                if (CommonUtils.isNotEmpty(extensions) && !extensions.contains(FileExtUtils.getFileExtensionName(entryName))) {
                     continue;
                 }
-                File newFile = new File(targetDir, UUID.randomUUID().toString() + FileUtils.getFileExtension(entryName));
+                File newFile = new File(targetDir, UUID.randomUUID().toString() + FileExtUtils.getFileExtension(entryName));
                 try {
                     in = zipFile.getInputStream(zipEntry);
                     os = new FileOutputStream(newFile);
@@ -204,10 +205,7 @@ public class ZipUtils {
             return;
         }
         String fileName = file.getName();
-        try {
-            fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
-        } catch (UnsupportedEncodingException ignored) {
-        }
+        fileName = new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
         String path = CommonUtils.isEmpty(parentPath) ? fileName : parentPath + File.separator + file.getName();
         if (file.isDirectory()) {//处理文件夹
             File[] files = file.listFiles();
@@ -264,10 +262,7 @@ public class ZipUtils {
         if (file.exists()) {
             if (file.isDirectory()) {//处理文件夹
                 String tmpName = file.getName();
-                try {
-                    tmpName = new String(tmpName.getBytes("UTF-8"), "iso-8859-1");
-                } catch (UnsupportedEncodingException ignored) {
-                }
+                tmpName = new String(tmpName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
                 parentPath += tmpName + File.separator;
                 File[] files = file.listFiles();
                 if (files != null && files.length != 0) {

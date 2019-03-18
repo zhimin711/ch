@@ -109,10 +109,10 @@ public class FtpHelper {
             String tmpDir = CommonUtils.isEmpty(dir) ? "" : dir;
             if (CommonUtils.isNotEmpty(fileExtension) && CommonUtils.isNotEmpty(fileName)) {
                 ftpFiles = client.listFiles(tmpDir, file ->
-                        fileExtension.equals(FileUtils.getFileExtensionName(file.getName()))
+                        fileExtension.equals(FileExtUtils.getFileExtensionName(file.getName()))
                                 && file.getName().contains(fileName));
             } else if (CommonUtils.isNotEmpty(fileExtension)) {
-                ftpFiles = client.listFiles(tmpDir, file -> fileExtension.equals(FileUtils.getFileExtensionName(file.getName())));
+                ftpFiles = client.listFiles(tmpDir, file -> fileExtension.equals(FileExtUtils.getFileExtensionName(file.getName())));
             } else if (CommonUtils.isNotEmpty(fileName)) {
                 ftpFiles = client.listFiles(tmpDir, file -> file.getName().contains(fileName));
             } else if (CommonUtils.isNotEmpty(tmpDir)) {
