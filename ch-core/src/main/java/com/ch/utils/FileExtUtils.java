@@ -251,4 +251,20 @@ public class FileExtUtils {
         ok = create(file.getParent());
         return ok && file.mkdir();
     }
+
+    /**
+     * @param paths
+     * @return
+     */
+    public static String linkPath(String... paths) {
+        StringBuilder sb = new StringBuilder();
+        if (paths == null) return sb.toString();
+        for (String path : paths) {
+            if (CommonUtils.isEmpty(path)) {
+                continue;
+            }
+            sb.append(File.separator).append(path);
+        }
+        return sb.toString().replaceAll("//", "/");
+    }
 }
