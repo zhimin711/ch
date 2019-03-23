@@ -4,16 +4,16 @@ package com.ch;
  * 描述：com.zh
  *
  * @author 80002023
- *         2017/2/4.
+ * 2017/2/4.
  * @version 1.0
  * @since 1.8
  */
 public class Constants {
 
-//    public final static String SAVED_REQUEST_KEY = "shiroSavedRequest";
-
+    //    public final static String SAVED_REQUEST_KEY = "shiroSavedRequest";
     public static final String SUPER_ADMIN = "admin";
     public final static String CURRENT_USER = "currentUser";
+    public static final String TOKEN_HEADER = "Authorization";
     public final static String TOKEN = "token";
     public final static String SECURITY_ROLE_PREFIX = "ROLE_";
     public final static String SECURITY_SEPARATOR = ":";
