@@ -18,6 +18,7 @@ public class Constants {
     public final static String SECURITY_ROLE_PREFIX = "ROLE_";
     public final static String SECURITY_SEPARATOR = ":";
     public final static String SEPARATOR = "-";
+    public final static String SEPARATOR_2 = ",";
 
 
     public final static String STATUS = "status";
