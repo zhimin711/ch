@@ -18,13 +18,4 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (number == null) number = 0;
         return String.format("%0" + length + "d", number);
     }
-
-    public static String lastStr(String s, String separator) {
-        if (CommonUtils.isEmpty(s)) return "";
-        if (s.contains(separator)) {
-            int i = s.lastIndexOf(separator);
-            return s.substring(i);
-        }
-        return s;
-    }
 }
