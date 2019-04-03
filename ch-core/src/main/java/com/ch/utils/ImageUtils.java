@@ -39,11 +39,22 @@ public class ImageUtils {
      * @param imagePath
      * @return
      */
-    public static String sub(String imagePath) {
+    public static String sub(String imagePath, float ratio) {
         File file = new File(imagePath);
         try {
             BufferedImage bufImage = ImageIO.read(file);
-//            bufImage.getSubimage()
+            int oW = bufImage.getWidth();
+            int oH = bufImage.getHeight();
+            if (oH <= 0) return null;
+            float oR = oW * 1.0f / oH;
+            int w = oW;
+            int h = oH;
+            if (oR > ratio) {
+                w = (int) (oH * ratio);
+            } else if (oR < ratio) {
+                h = (int) (oW / ratio);
+            }
+            BufferedImage subImage = bufImage.getSubimage(0, 0, w, h);
         } catch (IOException e) {
             e.printStackTrace();
         }
