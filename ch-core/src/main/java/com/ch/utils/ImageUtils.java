@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.ch.e.CoreError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,6 +8,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLDecoder;
 
 /**
  * 图片工具类
@@ -36,16 +39,30 @@ public class ImageUtils {
     }
 
     /**
-     * @param imagePath
+     * 按比例裁剪图片
+     *
+     * @param imagePath   图片路径
+     * @param targetImage 裁剪图片路径
+     * @param ratio       比例
      * @return
      */
-    public static String sub(String imagePath, float ratio) {
-        File file = new File(imagePath);
+    public static void subRatio(String imagePath, String targetImage, float ratio) {
         try {
-            BufferedImage bufImage = ImageIO.read(file);
+            BufferedImage bufImage;
+            if (NetUtils.isProtocolURL(imagePath)) {
+                String imgUrl = URLDecoder.decode(imagePath, "UTF-8");
+                URL url = new URL(imgUrl);
+                bufImage = ImageIO.read(url);
+            } else {
+                File file = new File(imagePath);
+                if (!file.exists()) {
+                    throw ExceptionUtils.create(CoreError.NOT_EXISTS);
+                }
+                bufImage = ImageIO.read(file);
+            }
             int oW = bufImage.getWidth();
             int oH = bufImage.getHeight();
-            if (oH <= 0) return null;
+            if (oH <= 0) return;
             float oR = oW * 1.0f / oH;
             int w = oW;
             int h = oH;
@@ -55,9 +72,14 @@ public class ImageUtils {
                 h = (int) (oW / ratio);
             }
             BufferedImage subImage = bufImage.getSubimage(0, 0, w, h);
+
+            File targetFile = new File(targetImage);
+            if (!targetFile.exists()) {
+                FileExtUtils.create(targetFile);
+            }
+            ImageIO.write(subImage, FileExtUtils.getFileExtensionName(imagePath), targetFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("sub image file of ratio error!", e);
         }
-        return null;
     }
 }
