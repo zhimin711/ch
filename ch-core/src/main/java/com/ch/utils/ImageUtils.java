@@ -3,6 +3,11 @@ package com.ch.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * 图片工具类
  * Created by 80002023 on 2017/4/5.
@@ -28,5 +33,20 @@ public class ImageUtils {
             }
         }
         return "";
+    }
+
+    /**
+     * @param imagePath
+     * @return
+     */
+    public static String sub(String imagePath) {
+        File file = new File(imagePath);
+        try {
+            BufferedImage bufImage = ImageIO.read(file);
+//            bufImage.getSubimage()
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
