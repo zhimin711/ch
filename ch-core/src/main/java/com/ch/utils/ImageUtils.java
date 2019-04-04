@@ -47,6 +47,19 @@ public class ImageUtils {
      * @return
      */
     public static void subRatio(String imagePath, String targetImage, float ratio) {
+        File targetFile = new File(targetImage);
+        subRatio(imagePath, targetFile, ratio);
+    }
+
+    /**
+     * 按比例裁剪图片
+     *
+     * @param imagePath   图片路径
+     * @param targetImage 裁剪图片路径
+     * @param ratio       比例
+     * @return
+     */
+    public static void subRatio(String imagePath, File targetImage, float ratio) {
         try {
             BufferedImage bufImage;
             if (NetUtils.isProtocolURL(imagePath)) {
@@ -73,11 +86,10 @@ public class ImageUtils {
             }
             BufferedImage subImage = bufImage.getSubimage(0, 0, w, h);
 
-            File targetFile = new File(targetImage);
-            if (!targetFile.exists()) {
-                FileExtUtils.create(targetFile);
+            if (!targetImage.exists()) {
+                FileExtUtils.create(targetImage);
             }
-            ImageIO.write(subImage, FileExtUtils.getFileExtensionName(imagePath), targetFile);
+            ImageIO.write(subImage, FileExtUtils.getFileExtensionName(imagePath), targetImage);
         } catch (IOException e) {
             logger.info("sub image file of ratio error!", e);
         }
