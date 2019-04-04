@@ -27,9 +27,9 @@ public class ImageUtils {
      * @return 图片名
      */
     public static String parseFileNameByUrl(String imgUrl) {
-        if (CommonUtils.isEmpty(imgUrl)) {
+        if (CommonUtils.isNotEmpty(imgUrl)) {
             //
-            logger.info("parse file name by url", imgUrl);
+            logger.info("parse file name by url: {}", imgUrl);
             if (!imgUrl.endsWith("/")) {
                 final int startIndex = imgUrl.lastIndexOf("/");
                 return imgUrl.substring(startIndex + 1);
