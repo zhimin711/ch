@@ -64,14 +64,14 @@ public class ImageUtils {
     /**
      * 按比例裁剪图片
      *
-     * @param imagePath   图片路径
-     * @param targetImage 裁剪图片输出文件
+     * @param srcImgPath   图片路径
+     * @param targetImg 裁剪图片输出文件
      * @param ratio       比例
      * @returnFile
      */
-    public static void subRatio(String imagePath, File targetImage, float ratio) {
-        BufferedImage bufImage = read(imagePath);
-        subRatio(bufImage, targetImage, ratio);
+    public static void subRatio(String srcImgPath, File targetImg, float ratio) {
+        BufferedImage bufImage = read(srcImgPath);
+        subRatio(bufImage, targetImg, ratio);
     }
 
 
@@ -79,15 +79,14 @@ public class ImageUtils {
      * 按比例裁剪图片
      *
      * @param srcImgInputStream 源图片输入流
-     * @param targetImage       裁剪图片输出路径
+     * @param targetImg         裁剪图片输出文件
      * @param ratio             比例
      * @return
      */
-    public static void subRatio(InputStream srcImgInputStream, String targetImage, float ratio) {
-        File targetFile = new File(targetImage);
+    public static void subRatio(InputStream srcImgInputStream, File targetImg, float ratio) {
         try {
             BufferedImage bufImage = ImageIO.read(srcImgInputStream);
-            subRatio(bufImage, targetFile, ratio);
+            subRatio(bufImage, targetImg, ratio);
         } catch (IOException e) {
             logger.error("subRatio from srcImgInputStream err!", e);
             throw ExceptionUtils.create(CoreError.INVALID);
