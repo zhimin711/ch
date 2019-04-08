@@ -23,16 +23,17 @@ public class UUIDGenerator {
     static {
         int ipAddress;
         try {
-            logger.info("This Server IP: {}", PlatformUtils.getLocalIp());
-            ipAddress = ipToInt(PlatformUtils.getLocalAddress());
+//            logger.info("This Server IP: {}", PlatformUtils.getLocalIp());
+//            ipAddress = ipToInt(PlatformUtils.getLocalAddress());
+            ipAddress = ipToInt(InetAddress.getLocalHost().getAddress());
         } catch (Exception e) {
+            logger.error("uuid to generate get host ip error!", e);
             ipAddress = 0;
         }
         IP = ipAddress;
     }
 
     private static short counter = (short) 0;
-    private static short m = (short) 10;
     private static final int JVM = (int) (System.currentTimeMillis() >>> 8);
 
     public UUIDGenerator() {
@@ -60,6 +61,7 @@ public class UUIDGenerator {
     }
 
     public static short getLimitCount(int len) {
+        short m = (short) 10;
         int limit = m ^ len;
         synchronized (UUIDGenerator.class) {
             if (counter < 0 || counter >= limit) {
