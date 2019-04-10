@@ -263,8 +263,21 @@ public class FileExtUtils {
             if (CommonUtils.isEmpty(path)) {
                 continue;
             }
-            sb.append(File.separator).append(path);
+            String tmp = path.trim();
+            if (tmp.startsWith(File.separator)) {
+                tmp = tmp.substring(1);
+            }
+            if (tmp.endsWith(File.separator)) {
+                tmp = tmp.substring(0, tmp.length() - 1);
+            }
+            sb.append(File.separator).append(tmp);
         }
-        return sb.toString().replaceAll("//", "/");
+        return sb.toString();
     }
+
+    public static String convertToUnix(String path) {
+        if(CommonUtils.isEmpty(path)) return "";
+        return path.replaceAll("//||\\\\","/");
+    }
+
 }
