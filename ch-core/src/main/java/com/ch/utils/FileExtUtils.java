@@ -277,7 +277,7 @@ public class FileExtUtils {
 
     public static String convertToUnix(String path) {
         if(CommonUtils.isEmpty(path)) return "";
-        return path.replaceAll("//||\\\\","/");
+        return path.replaceAll("//|\\\\","/");
     }
 
 }
