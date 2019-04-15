@@ -34,6 +34,10 @@ public class Result<T> implements Serializable {
      */
     private Error error;
 
+    public Result() {
+        setStatus(Status.FAILED);
+    }
+
     /**
      * @param status 请求状态
      */
