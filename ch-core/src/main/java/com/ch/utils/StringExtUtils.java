@@ -50,7 +50,6 @@ public class StringExtUtils {
      */
     public static String linkStr(String separator, String... args) {
         if (CommonUtils.isEmpty(args)) return "";
-        if (CommonUtils.isEmpty(separator)) separator = Constants.SEPARATOR;
         StringBuilder sb = new StringBuilder();
         for (String str : args) {
             if (CommonUtils.isEmpty(str)) {
