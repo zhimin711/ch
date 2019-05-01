@@ -22,6 +22,12 @@ public class ExampleUtils {
     private ExampleUtils() {
     }
 
+    /**
+     * @param criteria
+     * @param property
+     * @param values
+     * @return
+     */
     public static int dynIn(Example.Criteria criteria, String property, List<?> values) {
         if (CommonUtils.isEmpty(values)) {
             return 0;
@@ -31,6 +37,14 @@ public class ExampleUtils {
         return 1;
     }
 
+    /**
+     * 动态拼接指定字段条件
+     *
+     * @param criteria
+     * @param property
+     * @param values
+     * @return
+     */
     public static int dynInOrLike(Example.Criteria criteria, String property, List<String> values) {
         if (CommonUtils.isEmpty(values)) {
             return 0;
@@ -42,7 +56,13 @@ public class ExampleUtils {
         return 1;
     }
 
-
+    /**
+     * 动态拼接基础字段条件
+     *
+     * @param criteria
+     * @param record
+     * @return
+     */
     public static int dynCond(Example.Criteria criteria, Object record) {
         AtomicInteger c = new AtomicInteger(0);
         if (record == null) return c.get();
@@ -63,5 +83,35 @@ public class ExampleUtils {
         });
 
         return c.get();
+    }
+
+    /**
+     * 前后模糊拼接
+     *
+     * @param value
+     * @return
+     */
+    public static String likeAny(String value) {
+        return "%" + value + "%";
+    }
+
+    /**
+     * 后模糊拼接
+     *
+     * @param value
+     * @return
+     */
+    public static String likeSuffix(String value) {
+        return value + "%";
+    }
+
+    /**
+     * 前模糊拼接
+     *
+     * @param value
+     * @return
+     */
+    public static String likePrefix(String value) {
+        return "%" + value;
     }
 }
