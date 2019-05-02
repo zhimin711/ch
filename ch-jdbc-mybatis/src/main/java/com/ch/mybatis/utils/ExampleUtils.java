@@ -76,8 +76,8 @@ public class ExampleUtils {
         });
         Stream.of(LIKE).forEach(r -> {
             Object v = BeanExtUtils.getValueByProperty(record, r);
-            if (v != null) {
-                criteria.andLike(r, "%" + v + "%");
+            if (v != null && v instanceof String &&  CommonUtils.isNotEmpty(v)) {
+                criteria.andLike(r, "%" + ((String) v).trim() + "%");
                 c.addAndGet(1);
             }
         });
