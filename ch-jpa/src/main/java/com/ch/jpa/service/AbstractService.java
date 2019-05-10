@@ -13,7 +13,7 @@ import java.util.List;
  * 描述：com.ch.jdbc.support
  *
  * @author 80002023
- *         2017/2/24.
+ * 2017/2/24.
  * @version 1.0
  * @since 1.8
  */
@@ -59,7 +59,7 @@ public abstract class AbstractService<ID extends Serializable, T> implements ISe
         Example<T> example = Example.of(record);
         Page<T> page = getRepository().findAll(example, new PageRequest(pageNum, pageSize));
 
-        return new PageResult<T>(page.getContent(), pageNum, pageSize, page.getSize());
+        return PageResult.success(page.getSize(), page.getContent());
     }
 
     @Override

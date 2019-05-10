@@ -173,6 +173,9 @@ public class UtilTests {
         logger.info("url protocol correct: {} \n base: {} \n suffix: {}", NetUtils.isProtocolURL(url), NetUtils.parseBaseUrl(url), NetUtils.parseSuffixUrl(url));
 
         url = "http://www.r5k.com/books/z2_81_81780/984118/";
-        System.out.println(NetUtils.trim(url));
+        System.out.println(NetUtils.trim(FileExtUtils.convertToUnix(url)));
+
+        System.out.println(FileExtUtils.convertToUnix(url));
+
     }
 }
