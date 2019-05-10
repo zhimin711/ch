@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +96,7 @@ public class EncryptUtils {
     public static String encryptDES(String source, String password) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() % 8 != 0) {
-                throw ExceptionUtils.create(CoreError.ARGS, "invalid password must be not null or length not 8*");
+                throw ExceptionUtils.create(PubError.ARGS, "invalid password must be not null or length not 8*");
             }
             DESKeySpec desKey = new DESKeySpec(password.getBytes());
             //创建一个密匙工厂，使用KeySpec
@@ -119,7 +119,7 @@ public class EncryptUtils {
     public static String decryptDES(String source, String password) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() % 8 != 0) {
-                throw ExceptionUtils.create(CoreError.ARGS, "invalid password must be not null or length not 8*");
+                throw ExceptionUtils.create(PubError.ARGS, "invalid password must be not null or length not 8*");
             }
             DESKeySpec desKey = new DESKeySpec(password.getBytes());
             //创建一个密匙工厂，然后用它把DESKeySpec转换成
@@ -194,7 +194,7 @@ public class EncryptUtils {
     public static String encryptAESCBC(String source, String password, String iv) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() != 16) {
-                throw ExceptionUtils.create(CoreError.ARGS, "password must be not null or length not equals 16!");
+                throw ExceptionUtils.create(PubError.ARGS, "password must be not null or length not equals 16!");
             }
 
             SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(), AlgorithmType.AES.code);
@@ -220,7 +220,7 @@ public class EncryptUtils {
     public static String decryptAESCBC(String source, String password, String iv) {
         try {
             if (CommonUtils.isEmpty(password) || password.length() != 16) {
-                throw ExceptionUtils.create(CoreError.ARGS, "password must be not null or length not equals 16!");
+                throw ExceptionUtils.create(PubError.ARGS, "password must be not null or length not equals 16!");
             }
             SecretKeySpec keySpec = new SecretKeySpec(password.getBytes(), AlgorithmType.AES.code);
             Cipher cipher = Cipher.getInstance(AlgorithmType.AES_CBC.code);

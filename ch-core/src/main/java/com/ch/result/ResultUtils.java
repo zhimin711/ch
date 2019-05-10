@@ -1,8 +1,8 @@
 package com.ch.result;
 
-import com.ch.e.CoreError;
-import com.ch.e.CoreException;
 import com.ch.Status;
+import com.ch.e.PubError;
+import com.ch.e.PubException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,25 +23,20 @@ public class ResultUtils {
     }
 
     public static <T> Result<T> wrap(Invoker<T> invoker) {
-        Result<T> result = new Result<>(Status.FAILED);
         try {
             T record = invoker.invoke();
             List<T> records = Collections.emptyList();
             if (record != null) {
                 records = Collections.singletonList(record);
             }
-            result.setRows(records);
-            result.setStatus(Status.SUCCESS);
-        } catch (CoreException e) {
+            return Result.success(records);
+        } catch (PubException e) {
             logger.error(e.getMessage(), e);
-            result.newError(e.getError());
-            result.setStatus(Status.ERROR);
+            return Result.error(e.getError());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.newError(CoreError.UNKNOWN);
-            result.setStatus(Status.ERROR);
+            return Result.error(PubError.UNKNOWN);
         }
-        return result;
     }
 
     /**
@@ -64,22 +59,17 @@ public class ResultUtils {
     }
 
     public static <T> Result<T> wrapList(InvokerList<T> invoker) {
-        Result<T> result = new Result<>(Status.FAILED);
         try {
             List<T> records = invoker.invoke();
             if (records == null) records = Collections.emptyList();
-            result.setStatus(Status.SUCCESS);
-            result.setRows(records);
-        } catch (CoreException e) {
+            return Result.success(records);
+        } catch (PubException e) {
             logger.error(e.getMessage(), e);
-            result.newError(e.getError());
-            result.setStatus(Status.ERROR);
+            return Result.error(e.getError());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.newError(CoreError.UNKNOWN);
-            result.setStatus(Status.ERROR);
+            return Result.error(PubError.UNKNOWN);
         }
-        return result;
     }
 
 
@@ -96,14 +86,12 @@ public class ResultUtils {
                 result.setTotal(page.getTotal());
             }
             result.setStatus(Status.SUCCESS);
-        } catch (CoreException e) {
+        } catch (PubException e) {
             logger.error(e.getMessage(), e);
-            result.newError(e.getError());
-            result.setStatus(Status.ERROR);
+            return PageResult.error(e.getError());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            result.newError(CoreError.UNKNOWN);
-            result.setStatus(Status.ERROR);
+            return PageResult.error(PubError.UNKNOWN);
         }
         return result;
     }

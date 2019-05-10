@@ -42,8 +42,8 @@ uploadArchives {
             repository(url: "http://127.0.0.1:8081/repository/maven-releases/") {
                 authentication(userName: "admin", password: "admin123")
             }
-            snapshotRepository(url: "http://127.0.0.1:8081/repository/maven-snapshots/") {
-                authentication(userName: "admin", password: "admin123")
+            snapshotRepository(url: "http://nexus.sf-express.com/nexus/content/repositories/snapshots/") {
+                authentication(userName: "01370603", password: "xx")
             }
             pom.version = "$project.version"
             pom.artifactId = "$project.name"

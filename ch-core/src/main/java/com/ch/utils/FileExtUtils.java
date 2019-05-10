@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -194,7 +194,7 @@ public class FileExtUtils {
                 if (i < 0) break;
                 builder.append(new String(tmp, 0, i));
                 if (builder.length() / ONE_MB > 100) {
-                    throw ExceptionUtils.create(CoreError.OUT_OF_LIMIT, "File input is too large!");
+                    throw ExceptionUtils.create(PubError.OUT_OF_LIMIT, "File input is too large!");
                 }
             }
         } catch (IOException e) {

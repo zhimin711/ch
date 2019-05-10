@@ -1,7 +1,7 @@
 package com.ch.result;
 
-import com.ch.e.IError;
 import com.ch.Status;
+import com.ch.e.IError;
 
 import java.util.Collection;
 
@@ -32,51 +32,65 @@ public class PageResult<T> extends Result<T> {
         super(Status.FAILED);
     }
 
-    public PageResult(IError error) {
-        super(error);
-    }
-
-    public PageResult(IError error, String msg) {
-        super(error, msg);
+    public PageResult(Status status) {
+        super(status);
     }
 
     /**
      * 构造结果
      *
-     * @param pageNum  当前页
-     * @param pageSize 每页记录数
+     * @param total 总数
+     * @param rows  记录数
      */
-    public PageResult(int pageNum, int pageSize) {
-        super(Status.SUCCESS);
-        this.pageNum = pageNum;
-        this.pageSize = pageSize;
+    public static <T> PageResult<T> success(long total, Collection<T> rows) {
+        PageResult<T> res = new PageResult<>(Status.SUCCESS);
+        res.setTotal(total);
+        res.setRows(rows);
+        return res;
+    }
+
+    public static <T> PageResult<T> success() {
+        return new PageResult<>(Status.SUCCESS);
     }
 
     /**
-     * 构造结果
+     * 根据记录集合创建一个请求结果
      *
-     * @param records  当前页记录集合
-     * @param pageNum  当前页
-     * @param pageSize 每页记录数
-     * @param total    总页数
+     * @param row 记录集合
      */
-    public PageResult(Collection<T> records, int pageNum, int pageSize, long total) {
-        super(records);
-        this.pageNum = pageNum;
-        this.pageSize = pageSize;
-        this.total = total;
+    public static <T> PageResult<T> success(T row) {
+        PageResult<T> res = new PageResult<>(Status.SUCCESS);
+        res.put(row);
+        return res;
     }
 
     /**
-     * 构造结果
+     * 根据记录集合创建一个请求结果
      *
-     * @param records 记录数
-     * @param total   总数
+     * @param rows 记录集合
      */
-    public PageResult(Collection<T> records, long total) {
-        super(Status.SUCCESS);
-        this.total = total;
-        this.setRows(records);
+    public static <T> PageResult<T> success(Collection<T> rows) {
+        PageResult<T> res = new PageResult<>(Status.SUCCESS);
+        res.setRows(rows);
+        return res;
+    }
+
+    public static <T> PageResult<T> failed() {
+        return new PageResult<>();
+    }
+
+    public static <T> PageResult<T> error(IError error) {
+        PageResult<T> res = new PageResult<>(Status.ERROR);
+        res.setCode(error.getCode());
+        res.setMessage(error.getName());
+        return res;
+    }
+
+    public static <T> PageResult<T> error(IError error, String message) {
+        PageResult<T> res = new PageResult<>(Status.ERROR);
+        res.setCode(error.getCode());
+        res.setMessage(message);
+        return res;
     }
 
     public int getPageNum() {

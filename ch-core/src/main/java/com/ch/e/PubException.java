@@ -1,10 +1,10 @@
 package com.ch.e;
 
 /**
- * 基本异常
+ * 公共异常
  * Created by 01370603 on 2017/11/10.
  */
-public class CoreException extends RuntimeException {
+public class PubException extends RuntimeException {
 
     private IError error;
 
@@ -12,7 +12,7 @@ public class CoreException extends RuntimeException {
      * Constructs an <code>OutOfLimitException</code> with no
      * detail message.
      */
-    public CoreException(IError error) {
+    public PubException(IError error) {
         super();
         this.error = error;
     }
@@ -24,7 +24,7 @@ public class CoreException extends RuntimeException {
      * @param error Error.
      * @param s     the detail message.
      */
-    public CoreException(IError error, String s) {
+    public PubException(IError error, String s) {
         super(s);
         this.error = error;
     }

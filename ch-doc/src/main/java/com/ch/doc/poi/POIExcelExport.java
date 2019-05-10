@@ -3,7 +3,7 @@
  */
 package com.ch.doc.poi;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import com.ch.utils.ExceptionUtils;
 import com.ch.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +84,7 @@ public class POIExcelExport {
             workbook = new SXSSFWorkbook(xs);
         } catch (Exception e) {
             logger.error("write", e);
-            throw ExceptionUtils.create(CoreError.CREATE);
+            throw ExceptionUtils.create(PubError.CREATE);
         } finally {
             IOUtils.close(is);
         }
@@ -289,14 +289,14 @@ public class POIExcelExport {
                     method = entity.getClass().getMethod(methodName);
                 } catch (Exception e) {
                     logger.error("entityToArray", e);
-                    throw ExceptionUtils.create(CoreError.INVALID);
+                    throw ExceptionUtils.create(PubError.INVALID);
                 }
                 Object value = null;
                 try {
                     value = method.invoke(entity);
                 } catch (Exception e) {
                     logger.error("entityToArray", e);
-                    throw ExceptionUtils.create(CoreError.INVALID);
+                    throw ExceptionUtils.create(PubError.INVALID);
                 }
                 objList.add(value);
             }
@@ -330,7 +330,7 @@ public class POIExcelExport {
             workbook.dispose();
         } catch (Exception e) {
             logger.error("write", e);
-            throw ExceptionUtils.create(CoreError.NOT_EXISTS);
+            throw ExceptionUtils.create(PubError.NOT_EXISTS);
         } finally {
             IOUtils.close(os);
         }

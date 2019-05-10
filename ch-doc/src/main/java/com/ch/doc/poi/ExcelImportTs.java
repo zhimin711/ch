@@ -1,6 +1,6 @@
 package com.ch.doc.poi;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import com.ch.utils.ExceptionUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -79,7 +79,7 @@ public class ExcelImportTs {
         } catch (Exception e1) {
             e1.printStackTrace();
             logger.error("Read Excel Exception: ", e1);
-            throw ExceptionUtils.create(CoreError.INVALID);
+            throw ExceptionUtils.create(PubError.INVALID);
         } finally {
             if (fIn != null) {
                 fIn.close();
@@ -93,13 +93,13 @@ public class ExcelImportTs {
                     if (recordDefine.getColumns() != null
                             && recordDefine.getColumns().size() != rowFirst
                             .getPhysicalNumberOfCells()) {
-                        throw ExceptionUtils.create(CoreError.INVALID);
+                        throw ExceptionUtils.create(PubError.INVALID);
                     }
                 }
                 int rowcount = readSheet.getLastRowNum();
                 if (maxCount != null) {
                     if (rowcount > maxCount) {
-                        throw ExceptionUtils.create(CoreError.OUT_OF_LIMIT);
+                        throw ExceptionUtils.create(PubError.OUT_OF_LIMIT);
                     }
                 }
 
@@ -152,7 +152,7 @@ public class ExcelImportTs {
                                     case Cell.CELL_TYPE_BLANK:
                                         if (!column.getType().equals("Y")
                                                 && !column.getType().equals("N")) {
-                                            throw ExceptionUtils.create(CoreError.NON_NULL);
+                                            throw ExceptionUtils.create(PubError.NON_NULL);
                                         }
                                         break;
                                     default:
@@ -161,7 +161,7 @@ public class ExcelImportTs {
                             } else {
                                 if (!column.getType().equals("Y") && !column.getType().equals("N")) {
 
-                                    throw ExceptionUtils.create(CoreError.NON_NULL);
+                                    throw ExceptionUtils.create(PubError.NON_NULL);
                                 }
                             }
                             Class<?> propertyType = PropertyUtils.getPropertyType(obj,
@@ -197,7 +197,7 @@ public class ExcelImportTs {
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                throw ExceptionUtils.create(CoreError.NOT_ALLOWED);
+                                throw ExceptionUtils.create(PubError.NOT_ALLOWED);
                             }
                             PropertyUtils.setProperty(obj, column.getPropName(), value);
                             index++;

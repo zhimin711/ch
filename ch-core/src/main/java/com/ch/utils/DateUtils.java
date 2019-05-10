@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import com.ch.type.DateRule;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -758,7 +758,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static List<Date> workDate(Date start, Date end, String workday) {
         if (start == null || end == null) {
-            throw ExceptionUtils.create(CoreError.ARGS);
+            throw ExceptionUtils.create(PubError.ARGS);
         }
         Calendar cal = Calendar.getInstance();
         cal.setTime(start);

@@ -1,14 +1,14 @@
 package com.ch.e;
 
 /**
- * 描述：定义错误枚举类
+ * 描述：公共错误
  *
  * @author zhimin.ma
  * 2019/3/10.
  * @version 1.0
  * @since 1.8
  */
-public enum CoreError implements IError {
+public enum PubError implements IError {
     DEFAULT("0", "默认错误"),//不使用
     ARGS("10", "参数错误/无效"),//
     CONFIG("11", "配置错误/无效"),//
@@ -33,12 +33,12 @@ public enum CoreError implements IError {
     private final String code;
     private final String name;
 
-    CoreError(String code, String name) {
+    PubError(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static CoreError fromCode(String code) {
+    public static PubError fromCode(String code) {
         if (code == null) {
             return UNKNOWN;
         }

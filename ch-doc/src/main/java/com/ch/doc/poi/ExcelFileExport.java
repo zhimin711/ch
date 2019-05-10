@@ -1,6 +1,6 @@
 package com.ch.doc.poi;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import com.ch.utils.ExceptionUtils;
 import com.ch.utils.IOUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -85,7 +85,7 @@ public class ExcelFileExport {
             workbook = new SXSSFWorkbook(xs);
         } catch (Exception e) {
             logger.error("ExcelFileExport", e);
-            throw ExceptionUtils.create(CoreError.CREATE);
+            throw ExceptionUtils.create(PubError.CREATE);
         } finally {
             IOUtils.close(is);
         }
@@ -435,7 +435,7 @@ public class ExcelFileExport {
             workbook.dispose();
         } catch (Exception e) {
             logger.error("write", e);
-            throw ExceptionUtils.create(CoreError.ADD);
+            throw ExceptionUtils.create(PubError.ADD);
         } finally {
             IOUtils.close(os);
         }
@@ -454,7 +454,7 @@ public class ExcelFileExport {
             workbook.dispose();
         } catch (Exception e) {
             logger.error("write", e);
-            throw ExceptionUtils.create(CoreError.ADD);
+            throw ExceptionUtils.create(PubError.ADD);
         } finally {
             IOUtils.close(os);
         }

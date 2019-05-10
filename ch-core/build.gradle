@@ -1,5 +1,7 @@
 ext {
     slf4jVersion = '1.7.25'
+    fastjsonVersion = '1.2.56'
+    jacksonVersion = '2.9.8'
 }
 
 dependencies {
@@ -10,10 +12,12 @@ dependencies {
 //    compile 'commons-io:commons-io:2.5'
 //    compile 'commons-lang:commons-lang:2.5'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile "com.alibaba:fastjson:${fastjsonVersion}"
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: "${jacksonVersion}"
 
 
     // https://mvnrepository.com/artifact/com.alibaba/druid
 //    compile group: 'com.alibaba', name: 'druid', version: '1.1.10'
-//    compile group: 'com.alibaba', name: 'druid', version: '1.0.18'
 
 }

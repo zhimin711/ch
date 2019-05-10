@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.e.CoreError;
+import com.ch.e.PubError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +89,7 @@ public class ImageUtils {
             subRatio(bufImage, targetImg, ratio);
         } catch (IOException e) {
             logger.error("subRatio from srcImgInputStream err!", e);
-            throw ExceptionUtils.create(CoreError.INVALID);
+            throw ExceptionUtils.create(PubError.INVALID);
         }
     }
 
@@ -122,7 +122,7 @@ public class ImageUtils {
             ImageIO.write(subImage, FileExtUtils.getFileExtensionName(targetImage.getName()), targetImage);
         } catch (IOException e) {
             logger.info("sub image file of ratio error!", e);
-            throw ExceptionUtils.create(CoreError.CREATE);
+            throw ExceptionUtils.create(PubError.CREATE);
         }
     }
 
@@ -235,14 +235,14 @@ public class ImageUtils {
             } else {
                 File file = new File(imgPath);
                 if (!file.exists()) {
-                    throw ExceptionUtils.create(CoreError.NOT_EXISTS);
+                    throw ExceptionUtils.create(PubError.NOT_EXISTS);
                 }
                 bufImage = ImageIO.read(file);
             }
             return bufImage;
         } catch (IOException e) {
             logger.error("read img err!", e);
-            throw ExceptionUtils.create(CoreError.INVALID);
+            throw ExceptionUtils.create(PubError.INVALID);
         }
     }
 

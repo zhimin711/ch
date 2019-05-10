@@ -1,15 +1,18 @@
 package com.ch.result;
 
-import com.ch.e.IError;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.ch.Status;
+import com.ch.e.IError;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
- * 描述：com.zh.http
+ * 描述：com.ch.http
  *
  * @author zhimin.ma
  * 2017/2/5.
@@ -18,6 +21,8 @@ import java.util.HashSet;
  */
 public class Result<T> implements Serializable {
 
+    private static final long serialVersionUID = -1L;
+
     /**
      * 请求状态
      */
@@ -25,14 +30,27 @@ public class Result<T> implements Serializable {
 
 
     /**
-     * 记录集合(包含错误)
+     * 返回数据
      */
     private Collection<T> rows = new ArrayList<>();
 
     /**
-     * 请求错误信息
+     * 代码
      */
-    private Error error;
+    private String code;
+    /**
+     * 消息
+     */
+    private String message;
+    /**
+     * 附加数据
+     */
+    private Map<String, Object> extra;
+
+    /**
+     * 服务器时间
+     */
+    private long timestamp = System.currentTimeMillis();
 
     public Result() {
         setStatus(Status.FAILED);
@@ -45,15 +63,19 @@ public class Result<T> implements Serializable {
         setStatus(status);
     }
 
-
-    public Result(IError error) {
-        setStatus(Status.ERROR);
-        this.error = new Error(error.getCode(), error.getName());
+    public static <T> Result<T> success() {
+        return new Result<>(Status.SUCCESS);
     }
 
-    public Result(IError error, String msg) {
-        setStatus(Status.ERROR);
-        this.error = new Error(error.getCode(), msg);
+    /**
+     * 根据记录集合创建一个请求结果
+     *
+     * @param row 记录集合
+     */
+    public static <T> Result<T> success(T row) {
+        Result<T> res = new Result<>(Status.SUCCESS);
+        res.put(row);
+        return res;
     }
 
     /**
@@ -61,19 +83,28 @@ public class Result<T> implements Serializable {
      *
      * @param rows 记录集合
      */
-    public Result(Collection<T> rows) {
-        setStatus(Status.SUCCESS);
-        setRows(rows);
+    public static <T> Result<T> success(Collection<T> rows) {
+        Result<T> res = new Result<>(Status.SUCCESS);
+        res.setRows(rows);
+        return res;
     }
 
-    /**
-     * 根据一条记录创建一个请求结果
-     *
-     * @param record 记录
-     */
-    public Result(T record) {
-        setStatus(Status.SUCCESS);
-        this.put(record);
+    public static <T> Result<T> failed() {
+        return new Result<>();
+    }
+
+    public static <T> Result<T> error(IError error) {
+        Result<T> res = new Result<>(Status.ERROR);
+        res.setCode(error.getCode());
+        res.setMessage(error.getName());
+        return res;
+    }
+
+    public static <T> Result<T> error(IError error, String message) {
+        Result<T> res = new Result<>(Status.ERROR);
+        res.setCode(error.getCode());
+        res.setMessage(message);
+        return res;
     }
 
     /**
@@ -104,30 +135,46 @@ public class Result<T> implements Serializable {
         this.status = status.getNum();
     }
 
-    public Error getError() {
-        return error;
-    }
-
-    public void setError(Error error) {
-        this.error = error;
-    }
-
-    public void newError(IError error) {
-        this.error = new Error(error.getCode(), error.getName());
-    }
-
-    public void setError(IError error, String msg) {
-        this.error = new Error(error.getCode(), msg);
-    }
-
     public boolean isSuccess() {
         return Status.isSuccess(status);
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Map<String, Object> getExtra() {
+        return extra;
+    }
+
+    public void setExtra(Map<String, Object> extra) {
+        this.extra = extra;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    @JSONField(serialize = false, deserialize = false)
+    @JsonIgnore
     public boolean isEmpty() {
         return rows == null || rows.isEmpty();
     }
 
+    @JSONField(serialize = false, deserialize = false)
+    @JsonIgnore
     public T get() {
         if (isEmpty()) {
             return null;
