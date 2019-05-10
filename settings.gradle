@@ -4,5 +4,4 @@ include 'ch-jpa'
 include 'ch-mybatis'
 include 'ch-tools'
 include 'ch-doc'
-include 'ch-shiro'
 
