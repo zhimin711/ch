@@ -6,6 +6,8 @@ import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
@@ -20,14 +22,16 @@ import java.util.Set;
 /**
  * 描述：com.ch.mybatis.support
  *
+ * @param <PK> 主键
+ * @param <T>  对象
  * @author zhimin.ma
  * 2017/2/14.
  * @version 1.0
  * @since 1.8
- * @param <PK> 主键
- * @param <T> 对象
  */
 public abstract class BaseService<PK extends Serializable, T> implements IService<PK, T> {
+
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected abstract Mapper<T> getMapper();
 
@@ -35,6 +39,25 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
     private Class<T> getEntityClass() {
         return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
+
+    private Set<EntityColumn> getPK() {
+        Set<EntityColumn> pkSet = EntityHelper.getPKColumns(getEntityClass());
+        if (pkSet == null || pkSet.isEmpty()) {
+            throw new MybatisException("no pk columns, this method is not support!");
+        }
+        return pkSet;
+    }
+
+
+    private T newInstance() {
+        try {
+            return getEntityClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error("Mybatis Service New Instance Error", e);
+            throw new MybatisException("New Instance Error!");
+        }
+    }
+
 
     private void check() {
         if (getMapper() == null) {
@@ -50,10 +73,7 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
 
     private void checkPK(T record) {
         check(record);
-        Set<EntityColumn> pkSet = EntityHelper.getPKColumns(getEntityClass());
-        if (pkSet == null || pkSet.isEmpty()) {
-            throw new MybatisException("no pk columns, this method is not support!");
-        }
+        Set<EntityColumn> pkSet = getPK();
         for (EntityColumn pk : pkSet) {
             Object value = BeanExtUtils.getValueByProperty(record, pk.getProperty());
             if (CommonUtils.isEmpty(value)) {
@@ -103,8 +123,7 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
         check();
 //        checkParam(ids);
         if (ids == null || ids.isEmpty()) return 0;
-        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        Set<EntityColumn> pkSet = EntityHelper.getPKColumns(entityClass);
+        Set<EntityColumn> pkSet = EntityHelper.getPKColumns(getEntityClass());
         if (pkSet == null || pkSet.isEmpty() || pkSet.size() > 1) {
             throw new MybatisException("no or multi pk columns, this method is not support!");
         }
@@ -130,9 +149,11 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
     }
 
     @Override
-    public List<T> findPageList(T record, int pageNum, int pageSize) {
+    public List<T> findPageList(int pageNum, int pageSize, T record) {
         check();
-        check(record);
+        if (record == null) {
+            record = newInstance();
+        }
         PageHelper.startPage(pageNum, pageSize, true, true, false);
         return getMapper().select(record);
     }
@@ -146,7 +167,7 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
     @Override
     public int batchSave(List<T> records) {
         check();
-        if(records == null) return 0;
+        if (records == null) return 0;
         if (getMapper() instanceof BaseMapper) {
             return ((BaseMapper<T>) getMapper()).insertList(records);
         }
@@ -157,14 +178,14 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
     @Override
     public int batchUpdate(List<T> records) {
         check();
-        if(records == null) return 0;
+        if (records == null) return 0;
 //        records.forEach(r -> getMapper().updateByPrimaryKeySelective(r));
         Long c = records.stream().mapToInt(r -> getMapper().updateByPrimaryKeySelective(r)).count();
         return c.intValue();
     }
 
     @Override
-    public PageInfo<T> findPage(T record, int pageNum, int pageSize) {
+    public PageInfo<T> findPage(int pageNum, int pageSize, T record) {
         check();
         check(record);
         PageHelper.startPage(pageNum, pageSize);

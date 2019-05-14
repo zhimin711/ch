@@ -74,7 +74,7 @@ public interface IService<PK extends Serializable, T> {
      * @param pageSize 每页大小
      * @return 记录集合
      */
-    List<T> findPageList(T record, int pageNum, int pageSize);
+    List<T> findPageList(int pageNum, int pageSize, T record);
 
 
     /**
@@ -85,7 +85,7 @@ public interface IService<PK extends Serializable, T> {
      * @param pageSize 每页大小
      * @return 记录页
      */
-    PageInfo<T> findPage(T record, int pageNum, int pageSize);
+    PageInfo<T> findPage(int pageNum, int pageSize, T record);
 
 
     /**
