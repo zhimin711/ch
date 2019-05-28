@@ -10,7 +10,7 @@ subprojects {
 
     sourceCompatibility = 1.8
     [compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
-
+    
     repositories {
         mavenLocal()
         jcenter()
@@ -19,7 +19,8 @@ subprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
-        testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+        testImplementation group: 'junit', name: 'junit', version: '4.12'
+        testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+        compileOnly 'org.projectlombok:lombok:1.18.8'
     }
 }

@@ -6,13 +6,18 @@ import java.util.Date;
  * 描述：com.ch.pojo
  *
  * @author 80002023
- *         2017/2/5.
+ * 2017/2/5.
  * @version 1.0
  * @since 1.8
  */
 public class KeyValue {
-
+    /**
+     * 键值
+     */
     private String key;
+    /**
+     * 值
+     */
     private String value;
     private Date date;
 
