@@ -66,6 +66,22 @@ public class FileExtUtils {
     }
 
     /**
+     * 获得文件名(不带扩展名)
+     *
+     * @param fileName 文件名
+     * @return 文件扩展名
+     */
+    public static String getFileName(String fileName) {
+        if (CommonUtils.isEmpty(fileName)) {
+            return "";
+        }
+        if (fileName.lastIndexOf(".") > 0) {
+            return fileName.substring(0, fileName.lastIndexOf("."));
+        }
+        return fileName;
+    }
+
+    /**
      * 通过文件名获得扩展名(不带点)
      *
      * @param fileName 文件名
@@ -87,8 +103,6 @@ public class FileExtUtils {
      * </pre>
      *
      * @return 文件编码，eg：UTF-8,GBK,GB2312形式(不确定的时候，返回可能的字符编码序列)；若无，则返回null
-     * @throws FileNotFoundException
-     * @throws IOException
      */
     //判断编码格式方法
     public static String getCharset(File file) {
@@ -276,8 +290,8 @@ public class FileExtUtils {
     }
 
     public static String convertToUnix(String path) {
-        if(CommonUtils.isEmpty(path)) return "";
-        return path.replaceAll("//|\\\\","/");
+        if (CommonUtils.isEmpty(path)) return "";
+        return path.replaceAll("//|\\\\", "/");
     }
 
 }
