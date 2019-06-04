@@ -136,4 +136,35 @@ public class SQLUtils {
         }
         return false;
     }
+
+
+    /**
+     * 前后模糊拼接
+     *
+     * @param value
+     * @return
+     */
+    public static String likeAny(String value) {
+        return "%" + value + "%";
+    }
+
+    /**
+     * 后模糊拼接
+     *
+     * @param value
+     * @return
+     */
+    public static String likeSuffix(String value) {
+        return value + "%";
+    }
+
+    /**
+     * 前模糊拼接
+     *
+     * @param value
+     * @return
+     */
+    public static String likePrefix(String value) {
+        return "%" + value;
+    }
 }
