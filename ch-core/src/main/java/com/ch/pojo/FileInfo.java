@@ -13,10 +13,25 @@ import java.io.Serializable;
 @Data
 public class FileInfo implements Serializable {
 
-    private long size;
-    private String title;
-    private String url;
-    private String type;
+    /**
+     * 原文件名
+     */
     private String original;
+    /**
+     * 存储文件名
+     */
+    private String title;
+    /**
+     * 地址
+     */
+    private String url;
+    /**
+     * 类型
+     */
+    private String type;
+    /**
+     * 文件大小
+     */
+    private long size;
 
 }
