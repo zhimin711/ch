@@ -289,6 +289,16 @@ public class FileExtUtils {
         return sb.toString();
     }
 
+    /**
+     * 链接路径转Unix
+     *
+     * @param paths
+     * @return
+     */
+    public static String linkPathToUnix(String... paths) {
+        return convertToUnix(linkPath(paths));
+    }
+
     public static String convertToUnix(String path) {
         if (CommonUtils.isEmpty(path)) return "";
         return path.replaceAll("//|\\\\", "/");
