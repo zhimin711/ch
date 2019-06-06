@@ -55,10 +55,10 @@ public class ImageUtils {
      * @param ratio       比例
      * @return
      */
-    public static void subRatio(String imagePath, String targetImage, float ratio) {
+    public static int subRatio(String imagePath, String targetImage, float ratio) {
         File targetFile = new File(targetImage);
         BufferedImage bufImage = read(imagePath);
-        subRatio(bufImage, targetFile, ratio);
+        return subRatio(bufImage, targetFile, ratio);
     }
 
     /**
@@ -67,11 +67,11 @@ public class ImageUtils {
      * @param srcImgPath 图片路径
      * @param targetImg  裁剪图片输出文件
      * @param ratio      比例
-     * @returnFile
+     * @return File
      */
-    public static void subRatio(String srcImgPath, File targetImg, float ratio) {
+    public static int subRatio(String srcImgPath, File targetImg, float ratio) {
         BufferedImage bufImage = read(srcImgPath);
-        subRatio(bufImage, targetImg, ratio);
+        return subRatio(bufImage, targetImg, ratio);
     }
 
 
@@ -83,10 +83,10 @@ public class ImageUtils {
      * @param ratio             比例
      * @return
      */
-    public static void subRatio(InputStream srcImgInputStream, File targetImg, float ratio) {
+    public static int subRatio(InputStream srcImgInputStream, File targetImg, float ratio) {
         try {
             BufferedImage bufImage = ImageIO.read(srcImgInputStream);
-            subRatio(bufImage, targetImg, ratio);
+            return subRatio(bufImage, targetImg, ratio);
         } catch (IOException e) {
             logger.error("subRatio from srcImgInputStream err!", e);
             throw ExceptionUtils.create(PubError.INVALID);
@@ -101,17 +101,17 @@ public class ImageUtils {
      * @param ratio       比例
      * @return
      */
-    public static void subRatio(BufferedImage srcImage, File targetImage, float ratio) {
+    public static int subRatio(BufferedImage srcImage, File targetImage, float ratio) {
         try {
             int oW = srcImage.getWidth();
             int oH = srcImage.getHeight();
-            if (oH <= 0) return;
+            if (oH <= 0) return oW;
             float oR = oW * 1.0f / oH;
             int w = oW;
             int h = oH;
             if (oR == ratio) {
                 logger.warn("image sub by ratio[{}] is same!", ratio);
-                throw ExceptionUtils.create(PubError.DEFAULT);
+                return 0;
             }
             if (oR > ratio) {
                 w = (int) (oH * ratio);
@@ -128,6 +128,7 @@ public class ImageUtils {
             logger.info("sub image file of ratio error!", e);
             throw ExceptionUtils.create(PubError.CREATE);
         }
+        return 1;
     }
 
     /**
