@@ -64,9 +64,9 @@ public class ImageUtils {
     /**
      * 按比例裁剪图片
      *
-     * @param srcImgPath   图片路径
-     * @param targetImg 裁剪图片输出文件
-     * @param ratio       比例
+     * @param srcImgPath 图片路径
+     * @param targetImg  裁剪图片输出文件
+     * @param ratio      比例
      * @returnFile
      */
     public static void subRatio(String srcImgPath, File targetImg, float ratio) {
@@ -109,6 +109,10 @@ public class ImageUtils {
             float oR = oW * 1.0f / oH;
             int w = oW;
             int h = oH;
+            if (oR == ratio) {
+                logger.warn("image sub by ratio[{}] is same!", ratio);
+                return;
+            }
             if (oR > ratio) {
                 w = (int) (oH * ratio);
             } else if (oR < ratio) {
