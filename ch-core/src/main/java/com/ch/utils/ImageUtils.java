@@ -111,7 +111,7 @@ public class ImageUtils {
             int h = oH;
             if (oR == ratio) {
                 logger.warn("image sub by ratio[{}] is same!", ratio);
-                return;
+                throw ExceptionUtils.create(PubError.DEFAULT);
             }
             if (oR > ratio) {
                 w = (int) (oH * ratio);
