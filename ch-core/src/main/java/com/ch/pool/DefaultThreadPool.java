@@ -101,5 +101,19 @@ public class DefaultThreadPool {
         }
     }
 
-
+    /**
+     * 等待线程池关闭
+     *
+     * @param timeout
+     * @param unit
+     * @return
+     */
+    public boolean awaitTermination(long timeout, TimeUnit unit) {
+        try {
+            return getInstance().awaitTermination(timeout, unit);
+        } catch (InterruptedException e) {
+            logger.error("DefaultThreadPool awaitTermination Error!", e);
+        }
+        return false;
+    }
 }
