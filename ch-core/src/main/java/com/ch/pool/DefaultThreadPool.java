@@ -108,7 +108,7 @@ public class DefaultThreadPool {
      * @param unit
      * @return
      */
-    public boolean awaitTermination(long timeout, TimeUnit unit) {
+    public static boolean awaitTermination(long timeout, TimeUnit unit) {
         try {
             return getInstance().awaitTermination(timeout, unit);
         } catch (InterruptedException e) {
