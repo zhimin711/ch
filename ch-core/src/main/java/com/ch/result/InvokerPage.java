@@ -27,6 +27,14 @@ public interface InvokerPage<T> {
             this.rows = rows;
         }
 
+        public static <T> Page<T> build() {
+            return new Page<>();
+        }
+
+        public static <T> Page<T> build(long total, Collection<T> rows) {
+            return new Page<>(total, rows);
+        }
+
         public long getTotal() {
             return total;
         }
