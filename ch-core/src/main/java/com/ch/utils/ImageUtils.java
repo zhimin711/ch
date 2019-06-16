@@ -47,6 +47,49 @@ public class ImageUtils {
         return "";
     }
 
+
+    private static BufferedImage read(String imgPath) {
+        try {
+            BufferedImage bufImage;
+            if (NetUtils.isProtocolURL(imgPath)) {
+                String imgUrl = URLDecoder.decode(imgPath, "UTF-8");
+                URL url = new URL(imgUrl);
+                bufImage = ImageIO.read(url);
+            } else {
+                File file = new File(imgPath);
+                if (!file.exists()) {
+                    throw ExceptionUtils.create(PubError.NOT_EXISTS);
+                }
+                bufImage = ImageIO.read(file);
+            }
+            return bufImage;
+        } catch (IOException e) {
+            logger.error("read img err!", e);
+            throw ExceptionUtils.create(PubError.INVALID);
+        }
+    }
+
+    private static InputStream readInputStream(String imgPath) {
+        try {
+            InputStream is;
+            if (NetUtils.isProtocolURL(imgPath)) {
+                String imgUrl = URLDecoder.decode(imgPath, "UTF-8");
+                URL url = new URL(imgUrl);
+                is = url.openStream();
+            } else {
+                File file = new File(imgPath);
+                if (!file.exists()) {
+                    throw ExceptionUtils.create(PubError.NOT_EXISTS);
+                }
+                is = new FileInputStream(imgPath);
+            }
+            return is;
+        } catch (IOException e) {
+            logger.error("read img err!", e);
+            throw ExceptionUtils.create(PubError.INVALID);
+        }
+    }
+
     /**
      * 按比例裁剪图片
      *
@@ -134,42 +177,63 @@ public class ImageUtils {
     /**
      * 对图片裁剪，并把裁剪新图片保存
      *
-     * @param srcPath          读取源图片路径
-     * @param toPath           写入图片路径
-     * @param x                剪切起始点x坐标
-     * @param y                剪切起始点y坐标
-     * @param width            剪切宽度
-     * @param height           剪切高度
-     * @param readImageFormat  读取图片格式
-     * @param writeImageFormat 写入图片格式
+     * @param srcPath         读取源图片路径
+     * @param toPath          写入图片路径
+     * @param x               剪切起始点x坐标
+     * @param y               剪切起始点y坐标
+     * @param width           剪切宽度
+     * @param height          剪切高度
+     * @param readImageFormat 读取图片格式
      * @throws IOException
      */
     public static void cropImage(String srcPath, String toPath,
                                  int x, int y, int width, int height,
                                  String readImageFormat, String writeImageFormat) throws IOException {
-        FileInputStream fis = null;
+        FileInputStream is = null;
+        try {
+            is = new FileInputStream(srcPath);
+            cropImage(is, toPath, x, y, width, height, readImageFormat, writeImageFormat);
+        } finally {
+            IOUtils.close(is);
+        }
+    }
+
+    /**
+     * 对图片裁剪，并把裁剪新图片保存
+     *
+     * @param is               源图片输入流
+     * @param toPath           写入图片路径
+     * @param x                剪切起始点x坐标
+     * @param y                剪切起始点y坐标
+     * @param width            剪切宽度
+     * @param height           剪切高度
+     * @param readImageFormat  读取图片格式(gif,jpg,png)
+     * @param writeImageFormat 写入图片格式(gif,jpg,png)
+     * @throws IOException
+     */
+    public static void cropImage(InputStream is, String toPath,
+                                 int x, int y, int width, int height,
+                                 String readImageFormat, String writeImageFormat) throws IOException {
         ImageInputStream iis = null;
         try {
-            //读取图片文件
-            fis = new FileInputStream(srcPath);
             Iterator it = ImageIO.getImageReadersByFormatName(readImageFormat);
             ImageReader reader = (ImageReader) it.next();
             //获取图片流
-            iis = ImageIO.createImageInputStream(fis);
+            iis = ImageIO.createImageInputStream(is);
             reader.setInput(iis, true);
             ImageReadParam param = reader.getDefaultReadParam();
             //定义一个矩形
             Rectangle rect = new Rectangle(x, y, width, height);
+
             //提供一个 BufferedImage，将其用作解码像素数据的目标。
             param.setSourceRegion(rect);
+
             BufferedImage bi = reader.read(0, param);
+
             //保存新图片
             ImageIO.write(bi, writeImageFormat, new File(toPath));
         } finally {
-            if (fis != null)
-                fis.close();
-            if (iis != null)
-                iis.close();
+            IOUtils.close(iis);
         }
     }
 
@@ -180,9 +244,8 @@ public class ImageUtils {
      * @param toImagePath  写入图片路径
      * @param widthRatio   宽度缩小比例
      * @param heightRatio  高度缩小比例
-     * @throws IOException
      */
-    public static void reduceImageByRatio(String srcImagePath, String toImagePath, int widthRatio, int heightRatio) throws IOException {
+    public static void reduceImageByRatio(String srcImagePath, String toImagePath, int widthRatio, int heightRatio) {
         try {
             //读入文件
             // 构造Image对象
@@ -190,13 +253,14 @@ public class ImageUtils {
             int width = src.getWidth();
             int height = src.getHeight();
             // 缩小边长
-            BufferedImage tag = new BufferedImage(width / widthRatio, height / heightRatio, BufferedImage.TYPE_INT_RGB);
+            BufferedImage bufferedImage = new BufferedImage(width / widthRatio, height / heightRatio, BufferedImage.TYPE_INT_RGB);
+            bufferedImage = src.getSubimage(0, 0, width, height);
             // 绘制 缩小  后的图片
-            tag.getGraphics().drawImage(src, 0, 0, width / widthRatio, height / heightRatio, null);
-
+//            boolean flag = bufferedImage.getGraphics().drawImage(src, 0, 0, width / widthRatio, height / heightRatio, null);
+//            logger.info("drawImage: ",flag);
             String formatName = FileExtUtils.getFileExtension(srcImagePath);
-            ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
 
+            ImageIO.write(bufferedImage, formatName, new File(toImagePath));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -208,14 +272,11 @@ public class ImageUtils {
      * @param srcImagePath 读取图片路径
      * @param toImagePath  写入图片路径
      * @param ratio        缩小比例
-     * @throws IOException
      */
-    public void reduceImageEqualProportion(String srcImagePath, String toImagePath, int ratio) throws IOException {
+    public static void reduceImageEqualProportion(String srcImagePath, String toImagePath, int ratio) {
         try {
-            //读入文件
-            File file = new File(srcImagePath);
             // 构造Image对象
-            BufferedImage src = ImageIO.read(file);
+            BufferedImage src = read(srcImagePath);
             int width = src.getWidth();
             int height = src.getHeight();
             // 缩小边长
@@ -223,31 +284,15 @@ public class ImageUtils {
             // 绘制 缩小  后的图片
             tag.getGraphics().drawImage(src, 0, 0, width / ratio, height / ratio, null);
             String formatName = FileExtUtils.getFileExtension(srcImagePath);
-            ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
+            File targetImage = new File(toImagePath);
+            targetImage.createNewFile();
+//            if (!targetImage.exists()) {
+//                FileExtUtils.create(targetImage);
+//            }
+            ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, targetImage /* target */);
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    private static BufferedImage read(String imgPath) {
-        try {
-            BufferedImage bufImage;
-            if (NetUtils.isProtocolURL(imgPath)) {
-                String imgUrl = URLDecoder.decode(imgPath, "UTF-8");
-                URL url = new URL(imgUrl);
-                bufImage = ImageIO.read(url);
-            } else {
-                File file = new File(imgPath);
-                if (!file.exists()) {
-                    throw ExceptionUtils.create(PubError.NOT_EXISTS);
-                }
-                bufImage = ImageIO.read(file);
-            }
-            return bufImage;
-        } catch (IOException e) {
-            logger.error("read img err!", e);
-            throw ExceptionUtils.create(PubError.INVALID);
         }
     }
 
@@ -318,21 +363,18 @@ public class ImageUtils {
      * @throws IOException
      */
     public static void resizeImage(String srcImagePath, String toImagePath, int width, int height) throws IOException {
-        try {
-            //读入文件
-            File file = new File(srcImagePath);
-            // 构造Image对象
-            BufferedImage src = javax.imageio.ImageIO.read(file);
-            // 放大边长
-            BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-            //绘制放大后的图片
-            tag.getGraphics().drawImage(src, 0, 0, width, height, null);
-            String formatName = FileExtUtils.getFileExtension(srcImagePath);
-            ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //读入文件
+        File file = new File("D:\\work\\tmp", "test0.jpg");
+        // 构造Image对象
+        BufferedImage src = javax.imageio.ImageIO.read(file);
+        // 放大边长
+        BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        //绘制放大后的图片
+        tag.getGraphics().drawImage(src, 0, 0, width, height, null);
+        String formatName = FileExtUtils.getFileExtension(srcImagePath);
+        ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
+
     }
 
     /**
@@ -603,15 +645,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (os != null) {
-                os.close();
-            }
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(os, is2, is);
         }
     }
 
@@ -639,12 +673,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -672,12 +701,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -705,12 +729,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -738,12 +757,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -771,12 +785,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -804,12 +813,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -837,12 +841,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -870,12 +869,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -903,12 +897,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (is2 != null) {
-                is2.close();
-            }
-            if (is != null) {
-                is.close();
-            }
+            IOUtils.close(is2, is);
         }
     }
 
@@ -970,9 +959,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1013,9 +1000,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1048,9 +1033,7 @@ public class ImageUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1089,9 +1072,7 @@ public class ImageUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1122,9 +1103,7 @@ public class ImageUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1157,9 +1136,7 @@ public class ImageUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1205,9 +1182,7 @@ public class ImageUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1239,9 +1214,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
@@ -1276,9 +1249,7 @@ public class ImageUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (fos != null) {
-                fos.close();
-            }
+            IOUtils.close(fos);
         }
     }
 
