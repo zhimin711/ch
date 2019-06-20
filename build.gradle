@@ -22,5 +22,6 @@ subprojects {
         testImplementation group: 'junit', name: 'junit', version: '4.12'
         testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
         compileOnly 'org.projectlombok:lombok:1.18.8'
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     }
 }

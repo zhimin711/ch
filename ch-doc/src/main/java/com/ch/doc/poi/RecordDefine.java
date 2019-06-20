@@ -15,14 +15,14 @@ import java.util.Collection;
  *
  * @author 01370603
  */
-public class RecordDefineTs {
+public class RecordDefine {
 
     // 列定义
     private Collection<ColumnDefine> columns;
 
-    public RecordDefineTs() {
+    public RecordDefine() {
         // this.readWorkBook = readWorkBook;HSSFWorkbook readWorkBook
-        this.columns = new ArrayList<ColumnDefine>();
+        this.columns = new ArrayList<>();
     }
 
     public Collection<ColumnDefine> getColumns() {

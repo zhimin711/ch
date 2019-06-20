@@ -1,10 +1,15 @@
-import com.ch.doc.poi.POIExcelExport;
+import com.ch.doc.poi.ColumnDefine;
+import com.ch.doc.poi.ExcelExport;
+import com.ch.doc.poi.ExcelImport;
+import com.ch.doc.poi.RecordDefine;
 import com.ch.utils.UUIDGenerator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +27,7 @@ public class ExcelTests {
         File templateFile = new File("D:\\nfsc\\temp.xlsx");
         File excelFile = new File("D:\\nfsc\\" + UUIDGenerator.generate() + ".xlsx");
 
-        POIExcelExport excelExport = new POIExcelExport(templateFile, 1);
+        ExcelExport excelExport = new ExcelExport(templateFile, 1);
         Map<String, Object> objectMap = Maps.newHashMap();
         h1.forEach(r -> objectMap.put(r, "v1-" + r));
         excelExport.setSheetAt(0);
@@ -33,5 +38,28 @@ public class ExcelTests {
         excelExport.setSheetAt(1);
         excelExport.writeRecords(Lists.newArrayList(objectMap1), h2, false);
         excelExport.write(excelFile);
+    }
+
+    @Test
+    public void read() throws Exception {
+        File templateFile = new File("D:\\nfsc\\副本（历史数据刷数）系统任务所属网点修正.xlsx");
+
+        RecordDefine recordDefine = new RecordDefine();
+        recordDefine.addColumn(new ColumnDefine());
+        recordDefine.addColumn(new ColumnDefine());
+        recordDefine.addColumn(new ColumnDefine());
+        recordDefine.addColumn(new ColumnDefine());
+        ExcelImport excelImport = new ExcelImport(recordDefine, 10000);
+        List<?> rows = excelImport.read(templateFile, HashMap.class, 1, 0);
+        rows.forEach(r -> {
+            Map obj = (Map) r;
+            StringBuilder sb = new StringBuilder();
+            sb.append("insert into `` values(");
+            sb.append(obj.get(1).toString());
+            sb.append(",").append("'").append(obj.get(2).toString()).append("'");
+            sb.append(",").append("'").append(obj.get(3).toString()).append("'");
+            sb.append(");");
+            System.out.println(sb.toString());
+        });
     }
 }

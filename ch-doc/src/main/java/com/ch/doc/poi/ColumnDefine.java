@@ -1,6 +1,8 @@
 package com.ch.doc.poi;
 
 
+import lombok.Data;
+
 /**
  * *********************************************
  * Copyright ch.
@@ -13,6 +15,7 @@ package com.ch.doc.poi;
  *
  * @author 01370603
  */
+@Data
 public class ColumnDefine {
 
     // 属性名称
@@ -21,54 +24,11 @@ public class ColumnDefine {
     private String title;
     // 列位置，在导入时，用于匹配列与属性
     private int index;
-    //列类型
-    private String type;
+    /**
+     * 列类型是否为必填
+     */
+    private String type = "N";
 
     private String cellType;
 
-    public String getCellType() {
-        return cellType;
-    }
-
-    public void setCellType(String cellType) {
-        this.cellType = cellType;
-    }
-
-    public String getPropName() {
-        return propName;
-    }
-
-    public void setPropName(String propName) {
-        this.propName = propName;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 }

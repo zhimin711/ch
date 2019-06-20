@@ -26,7 +26,7 @@ import java.util.*;
  * @author 01370603
  * @since 1.0
  */
-public class POIExcelExport {
+public class ExcelExport {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final DateFormat sf = new SimpleDateFormat("yyyy/MM/dd");
@@ -40,7 +40,7 @@ public class POIExcelExport {
     /**
      * 导出Excel
      */
-    public POIExcelExport() {
+    public ExcelExport() {
         this(1);
     }
 
@@ -49,7 +49,7 @@ public class POIExcelExport {
      *
      * @param startRowIndex 开始行索引，0表示第一行
      */
-    public POIExcelExport(int startRowIndex) {
+    public ExcelExport(int startRowIndex) {
         this.startRowIndex = startRowIndex;
         lastRowIndex = startRowIndex;
 
@@ -65,7 +65,7 @@ public class POIExcelExport {
      * @param startRowIndex 开始行索引，0表示第一行
      * @throws FileNotFoundException
      */
-    public POIExcelExport(File tplFile, int startRowIndex) throws FileNotFoundException {
+    public ExcelExport(File tplFile, int startRowIndex) throws FileNotFoundException {
         this(new FileInputStream(tplFile), startRowIndex);
     }
 
@@ -75,7 +75,7 @@ public class POIExcelExport {
      * @param is            模板输入流
      * @param startRowIndex 开始行索引，0表示第一行
      */
-    public POIExcelExport(InputStream is, int startRowIndex) {
+    public ExcelExport(InputStream is, int startRowIndex) {
         this.startRowIndex = startRowIndex;
         lastRowIndex = startRowIndex;
 

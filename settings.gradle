@@ -1,6 +1,6 @@
 rootProject.name = 'ch'
 include 'ch-core'
-include 'ch-jpa'
+//include 'ch-jpa'
 include 'ch-mybatis'
 include 'ch-tools'
 include 'ch-doc'
