@@ -59,8 +59,9 @@ public class BeanExtUtils {
      *
      * @param target        目标对象
      * @param fieldValueMap 属性与值Map
+     * @param isOverride    是否覆盖
      */
-    public static void setFieldValue(Object target, Map<String, String> fieldValueMap) {
+    public static void setFieldValue(Object target, Map<String, String> fieldValueMap, boolean isOverride) {
         Class<?> cls = target.getClass();
         // 取出bean里的所有方法
         Method[] methods = cls.getDeclaredMethods();
@@ -71,6 +72,18 @@ public class BeanExtUtils {
                 String fieldSetName = getSetMethodName(field.getName());
                 if (!existSetMethod(methods, fieldSetName)) {
                     continue;
+                }
+                if (!isOverride) {
+                    String fieldGetName = getGetMethodName(field.getName());
+                    if (!existsGetMethod(methods, fieldGetName)) {
+                        continue;
+                    }
+                    Method fieldGetMethod = cls.getMethod(fieldGetName, null);
+
+                    Object v = fieldGetMethod.invoke(target, null);
+                    if (v != null) {
+                        continue;
+                    }
                 }
                 Method fieldSetMet = cls.getMethod(fieldSetName, field.getType());
                 String value = fieldValueMap.get(field.getName());
@@ -103,7 +116,6 @@ public class BeanExtUtils {
         }
 
     }
-
 
     /**
      * 取Bean声明的属性和值对应关系的MAP

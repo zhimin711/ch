@@ -3,6 +3,7 @@ package com.ch.core;
 import com.ch.pojo.KeyValue;
 import com.ch.utils.*;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,11 +128,16 @@ public class UtilTests {
     @Test
     public void testBean() {
         KeyValue kv = new KeyValue("a", "a1");
-        try {
-//            Method m = kv.getClass().getMethod("getValue", String.class);
-//            logger.info("{}:{}", kv.getValue(), String.valueOf(m.invoke(kv, "a2")));
 
-            logger.info("{}:{}", PlatformUtils.getHostName(), PlatformUtils.getCanonicalHostName());
+        try {
+            Map<String, String> map = Maps.newHashMap();
+            map.put("key", "b");
+            map.put("value", "b1");
+            BeanExtUtils.setFieldValue(kv, map, false);
+            logger.info("{}:{}", kv.getKey(), kv.getValue());
+
+//            logger.info("{}:{}", PlatformUtils.getHostName(), PlatformUtils.getCanonicalHostName());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
