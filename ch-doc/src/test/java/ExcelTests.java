@@ -54,8 +54,9 @@ public class ExcelTests {
         rows.forEach(r -> {
             Map obj = (Map) r;
             StringBuilder sb = new StringBuilder();
-            sb.append("insert into `` values(");
-            sb.append(obj.get(1).toString());
+            sb.append("insert into `temp_plan_require_task_dept_0620` values(");
+            sb.append(obj.get(0).toString());
+            sb.append(",").append(obj.get(1).toString());
             sb.append(",").append("'").append(obj.get(2).toString()).append("'");
             sb.append(",").append("'").append(obj.get(3).toString()).append("'");
             sb.append(");");

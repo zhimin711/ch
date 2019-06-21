@@ -3,6 +3,7 @@ package com.ch.core;
 import com.ch.utils.ImageUtils;
 import org.junit.Test;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.IOException;
 
 public class ImageTests {
@@ -18,8 +19,13 @@ public class ImageTests {
         newFilePath = "D:\\work\\tmp\\test2.jpg";
         ImageUtils.subRatio(url, newFilePath, 2.2f);
         newFilePath = "D:\\work\\tmp\\test3.jpg";
-        ImageUtils.cropImage(url, newFilePath, 0, 0, 3000, 2000, "jpg", "jpg");
+        ImageUtils.crop(url, newFilePath, 0, 0, 3000, 2000, "jpg");
         newFilePath = "D:\\work\\tmp\\test4.jpg";
         ImageUtils.resizeImage(url, newFilePath, 3000, 2000);
+    }
+
+    @Test
+    public void testType() {
+        MimetypesFileTypeMap fileTypeMap = new MimetypesFileTypeMap();
     }
 }

@@ -37,9 +37,10 @@ import java.util.Map;
  * ID   DATE           PERSON          REASON
  * *********************************************
  *
- * @author 01370603
+ * @author zhimin.ma
  */
 public class ExcelImport {
+
     private Integer maxCount;
 
     private RecordDefine recordDefine;
@@ -83,6 +84,7 @@ public class ExcelImport {
      * @param excelFile 上传文件 startRowIndex 文件读取开始下标 flag 上传文件的格式(非空为2007格式)
      * @throws Exception
      */
+    @SuppressWarnings("unchecked")
     public List<?> read(File excelFile, Class<?> clazz, int startRowIndex, int sheetIndex)
             throws Exception {
         FileInputStream fis = null;
@@ -102,8 +104,8 @@ public class ExcelImport {
             Row rowFirst = readSheet.getRow(0);
             if (rowFirst != null) {
                 if (recordDefine.getColumns() != null
-                        && recordDefine.getColumns().size() != rowFirst.getPhysicalNumberOfCells()) {
-//                    throw ExceptionUtils.create(PubError.INVALID);
+                        && recordDefine.getColumns().size() > rowFirst.getPhysicalNumberOfCells()) {
+                    throw ExceptionUtils.create(PubError.INVALID);
                 }
             }
             int rowcount = readSheet.getLastRowNum();

@@ -183,16 +183,15 @@ public class ImageUtils {
      * @param y               剪切起始点y坐标
      * @param width           剪切宽度
      * @param height          剪切高度
-     * @param readImageFormat 读取图片格式
+     * @param writeImageFormat 读取图片格式
      * @throws IOException
      */
-    public static void cropImage(String srcPath, String toPath,
-                                 int x, int y, int width, int height,
-                                 String readImageFormat, String writeImageFormat) throws IOException {
+    public static void crop(String srcPath, String toPath,
+                            int x, int y, int width, int height, String writeImageFormat) throws IOException {
         FileInputStream is = null;
         try {
             is = new FileInputStream(srcPath);
-            cropImage(is, toPath, x, y, width, height, readImageFormat, writeImageFormat);
+            crop(is, toPath, x, y, width, height, writeImageFormat);
         } finally {
             IOUtils.close(is);
         }
@@ -207,19 +206,22 @@ public class ImageUtils {
      * @param y                剪切起始点y坐标
      * @param width            剪切宽度
      * @param height           剪切高度
-     * @param readImageFormat  读取图片格式(gif,jpg,png)
      * @param writeImageFormat 写入图片格式(gif,jpg,png)
      * @throws IOException
      */
-    public static void cropImage(InputStream is, String toPath,
-                                 int x, int y, int width, int height,
-                                 String readImageFormat, String writeImageFormat) throws IOException {
+    public static void crop(InputStream is, String toPath,
+                            int x, int y, int width, int height, String writeImageFormat) throws IOException {
         ImageInputStream iis = null;
         try {
-            Iterator it = ImageIO.getImageReadersByFormatName(readImageFormat);
-            ImageReader reader = (ImageReader) it.next();
             //获取图片流
             iis = ImageIO.createImageInputStream(is);
+            // get all currently registered readers that recognize the image format
+            Iterator<ImageReader> iter = ImageIO.getImageReaders(iis);
+
+            ImageReader reader = iter.next();
+
+            logger.info("Format: " + reader.getFormatName());
+
             reader.setInput(iis, true);
             ImageReadParam param = reader.getDefaultReadParam();
             //定义一个矩形
