@@ -128,12 +128,12 @@ public class UtilTests {
     @Test
     public void testBean() {
         KeyValue kv = new KeyValue("a", "a1");
-
+//        kv.setValue(null);
         try {
             Map<String, String> map = Maps.newHashMap();
             map.put("key", "b");
             map.put("value", "b1");
-            BeanExtUtils.setFieldValue(kv, map, false);
+            BeanExtUtils.setFieldValue(kv, map, true);
             logger.info("{}:{}", kv.getKey(), kv.getValue());
 
 //            logger.info("{}:{}", PlatformUtils.getHostName(), PlatformUtils.getCanonicalHostName());

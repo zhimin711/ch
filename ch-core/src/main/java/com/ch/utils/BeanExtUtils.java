@@ -3,6 +3,7 @@ package com.ch.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -64,57 +65,55 @@ public class BeanExtUtils {
     public static void setFieldValue(Object target, Map<String, String> fieldValueMap, boolean isOverride) {
         Class<?> cls = target.getClass();
         // 取出bean里的所有方法
-        Method[] methods = cls.getDeclaredMethods();
+//        Method[] methods = cls.getDeclaredMethods();
         Field[] fields = cls.getDeclaredFields();
 
         for (Field field : fields) {
             try {
-                String fieldSetName = getSetMethodName(field.getName());
-                if (!existSetMethod(methods, fieldSetName)) {
-                    continue;
-                }
-                if (!isOverride) {
-                    String fieldGetName = getGetMethodName(field.getName());
-                    if (!existsGetMethod(methods, fieldGetName)) {
-                        continue;
-                    }
-                    Method fieldGetMethod = cls.getMethod(fieldGetName, null);
+                PropertyDescriptor pd = new PropertyDescriptor(field.getName(), cls);
 
-                    Object v = fieldGetMethod.invoke(target, null);
+                if (!isOverride) {
+                    Method method = pd.getReadMethod();
+                    if (method == null) continue;
+                    Object v = method.invoke(target);
                     if (v != null) {
                         continue;
                     }
                 }
-                Method fieldSetMet = cls.getMethod(fieldSetName, field.getType());
+                Method method = pd.getWriteMethod();
+                if (method == null) continue;
                 String value = fieldValueMap.get(field.getName());
-                if (null != value && !"".equals(value)) {
-                    String fieldType = field.getType().getSimpleName();
-                    if ("String".equals(fieldType)) {
-                        fieldSetMet.invoke(target, value);
-                    } else if ("Date".equals(fieldType) || "Timestamp".equals(fieldType)) {
-                        Date temp = DateUtils.parse(value);
-                        fieldSetMet.invoke(target, temp);
-                    } else if ("Integer".equals(fieldType) || "int".equals(fieldType)) {
-                        Integer val = Integer.parseInt(value);
-                        fieldSetMet.invoke(target, val);
-                    } else if ("Long".equalsIgnoreCase(fieldType) || "long".equals(fieldType)) {
-                        Long temp = Long.parseLong(value);
-                        fieldSetMet.invoke(target, temp);
-                    } else if ("Double".equalsIgnoreCase(fieldType) || "double".equals(fieldType)) {
-                        Double temp = Double.parseDouble(value);
-                        fieldSetMet.invoke(target, temp);
-                    } else if ("Boolean".equalsIgnoreCase(fieldType) || "boolean".equals(fieldType)) {
-                        Boolean temp = Boolean.parseBoolean(value);
-                        fieldSetMet.invoke(target, temp);
-                    } else {
-                        logger.info("not supper type" + fieldType);
-                    }
+                Object val = parseValue(field.getType(), value);
+                if (CommonUtils.isNotEmpty(val)) {
+                    method.invoke(target, val);
                 }
             } catch (Exception e) {
                 logger.error("setFieldValue Error!", e);
             }
         }
 
+    }
+
+    private static Object parseValue(Class<?> type, String value) {
+        if (CommonUtils.isEmpty(value)) return null;
+        Object obj = null;
+        String fieldType = type.getSimpleName();
+        if ("String".equals(fieldType)) {
+            obj = value;
+        } else if ("Date".equals(fieldType) || "Timestamp".equals(fieldType)) {
+            obj = DateUtils.parse(value);
+        } else if ("Integer".equals(fieldType) || "int".equals(fieldType)) {
+            obj = Integer.parseInt(value);
+        } else if ("Long".equalsIgnoreCase(fieldType) || "long".equals(fieldType)) {
+            obj = Long.parseLong(value);
+        } else if ("Double".equalsIgnoreCase(fieldType) || "double".equals(fieldType)) {
+            obj = Double.parseDouble(value);
+        } else if ("Boolean".equalsIgnoreCase(fieldType) || "boolean".equals(fieldType)) {
+            obj = Boolean.parseBoolean(value);
+        } else {
+            logger.info("not support type" + fieldType);
+        }
+        return obj;
     }
 
     /**
