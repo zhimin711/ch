@@ -177,12 +177,12 @@ public class ImageUtils {
     /**
      * 对图片裁剪，并把裁剪新图片保存
      *
-     * @param srcPath         读取源图片路径
-     * @param toPath          写入图片路径
-     * @param x               剪切起始点x坐标
-     * @param y               剪切起始点y坐标
-     * @param width           剪切宽度
-     * @param height          剪切高度
+     * @param srcPath          读取源图片路径
+     * @param toPath           写入图片路径
+     * @param x                剪切起始点x坐标
+     * @param y                剪切起始点y坐标
+     * @param width            剪切宽度
+     * @param height           剪切高度
      * @param writeImageFormat 读取图片格式
      * @throws IOException
      */
@@ -217,14 +217,20 @@ public class ImageUtils {
             iis = ImageIO.createImageInputStream(is);
             // get all currently registered readers that recognize the image format
             Iterator<ImageReader> iter = ImageIO.getImageReaders(iis);
+            //appoint reader image format
+//            Iterator<ImageReader> iter = ImageIO.getImageReadersByFormatName("png");
 
             ImageReader reader = iter.next();
 
-            logger.info("Format: " + reader.getFormatName());
-
             reader.setInput(iis, true);
             ImageReadParam param = reader.getDefaultReadParam();
+
+//            BufferedImage b = ImageIO.read(iis);
+            logger.info("Format: {}", reader.getFormatName());
             //定义一个矩形
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+
             Rectangle rect = new Rectangle(x, y, width, height);
 
             //提供一个 BufferedImage，将其用作解码像素数据的目标。
