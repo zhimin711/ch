@@ -16,5 +16,6 @@ dependencies {
 //        exclude group: 'org.aspectj', module: 'aspectjrt'
     }
 
+    implementation "mysql:mysql-connector-java:5.1.30"
     compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
 }
