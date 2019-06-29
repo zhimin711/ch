@@ -21,7 +21,7 @@ public class ImageTests {
 //        ImageUtils.subRatio(url, newFilePath, 2.2f);
         newFilePath = "D:\\work\\tmp\\test3.jpg";
         newFilePath = "D:\\work\\tmp\\test5-1.jpg";
-        ImageUtils.crop(url, newFilePath, -10, 100, 300, 300, "jpg");
+        ImageUtils.crop(url, newFilePath, -10, 100, 300, 300);
         newFilePath = "D:\\work\\tmp\\test4.jpg";
 //        ImageUtils.resizeImage(url, newFilePath, 3000, 2000);
     }

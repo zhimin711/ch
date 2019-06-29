@@ -186,11 +186,11 @@ public class ImageUtils {
      * @throws IOException
      */
     public static void crop(String srcPath, String toPath,
-                            int x, int y, int width, int height, String writeImageFormat) throws IOException {
+                            int x, int y, int width, int height) throws IOException {
         FileInputStream is = null;
         try {
             is = new FileInputStream(srcPath);
-            crop(is, toPath, x, y, width, height, writeImageFormat);
+            crop(is, toPath, x, y, width, height);
         } finally {
             IOUtils.close(is);
         }
@@ -205,11 +205,10 @@ public class ImageUtils {
      * @param y                剪切起始点y坐标
      * @param width            剪切宽度
      * @param height           剪切高度
-     * @param writeImageFormat 写入图片格式(gif,jpg,png)
      * @throws IOException
      */
     public static void crop(InputStream is, String toPath,
-                            int x, int y, int width, int height, String writeImageFormat) throws IOException {
+                            int x, int y, int width, int height) throws IOException {
         ImageInputStream iis = null;
         try {
             //获取图片流
@@ -238,7 +237,7 @@ public class ImageUtils {
             BufferedImage bi = reader.read(0, param);
 
             //保存新图片
-            ImageIO.write(bi, writeImageFormat, new File(toPath));
+            ImageIO.write(bi, reader.getFormatName(), new File(toPath));
         } finally {
             IOUtils.close(iis);
         }
