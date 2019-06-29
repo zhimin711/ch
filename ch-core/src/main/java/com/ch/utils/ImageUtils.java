@@ -186,11 +186,11 @@ public class ImageUtils {
      * @throws IOException
      */
     public static void crop(String srcPath, String toPath,
-                            int x, int y, int width, int height) throws IOException {
+                            int x, int y, int width, int height, String writeImageFormat) throws IOException {
         FileInputStream is = null;
         try {
             is = new FileInputStream(srcPath);
-            crop(is, toPath, x, y, width, height);
+            crop(is, toPath, x, y, width, height, writeImageFormat);
         } finally {
             IOUtils.close(is);
         }
@@ -205,24 +205,31 @@ public class ImageUtils {
      * @param y                剪切起始点y坐标
      * @param width            剪切宽度
      * @param height           剪切高度
+     * @param writeImageFormat 写入图片格式(gif,jpg,png)
      * @throws IOException
      */
     public static void crop(InputStream is, String toPath,
-                            int x, int y, int width, int height) throws IOException {
+                            int x, int y, int width, int height, String writeImageFormat) throws IOException {
         ImageInputStream iis = null;
         try {
             //获取图片流
             iis = ImageIO.createImageInputStream(is);
             // get all currently registered readers that recognize the image format
             Iterator<ImageReader> iter = ImageIO.getImageReaders(iis);
+            //appoint reader image format
+//            Iterator<ImageReader> iter = ImageIO.getImageReadersByFormatName("png");
 
             ImageReader reader = iter.next();
 
-            logger.info("Format: " + reader.getFormatName());
-
             reader.setInput(iis, true);
             ImageReadParam param = reader.getDefaultReadParam();
+
+//            BufferedImage b = ImageIO.read(iis);
+            logger.info("Format: {}", reader.getFormatName());
             //定义一个矩形
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+
             Rectangle rect = new Rectangle(x, y, width, height);
 
             //提供一个 BufferedImage，将其用作解码像素数据的目标。
@@ -231,7 +238,7 @@ public class ImageUtils {
             BufferedImage bi = reader.read(0, param);
 
             //保存新图片
-            ImageIO.write(bi, reader.getFormatName(), new File(toPath));
+            ImageIO.write(bi, writeImageFormat, new File(toPath));
         } finally {
             IOUtils.close(iis);
         }
