@@ -9,7 +9,8 @@ public enum Status {
     FAILED("0"), //失败
     SUCCESS("1"), //成功
     ERROR("2"), //错误
-    TIMEOUT("3"), //超时
+    DELETE("3"), //超时
+    TIMEOUT("4"), //超时
     UNSELECTED("0"), //选中
     SELECTED("1"), //选中
     ENABLED("1"), //启用
@@ -32,6 +33,14 @@ public enum Status {
         return code;
     }
 
+    /**
+     * 两个状态之前判断输入值
+     *
+     * @param value 输入值
+     * @param zero  状态1
+     * @param one   状态2
+     * @return 状态1/2
+     */
     private static Status getStatus(Object value, Status zero, Status one) {
         String tmp = toCode(value);
         switch (tmp) {
@@ -44,7 +53,7 @@ public enum Status {
         }
     }
 
-    public static Status forSuccess(Object value) {
+    public static Status fromValue(Object value) {
         String tmp = toCode(value);
         switch (tmp) {
             case "0":
@@ -54,6 +63,8 @@ public enum Status {
             case "2":
                 return ERROR;
             case "3":
+                return DELETE;
+            case "4":
                 return TIMEOUT;
             default:
                 return UNKNOWN;
@@ -86,7 +97,7 @@ public enum Status {
     }
 
     public static boolean isSuccess(Object value) {
-        return Status.forSuccess(value) == Status.SUCCESS;
+        return Status.fromValue(value) == Status.SUCCESS;
     }
 
     public boolean isSuccess() {
