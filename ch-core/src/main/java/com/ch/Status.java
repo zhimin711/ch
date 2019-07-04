@@ -100,6 +100,10 @@ public enum Status {
         return Status.fromValue(value) == Status.SUCCESS;
     }
 
+    public static boolean isDelete(Object value) {
+        return Status.fromValue(value) == Status.DELETE;
+    }
+
     public boolean isSuccess() {
         return this == Status.SUCCESS;
     }
