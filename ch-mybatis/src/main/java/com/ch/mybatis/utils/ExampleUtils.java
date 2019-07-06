@@ -4,6 +4,7 @@ import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -59,33 +60,61 @@ public class ExampleUtils {
     /**
      * 动态拼接基础字段条件
      *
-     * @param criteria
-     * @param record
-     * @return
+     * @param criteria 条件装配
+     * @param record   条件
+     * @return 装配条件数
      */
     public static int dynCond(Example.Criteria criteria, Object record) {
         AtomicInteger c = new AtomicInteger(0);
         if (record == null) return c.get();
+        c.getAndAdd(dynEqual(criteria, record, BASE));
+        c.getAndAdd(dynLike(criteria, record, LIKE));
+        return c.get();
+    }
 
-        Stream.of(BASE).forEach(r -> {
+    /**
+     * 动态拼接指定字段条件(equal or in)
+     *
+     * @param criteria   条件装配
+     * @param record     条件
+     * @param properties 属性
+     * @return 装配条件数
+     */
+    public static int dynEqual(Example.Criteria criteria, Object record, String... properties) {
+        AtomicInteger c = new AtomicInteger(0);
+        if (record == null) return c.get();
+        for (String r : properties) {
             Object v = BeanExtUtils.getValueByProperty(record, r);
-            if (v != null) {
+            if (v == null) {
+                continue;
+            }
+            if (v instanceof Iterable) {
+                criteria.andIn(r, (Iterable) v);
+            } else {
                 criteria.andEqualTo(r, v);
-                c.addAndGet(1);
             }
-        });
-        Stream.of(LIKE).forEach(r -> {
-            Object v = BeanExtUtils.getValueByProperty(record, r);
-            if (v != null) {
-                if (v instanceof String) {
-                    criteria.andLike(r, "%" + ((String) v).trim() + "%");
-                } else {
-                    criteria.andLike(r, "%" + v + "%");
-                }
-                c.addAndGet(1);
-            }
-        });
+            c.addAndGet(1);
+        }
+        return c.get();
+    }
 
+    /**
+     * 动态拼接指定字段Like条件（只装配String字符串）
+     *
+     * @param criteria   条件装配
+     * @param record     条件
+     * @param properties 属性
+     * @return 装配条件数
+     */
+    public static int dynLike(Example.Criteria criteria, Object record, String... properties) {
+        AtomicInteger c = new AtomicInteger(0);
+        if (record == null) return c.get();
+        for (String r : properties) {
+            Object v = BeanExtUtils.getValueByProperty(record, r);
+            if (!(v instanceof String)) continue;
+            criteria.andLike(r, "%" + ((String) v).trim() + "%");
+            c.addAndGet(1);
+        }
         return c.get();
     }
 }

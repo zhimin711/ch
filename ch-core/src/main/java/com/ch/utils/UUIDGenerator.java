@@ -113,18 +113,18 @@ public class UUIDGenerator {
 
 
     public static String generate(String prefix) {
-        return prefix + sep + format(getIP()).toUpperCase() + sep + DateUtils.format(DateUtils.currentTime(), DateUtils.Pattern.DATETIME_SHORT) + formatZero(getLimitCount(4));
+        return prefix + sep + format(getIP()).toUpperCase() + sep + DateUtils.format(DateUtils.current(), DateUtils.Pattern.DATETIME_SHORT) + formatZero(getLimitCount(4));
     }
 
     /**
      * 按模块生成交易序号
      *
      * @param prefix    前缀
-     * @param separator M-手机 T-pc:R-需求 C-竞价 T-招标
+     * @param separator M-手机 pc:R- C- T-
      * @return String code
      */
     public static String generateCode(String prefix, String separator) {
-        return prefix + "-" + separator + "-" + DateUtils.format(DateUtils.currentTime(), DateUtils.Pattern.DATETIME_FULL_SHORT)
+        return prefix + "-" + separator + "-" + DateUtils.format(DateUtils.current(), DateUtils.Pattern.DATETIME_FULL_SHORT)
                 + (new Random().nextInt(900) + 100);
     }
 

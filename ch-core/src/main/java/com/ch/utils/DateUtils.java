@@ -142,6 +142,34 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
+     * 创建一个格式化时间实例
+     *
+     * @param pattern 时间格式
+     * @return SimpleDateFormat
+     */
+    public static SimpleDateFormat newFormatInstance(Pattern pattern) {
+        return new SimpleDateFormat(pattern.getValue());
+    }
+
+    /**
+     * 创建一个格式化日期（yyyy-MM-dd）实例
+     *
+     * @return SimpleDateFormat
+     */
+    public static SimpleDateFormat newFormatDateInstance() {
+        return newFormatInstance(Pattern.DATE_CN);
+    }
+
+    /**
+     * 创建一个格式化时间（yyyy-MM-dd HH:mm:ss）实例
+     *
+     * @return SimpleDateFormat
+     */
+    public static SimpleDateFormat newFormatDateTimeInstance() {
+        return newFormatInstance(Pattern.DATETIME_CN);
+    }
+
+    /**
      * 格式化时间为字符串（yyyy-MM-dd HH:mm:ss）
      *
      * @param date 时间
@@ -166,8 +194,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (null == date) {
             return null;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern.getValue());
-        return sdf.format(date);
+        return newFormatInstance(pattern).format(date);
     }
 
     /**
@@ -243,9 +270,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (CommonUtils.isEmpty(dateStr)) {
             return null;
         }
-        SimpleDateFormat df = new SimpleDateFormat(pattern.getValue());
         try {
-            return df.parse(dateStr);
+            return newFormatInstance(pattern).parse(dateStr);
         } catch (Exception e) {
             logger.error("Parse date failed! date = " + dateStr + ", pattern = " + pattern, e);
         }
@@ -267,8 +293,27 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @return 返回当前日期时间
      */
-    public static Date currentTime() {
+    public static Date current() {
         return Calendar.getInstance().getTime();
+    }
+
+    /**
+     * 获得系统当前日期时间
+     *
+     * @return 返回当前日期时间
+     */
+    public static Date min() {
+        return parse("1970-01-01", Pattern.DATE_CN);
+    }
+
+    /**
+     * 获得系统当前日期时间
+     *
+     * @return 返回当前日期时间
+     */
+    public static Date max() {
+        Date date = parse("9999-12-31", Pattern.DATE_CN);
+        return endDayTime(date);
     }
 
     /**
@@ -317,7 +362,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return 0L;
         }
         logger.info("convert expires date seconds! {}", expires);
-        Date dateTime = currentTime();
+        Date dateTime = current();
         if (dateTime.before(expires)) {
             return (expires.getTime() - dateTime.getTime()) / 1000;
         }
@@ -367,7 +412,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         Date date = parse(dateString, Pattern.DATE_CN);
         assert date != null;
         calendar.setTime(date);
-        calendar.add(6, -1 * offset);
+        calendar.add(Calendar.DAY_OF_YEAR, -1 * offset);
         return format(calendar.getTime(), Pattern.DATE_CN);
     }
 
@@ -386,7 +431,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return String
      */
     public static String getWeekInYear() {
-        return getWeekInYear(currentTime());
+        return getWeekInYear(current());
     }
 
 
@@ -728,7 +773,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 1234567转中文
      *
-     * @param workday 适用工作日
+     * @param workday   适用工作日
      * @param separator 分割符
      * @return
      */
