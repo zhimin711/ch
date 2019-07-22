@@ -63,34 +63,39 @@ public class BeanExtUtils {
      * @param isOverride    是否覆盖
      */
     public static void setFieldValue(Object target, Map<String, String> fieldValueMap, boolean isOverride) {
+        if (fieldValueMap == null || fieldValueMap.isEmpty()) return;
         Class<?> cls = target.getClass();
         // 取出bean里的所有方法
 //        Method[] methods = cls.getDeclaredMethods();
         Field[] fields = cls.getDeclaredFields();
 
-        for (Field field : fields) {
-            try {
-                PropertyDescriptor pd = new PropertyDescriptor(field.getName(), cls);
-
-                if (!isOverride) {
-                    Method method = pd.getReadMethod();
-                    if (method == null) continue;
-                    Object v = method.invoke(target);
-                    if (v != null) {
-                        continue;
+        fieldValueMap.forEach((k, v) -> {
+            if (CommonUtils.isEmpty(v)) return;
+            for (Field field : fields) {
+                if (!CommonUtils.isEquals(k, field.getName())) {
+                    continue;
+                }
+                try {
+                    PropertyDescriptor pd = new PropertyDescriptor(field.getName(), cls);
+                    if (!isOverride) {//判断是否有值
+                        Method method = pd.getReadMethod();
+                        if (method == null) continue;
+                        Object v1 = method.invoke(target);
+                        if (v1 != null) {
+                            continue;
+                        }
                     }
+                    Method method = pd.getWriteMethod();
+                    if (method == null) continue;
+                    Object val = parseValue(field.getType(), v);
+                    if (CommonUtils.isNotEmpty(val)) {
+                        method.invoke(target, val);
+                    }
+                } catch (Exception e) {
+                    logger.error("setFieldValue Error!", e);
                 }
-                Method method = pd.getWriteMethod();
-                if (method == null) continue;
-                String value = fieldValueMap.get(field.getName());
-                Object val = parseValue(field.getType(), value);
-                if (CommonUtils.isNotEmpty(val)) {
-                    method.invoke(target, val);
-                }
-            } catch (Exception e) {
-                logger.error("setFieldValue Error!", e);
             }
-        }
+        });
 
     }
 

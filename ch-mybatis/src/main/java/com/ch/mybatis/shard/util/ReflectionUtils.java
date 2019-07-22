@@ -31,7 +31,7 @@ public class ReflectionUtils {
 
         try {
             field.set(object, value);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException ignored) {
 
         }
     }
@@ -50,7 +50,7 @@ public class ReflectionUtils {
         Object result = null;
         try {
             result = field.get(object);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException ignored) {
 
         }
         return result;
@@ -69,7 +69,7 @@ public class ReflectionUtils {
 
         try {
             return method.invoke(object, parameters);
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException ignored) {
 
         }
 
@@ -84,7 +84,7 @@ public class ReflectionUtils {
                 .getSuperclass()) {
             try {
                 return superClass.getDeclaredField(fieldName);
-            } catch (NoSuchFieldException e) {
+            } catch (NoSuchFieldException ignored) {
             }
         }
         return null;
