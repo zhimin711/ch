@@ -53,6 +53,9 @@ public class ResultUtils {
      */
     public static <T> Result<T> wrapFail(Invoker<T> invoker) {
         Result<T> result = wrap(invoker);
+        if (!result.isSuccess()) {
+            return result;
+        }
         T record = result.get();
         Number numZero = 0;
         if (result.isEmpty()) {
