@@ -1,14 +1,16 @@
 package com.ch.result;
 
+import com.ch.e.IError;
+
 import java.io.Serializable;
 
 /**
- * desc:
+ * desc:自定义错误
  *
  * @author zhimin
  * @date 2018/8/13 上午8:48
  */
-public class Error implements Serializable {
+public class Error implements Serializable, IError {
 
     private String code;
     private String name;
@@ -19,6 +21,11 @@ public class Error implements Serializable {
     public Error(String code, String name) {
         this.code = code;
         this.name = name;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.CUSTOMER;
     }
 
     public String getCode() {

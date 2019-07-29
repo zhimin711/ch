@@ -1,7 +1,7 @@
 package com.ch.e;
 
 /**
- * 描述：公共错误
+ * 描述：常用（公共）错误
  *
  * @author zhimin.ma
  * 2019/3/10.
