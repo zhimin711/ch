@@ -1,17 +1,23 @@
 ext {
     slf4jVersion = '1.7.25'
-    fastjsonVersion = '1.2.56'
     jacksonVersion = '2.9.8'
+    googleGuavaVersion = '21.0'
+    googleGsonVersion = '2.8.5'
+    apacheCommonsLang3Version = '3.4'
+
+    fastjsonVersion = '1.+'
 }
 
 dependencies {
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
 
-    compile 'com.google.guava:guava:21.0'
-    compile 'com.google.code.gson:gson:2.8.5'
+    compile "com.google.guava:guava:${googleGuavaVersion}"
+    compile "com.google.code.gson:gson:${googleGsonVersion}"
+    
 //    compile 'commons-io:commons-io:2.5'
 //    compile 'commons-lang:commons-lang:2.5'
-    compile 'org.apache.commons:commons-lang3:3.4'
+    compile "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
+    
     compile "com.alibaba:fastjson:${fastjsonVersion}"
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: "${jacksonVersion}"

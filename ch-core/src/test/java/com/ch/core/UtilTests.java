@@ -38,7 +38,7 @@ public class UtilTests {
         System.out.println(CommonUtils.isEquals(a, b));
         System.out.println(CommonUtils.isEquals(20.0000000000022, 20.0000000000022));
         logger.info("{}", CommonUtils.isEquals(20L, 20));
-        o = DateUtils.currentTime();
+        o = DateUtils.current();
         logger.info("{}", CommonUtils.isEquals(o, o));
         o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
         logger.info("{}", o);
@@ -49,7 +49,7 @@ public class UtilTests {
 
     @Test
     public void testDate() {
-        o = DateUtils.getFirstDayOfMouth(DateUtils.currentTime());
+        o = DateUtils.getFirstDayOfMouth(DateUtils.current());
         System.out.println(o);
         Date date = DateUtils.parse("2018-01-02 00:10:21");
         o = DateUtils.format(DateUtils.parseTimestamp(String.valueOf(date.getTime())));
@@ -80,7 +80,7 @@ public class UtilTests {
     public void testFile() {
         o = FileExtUtils.convertSize(22209L);
         System.out.println(o);
-        Date currTime = DateUtils.currentTime();
+        Date currTime = DateUtils.current();
         String dateStr = DateUtils.format(currTime, DateUtils.Pattern.DATE_SHORT);
         String uuid = UUIDGenerator.generate();
         File file = new File("D:\\opt\\" + dateStr + File.separator + uuid + "\\demo.txt");
@@ -91,7 +91,7 @@ public class UtilTests {
 
     @Test
     public void testJson() throws Exception {
-        o = new KeyValue("a", "b", DateUtils.currentTime());
+        o = new KeyValue("a", "b", DateUtils.current());
         System.out.println(JSONUtils.toJson(o));
 //        System.out.println(new JSONObject(o).toString());
 //        KeyValue tmp = mapper.readValue("{\"expires\":\"2017-08-15\",\"value\":\"[{\"b\":\"b\"}]\",\"key\":\"a\"}", KeyValue.class);

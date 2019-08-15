@@ -1,5 +1,6 @@
 package com.ch.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @date 2018/12/24 19:41
  */
 @Data
+@JsonIgnoreProperties("exists")
 public class FileInfo implements Serializable {
 
     /**
@@ -33,5 +35,10 @@ public class FileInfo implements Serializable {
      * 文件大小
      */
     private long size;
+
+    /**
+     * 已存在
+     */
+    private boolean exists;
 
 }
