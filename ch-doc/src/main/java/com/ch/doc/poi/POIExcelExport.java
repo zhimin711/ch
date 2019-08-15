@@ -3,12 +3,15 @@
  */
 package com.ch.doc.poi;
 
+import com.ch.doc.pojo.CellFont;
 import com.ch.e.CoreError;
+import com.ch.utils.CommonUtils;
 import com.ch.utils.ExceptionUtils;
 import com.ch.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -128,6 +131,7 @@ public class POIExcelExport {
     public void writeHeader(Object[] headers, int headerRowIndex) {
         Row row = sheet.createRow(headerRowIndex);// 写入第一行
         CellStyle headerStyle = getHeaderStyle(workbook);
+
         Cell cell;
         for (int i = 0; i < headers.length; i++) {
             cell = row.createCell(i);
@@ -362,8 +366,32 @@ public class POIExcelExport {
         font.setFontName("Times New Roman");
         font.setBold(true);
         font.setFontHeightInPoints((short) 9);
+
+//        font.setColor(new XSSFColor(java.awt.Color.RED));
         headerStyle.setFont(font);
         return headerStyle;
+    }
+
+    /**
+     * 获取表头的样式
+     *
+     * @return
+     */
+    protected XSSFFont getFont(SXSSFWorkbook workbook, CellFont fontInfo) {
+        // sheet页标题样式
+        // 设置字体
+        XSSFFont font = (XSSFFont) workbook.createFont();
+        font.setFontName("Times New Roman");
+        if(CommonUtils.isNotEmpty(fontInfo.getFontName())){
+            font.setFontName(fontInfo.getFontName());
+        }
+        font.setBold(fontInfo.isBold());
+        font.setFontHeightInPoints((short) 9);
+
+        if ("red".equals(fontInfo.getColor())) {
+            font.setColor(new XSSFColor(java.awt.Color.RED));
+        }
+        return font;
     }
 
     /**

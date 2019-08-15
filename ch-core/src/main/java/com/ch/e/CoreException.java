@@ -1,5 +1,7 @@
 package com.ch.e;
 
+import com.ch.result.Error;
+
 /**
  * 基本异常
  * Created by 01370603 on 2017/11/10.
@@ -26,7 +28,7 @@ public class CoreException extends RuntimeException {
      */
     public CoreException(IError error, String s) {
         super(s);
-        this.error = error;
+        this.error = new Error(error.getCode(), s);
     }
 
     public IError getError() {
