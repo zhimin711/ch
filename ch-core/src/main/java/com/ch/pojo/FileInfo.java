@@ -39,6 +39,6 @@ public class FileInfo implements Serializable {
     /**
      * 已存在
      */
-    private boolean exists;
+    private boolean exists = false;
 
 }
