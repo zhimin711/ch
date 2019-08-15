@@ -1,4 +1,4 @@
-package com.ch.type;
+package com.ch.t;
 
 /**
  * @author 01370603

@@ -1,4 +1,4 @@
-package com.ch.type;
+package com.ch.t;
 
 /**
  * 系统类型

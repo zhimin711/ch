@@ -1,7 +1,7 @@
 package com.ch.utils;
 
 import com.ch.e.PubError;
-import com.ch.type.DateRule;
+import com.ch.t.DateRule;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

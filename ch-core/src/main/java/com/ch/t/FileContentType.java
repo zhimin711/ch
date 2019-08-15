@@ -1,4 +1,4 @@
-package com.ch.type;
+package com.ch.t;
 
 /**
  * FileContentType 网络文件类型

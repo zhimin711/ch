@@ -1,4 +1,4 @@
-package com.ch.type;
+package com.ch.t;
 
 /**
  * FileContentType 网络文件类型
@@ -10,6 +10,7 @@ public enum FileType {
     VIDEO("video"),//
     SCRAWL("scrawl"),//
     DOC("doc"),//
+    DOCX("docx"),//
     EXCEL("excel"),//
     PPT("ppt"),//
     ZIP("zip"),//

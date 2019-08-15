@@ -304,4 +304,15 @@ public class FileExtUtils {
         return path.replaceAll("//|\\\\", "/");
     }
 
+    public enum Doc {
+        DOC, DOCX, PPT, PPTX, XLS, XLSX, PDF
+    }
+
+    public enum Zip {
+        ZIP, RAR, TAR, GZ
+    }
+
+    public enum Img {
+        JPG, PNG, GIF
+    }
 }

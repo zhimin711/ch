@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @date 2018/12/24 19:41
  */
 @Data
-@JsonIgnoreProperties("exists")
+@JsonIgnoreProperties({"exists", "username"})
 public class FileInfo implements Serializable {
 
     /**
@@ -40,5 +40,9 @@ public class FileInfo implements Serializable {
      * 已存在
      */
     private boolean exists = false;
+    /**
+     * 用户名
+     */
+    private String username;
 
 }

@@ -1,6 +1,6 @@
 package com.ch.utils;
 
-import com.ch.type.SystemType;
+import com.ch.t.SystemType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,6 +1,6 @@
 package com.ch.mybatis.utils;
 
-import com.ch.type.ConditionType;
+import com.ch.t.ConditionType;
 import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.SQLUtils;
