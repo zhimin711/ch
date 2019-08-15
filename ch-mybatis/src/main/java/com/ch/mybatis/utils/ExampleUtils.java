@@ -1,13 +1,13 @@
 package com.ch.mybatis.utils;
 
+import com.ch.type.ConditionType;
 import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
+import com.ch.utils.SQLUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 
 /**
  * desc:通用查询工具
@@ -99,6 +99,64 @@ public class ExampleUtils {
     }
 
     /**
+     * 动态拼接指定字段条件(equal or in)
+     *
+     * @param criteria   条件装配
+     * @param record     条件
+     * @param properties 属性
+     * @return 装配条件数
+     */
+    public static int dynNotEqual(Example.Criteria criteria, Object record, String... properties) {
+        AtomicInteger c = new AtomicInteger(0);
+        if (record == null) return c.get();
+        for (String r : properties) {
+            Object v = BeanExtUtils.getValueByProperty(record, r);
+            if (v == null) {
+                continue;
+            }
+            criteria.andNotEqualTo(r, v);
+            c.addAndGet(1);
+        }
+        return c.get();
+    }
+
+    /**
+     * 动态拼接指定字段条件(equal or in)
+     *
+     * @param criteria      条件装配
+     * @param record        条件
+     * @param conditionType 条件类型
+     * @param property      属性
+     * @return 装配条件数
+     */
+    public static int dynType(Example.Criteria criteria, Object record, ConditionType conditionType, String property) {
+        AtomicInteger c = new AtomicInteger(0);
+        if (record == null) return c.get();
+        if (conditionType == ConditionType.NOT_NULL) {
+            criteria.andIsNotNull(property);
+            return 1;
+        } else if (conditionType == ConditionType.NULL) {
+            criteria.andIsNull(property);
+            return 1;
+        }
+        Object v = BeanExtUtils.getValueByProperty(record, property);
+        if (v == null) {
+            return 0;
+        }
+        if (conditionType == ConditionType.NOT_EQUAL_TO) {
+            criteria.andNotEqualTo(property, v);
+        } else if (conditionType == ConditionType.GREATER_THAN) {
+            criteria.andGreaterThan(property, v);
+        } else if (conditionType == ConditionType.LESS_THAN) {
+            criteria.andLessThan(property, v);
+        } else {
+            criteria.andEqualTo(property, v);
+        }
+        c.addAndGet(1);
+        return c.get();
+    }
+
+    /**
      * 动态拼接指定字段Like条件（只装配String字符串）
      *
      * @param criteria   条件装配
@@ -107,14 +165,50 @@ public class ExampleUtils {
      * @return 装配条件数
      */
     public static int dynLike(Example.Criteria criteria, Object record, String... properties) {
+        return dynLike(criteria, record, LikeType.LIKE_ANY, properties);
+    }
+
+    /**
+     * 动态拼接指定字段Like条件（只装配String字符串）
+     *
+     * @param criteria   条件装配
+     * @param record     条件
+     * @param likeType   模糊类型
+     * @param properties 属性
+     * @return 装配条件数
+     */
+    public static int dynLike(Example.Criteria criteria, Object record, LikeType likeType, String... properties) {
         AtomicInteger c = new AtomicInteger(0);
         if (record == null) return c.get();
         for (String r : properties) {
             Object v = BeanExtUtils.getValueByProperty(record, r);
             if (!(v instanceof String)) continue;
-            criteria.andLike(r, "%" + ((String) v).trim() + "%");
+            String tmp = ((String) v).trim();
+            if (likeType == LikeType.LIKE_ANY) {
+                tmp = SQLUtils.likeAny(tmp);
+            } else if (likeType == LikeType.LIKE_SUFFIX) {
+                tmp = SQLUtils.likeSuffix(tmp);
+            } else if (likeType == LikeType.LIKE_PREFIX) {
+                tmp = SQLUtils.likePrefix(tmp);
+            }
+            criteria.andLike(r, tmp);
             c.addAndGet(1);
         }
         return c.get();
+    }
+
+    public enum LikeType {
+        /**
+         *
+         */
+        LIKE_ANY,
+        /**
+         * 后模糊
+         */
+        LIKE_SUFFIX,
+        /**
+         * 前模糊
+         */
+        LIKE_PREFIX
     }
 }

@@ -48,5 +48,13 @@ public enum ConditionType {
     /**
      * 模糊
      */
-    LIKE
+    LIKE,
+    /**
+     * 后模糊
+     */
+    LIKE_SUFFIX,
+    /**
+     * 前模糊
+     */
+    LIKE_PREFIX
 }
