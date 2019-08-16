@@ -9,10 +9,10 @@ package com.ch.e;
  * @since 1.8
  */
 public enum PubError implements IError {
-    DEFAULT("0", "默认错误"),//不使用
+    DEFAULT("0", "错误"),//不使用
     ARGS("10", "参数错误/无效"),//
     CONFIG("11", "配置错误/无效"),//
-    CONNECT("12", "连接错误/无效"),//
+    CONNECT("12", "连接失败"),//
     ADD("100", "添加失败"),//
     CREATE("101", "创建失败"),//
     UPDATE("102", "更新失败"),//
@@ -28,6 +28,7 @@ public enum PubError implements IError {
     EXISTS("303", "已存在"),//
     INVALID("304", "无效"),//
     OUT_OF_LIMIT("305", "溢出/超出限制"),//
+    NOT_("306", "无效"),//
     NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
 

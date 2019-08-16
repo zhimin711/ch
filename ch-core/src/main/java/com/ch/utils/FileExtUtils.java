@@ -293,7 +293,7 @@ public class FileExtUtils {
     /**
      * 链接路径转Unix
      *
-     * @param paths
+     * @param paths 路径集合
      * @return
      */
     public static String linkPathToUnix(String... paths) {
@@ -315,6 +315,43 @@ public class FileExtUtils {
 
     public enum Img {
         JPG, PNG, GIF
+    }
+
+    /**
+     * 判断文件名称是否是文档
+     *
+     * @param fileName fileName
+     * @return
+     */
+    public static Doc fromDoc(String fileName) {
+        if (CommonUtils.isEmpty(fileName)) return null;
+        String ext = getFileExtensionName(fileName);
+        try {
+            return Doc.valueOf(ext.toUpperCase());
+        } catch (IllegalArgumentException ignored) {
+        }
+        return null;
+    }
+
+    /**
+     * 判断文件名称是否是文档
+     *
+     * @param fileName fileName
+     * @return
+     */
+    public static boolean isDOC(String fileName) {
+        Doc doc = fromDoc(fileName);
+        return doc != null;
+    }
+
+    /**
+     * 判断文件名称是否是PDF文档
+     *
+     * @param fileName fileName
+     * @return
+     */
+    public static boolean isPDF(String fileName) {
+        return fromDoc(fileName) == Doc.PDF;
     }
 
 
