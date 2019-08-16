@@ -57,7 +57,7 @@ public class FileExtUtils {
             return "";
         }
         int start = fileName.lastIndexOf(".");
-        if (start > 0) {
+        if (start >= 0) {
             String suffix = fileName.substring(start);
             if (CommonUtils.isNotEmpty(suffix)) {
                 return suffix;
