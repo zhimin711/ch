@@ -17,6 +17,7 @@ public enum PubError implements IError {
     CREATE("101", "创建失败"),//
     UPDATE("102", "更新失败"),//
     DELETE("103", "删除失败"),//
+    DOWNLOAD("104", "下载失败"),//
     NOT_LOGIN("200", "未登录"),//
     USERNAME("201", "账号错误"),//
     PASSWORD("202", "密码错误"),//
@@ -58,6 +59,7 @@ public enum PubError implements IError {
             case "103":
                 return DELETE;
             case "104":
+                return DOWNLOAD;
             case "105":
                 break;
             case "200":
