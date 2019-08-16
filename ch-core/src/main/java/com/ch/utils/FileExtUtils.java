@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 
 /**
@@ -314,5 +315,15 @@ public class FileExtUtils {
 
     public enum Img {
         JPG, PNG, GIF
+    }
+
+
+    public static String encodeFileName(String fileName) {
+        try {
+            return new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");
+        } catch (UnsupportedEncodingException e) {
+            logger.error("UnsupportedEncodingException!", e);
+        }
+        return fileName;
     }
 }
