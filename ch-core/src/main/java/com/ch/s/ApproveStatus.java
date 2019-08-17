@@ -5,11 +5,11 @@ import com.ch.utils.CommonUtils;
 public enum ApproveStatus {
 
     BEGIN(0, "待审核"),
-    RUNNING(1, "审核中"),
-    REJECT(2, "审核驳回"),
+    SUCCESS(1, "审核通过"),
+    REFRESH(2, "重新审核"),
     CANCEL(3, "取消审核"),
-    REFRESH(4, "重新审核"),
-    SUCCESS(6, "审核通过"),
+    REJECT(4, "审核驳回"),
+    RUNNING(5, "审核中"),
     UNKNOWN(-1, "未知状态");
 
     private final int code;
@@ -36,19 +36,19 @@ public enum ApproveStatus {
                 status = BEGIN;
                 break;
             case 1:
-                status = RUNNING;
+                status = SUCCESS;
                 break;
             case 2:
-                status = REJECT;
+                status = REFRESH;
                 break;
             case 3:
                 status = CANCEL;
                 break;
             case 4:
-                status = REFRESH;
+                status = REJECT;
                 break;
-            case 6:
-                status = SUCCESS;
+            case 5:
+                status = RUNNING;
                 break;
         }
         return status;
