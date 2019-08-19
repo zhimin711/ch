@@ -20,6 +20,9 @@ public class FileExtUtils {
 
     private final static Logger logger = LoggerFactory.getLogger(FileExtUtils.class);
 
+    private FileExtUtils() {
+    }
+
     /**
      * The number of bytes in a kilobyte.
      */
@@ -221,8 +224,8 @@ public class FileExtUtils {
     /**
      * 创建文件或目录
      *
-     * @param file
-     * @return
+     * @param file 文件
+     * @return 成功或失败
      */
     public static boolean create(File file) {
         if (file == null) {
@@ -247,8 +250,8 @@ public class FileExtUtils {
     /**
      * 创建文件目录
      *
-     * @param path
-     * @return
+     * @param path 路径
+     * @return 成功或失败
      */
     public static boolean create(String path) {
         File file = new File(path);
@@ -268,8 +271,10 @@ public class FileExtUtils {
     }
 
     /**
-     * @param paths
-     * @return
+     * 连接目录路径名称
+     *
+     * @param paths 路径名称集合
+     * @return 目录
      */
     public static String linkPath(String... paths) {
         StringBuilder sb = new StringBuilder();
@@ -294,7 +299,7 @@ public class FileExtUtils {
      * 链接路径转Unix
      *
      * @param paths 路径集合
-     * @return
+     * @return 路径
      */
     public static String linkPathToUnix(String... paths) {
         return convertToUnix(linkPath(paths));
@@ -321,7 +326,7 @@ public class FileExtUtils {
      * 判断文件名称是否是文档
      *
      * @param fileName fileName
-     * @return
+     * @return 文件类型
      */
     public static Doc fromDoc(String fileName) {
         if (CommonUtils.isEmpty(fileName)) return null;
@@ -337,7 +342,7 @@ public class FileExtUtils {
      * 判断文件名称是否是文档
      *
      * @param fileName fileName
-     * @return
+     * @return 是或否
      */
     public static boolean isDOC(String fileName) {
         Doc doc = fromDoc(fileName);
@@ -348,7 +353,7 @@ public class FileExtUtils {
      * 判断文件名称是否是PDF文档
      *
      * @param fileName fileName
-     * @return
+     * @return 是或否
      */
     public static boolean isPDF(String fileName) {
         return fromDoc(fileName) == Doc.PDF;
