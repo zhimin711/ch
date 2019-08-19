@@ -113,10 +113,10 @@ public enum Status {
     }
 
     public boolean isSelected() {
-        return this == Status.ERROR;
+        return this == Status.SELECTED || this == Status.SUCCESS;
     }
 
     public boolean isEnabled() {
-        return this == Status.ENABLED;
+        return this == Status.ENABLED || this == Status.SUCCESS;
     }
 }
