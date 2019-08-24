@@ -85,7 +85,7 @@ public class ExampleUtils {
         if (record == null) return c.get();
         for (String r : properties) {
             Object v = BeanExtUtils.getValueByProperty(record, r);
-            if (v == null) {
+            if (CommonUtils.isEmpty(v)) {
                 continue;
             }
             if (v instanceof Iterable) {
@@ -111,7 +111,7 @@ public class ExampleUtils {
         if (record == null) return c.get();
         for (String r : properties) {
             Object v = BeanExtUtils.getValueByProperty(record, r);
-            if (v == null) {
+            if (CommonUtils.isEmpty(v)) {
                 continue;
             }
             criteria.andNotEqualTo(r, v);
