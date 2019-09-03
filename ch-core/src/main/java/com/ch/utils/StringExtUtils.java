@@ -16,7 +16,6 @@ public class StringExtUtils {
     }
 
     /**
-     *
      * @param number
      * @param length
      * @return
@@ -27,7 +26,6 @@ public class StringExtUtils {
     }
 
     /**
-     *
      * @param s
      * @param separator
      * @return
@@ -45,7 +43,7 @@ public class StringExtUtils {
      * 链接字符串数组
      *
      * @param separator 连接符号
-     * @param args 符串数组
+     * @param args      符串数组
      * @return
      */
     public static String linkStr(String separator, String... args) {
@@ -62,5 +60,25 @@ public class StringExtUtils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 检查字符串是包含指定字符集
+     *
+     * @param str  字符串
+     * @param args 字符集
+     * @return 是或否
+     */
+    public static boolean isExists(String str, String... args) {
+        if (CommonUtils.isEmpty(str) || CommonUtils.isEmpty(args)) return false;
+        for (String s : args) {
+            if (CommonUtils.isEmpty(s)) {
+                continue;
+            }
+            if (str.contains(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

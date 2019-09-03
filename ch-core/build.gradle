@@ -5,7 +5,7 @@ ext {
     googleGsonVersion = '2.8.5'
     apacheCommonsLang3Version = '3.4'
 
-    fastjsonVersion = '1.+'
+    fastjsonVersion = '1.2.59'
 }
 
 dependencies {

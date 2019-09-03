@@ -2,6 +2,7 @@ package com.ch.mybatis.service;
 
 import com.ch.mybatis.mapper.TableMapper;
 import com.ch.utils.CommonUtils;
+import com.ch.utils.StringExtUtils;
 
 public class TableServiceImpl implements TableService {
 
@@ -11,13 +12,15 @@ public class TableServiceImpl implements TableService {
         this.tableMapper = tableMapper;
     }
 
+    public static final String[] sList = new String[]{" ", "-", "%"};
+
     @Override
     public void create(String sourceName, String targetName) {
         if (CommonUtils.isNotEmpty(sourceName, targetName)) {
-            if (sourceName.contains(" ") || sourceName.contains("-") || sourceName.contains("%")) {
+            if (StringExtUtils.isExists(sourceName, sList)) {
                 throw new IllegalArgumentException("sourceName is invalid parameter!");
             }
-            if (targetName.contains(" ") || targetName.contains("-") || targetName.contains("%")) {
+            if (StringExtUtils.isExists(targetName, sList)) {
                 throw new IllegalArgumentException("sourceName is invalid parameter!");
             }
         } else {
@@ -29,7 +32,7 @@ public class TableServiceImpl implements TableService {
     @Override
     public void truncate(String tableName) {
         if (CommonUtils.isNotEmpty(tableName)) {
-            if (tableName.contains(" ") || tableName.contains("-") || tableName.contains("%")) {
+            if (StringExtUtils.isExists(tableName, sList)) {
                 throw new IllegalArgumentException("tableName is invalid parameter!");
             }
         } else {
@@ -41,10 +44,10 @@ public class TableServiceImpl implements TableService {
     @Override
     public int isExists(String schemaName, String tableName) {
         if (CommonUtils.isNotEmpty(schemaName, tableName)) {
-            if (schemaName.contains(" ") || schemaName.contains("-") || schemaName.contains("%")) {
+            if (StringExtUtils.isExists(schemaName, sList)) {
                 throw new IllegalArgumentException("schemaName is invalid parameter!");
             }
-            if (tableName.contains(" ") || tableName.contains("-") || tableName.contains("%")) {
+            if (StringExtUtils.isExists(tableName, sList)) {
                 throw new IllegalArgumentException("tableName is invalid parameter!");
             }
         } else {
