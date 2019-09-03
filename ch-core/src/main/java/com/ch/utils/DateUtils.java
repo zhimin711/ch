@@ -709,6 +709,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             case Calendar.HOUR:
                 t = Calendar.HOUR;
                 break;
+            case Calendar.HOUR_OF_DAY:
+                t = Calendar.HOUR_OF_DAY;
+                break;
             case Calendar.MINUTE:
                 t = Calendar.MINUTE;
                 break;
@@ -895,4 +898,38 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         }
         return String.format("%2d", i);
     }
+
+
+    /**
+     * 计算两个日期之间相差的天数
+     *
+     * @param date1
+     * @param date2
+     * @return
+     */
+    public static int daysBetween(Date date1, Date date2) {
+        long hours = hourBetween(date1,date2);
+        long betweenDays = hours / 24;
+
+        return Integer.parseInt(String.valueOf(betweenDays));
+    }
+
+
+    /**
+     * 计算两个日期之间相差的小时
+     *
+     * @param date1 日期1
+     * @param date2 日期2
+     * @return
+     */
+    public static long hourBetween(Date date1, Date date2) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date1);
+        long time1 = cal.getTimeInMillis();
+        cal.setTime(date2);
+        long time2 = cal.getTimeInMillis();
+        long betweenHours= (time2 - time1) / (1000 * 3600);
+        return Math.abs(betweenHours);
+    }
+
 }
