@@ -11,7 +11,7 @@ public class PubException extends RuntimeException {
     private IError error;
 
     /**
-     * Constructs an <code>OutOfLimitException</code> with no
+     * Constructs an <code>RuntimeException</code> with no
      * detail message.
      */
     public PubException(IError error) {
@@ -20,7 +20,7 @@ public class PubException extends RuntimeException {
     }
 
     /**
-     * Constructs an <code>OutOfLimitException</code> class
+     * Constructs an <code>RuntimeException</code> class
      * with the specified detail message.
      *
      * @param error Error.
@@ -29,6 +29,42 @@ public class PubException extends RuntimeException {
     public PubException(IError error, String s) {
         super(s);
         this.error = new Error(error.getCode(), s);
+    }
+
+    /**
+     * Constructs an <code>RuntimeException</code> with no
+     * detail message.
+     *
+     * @param e the Throwable.
+     */
+    public PubException(IError error, Throwable e) {
+        super(e);
+        this.error = error;
+    }
+
+    /**
+     * Constructs an <code>RuntimeException</code> class
+     * with the specified detail message.
+     *
+     * @param error Error.
+     * @param s     the detail message.
+     * @param e     the Throwable.
+     */
+    public PubException(IError error, String s, Throwable e) {
+        super(s, e);
+        this.error = new Error(error.getCode(), s);
+    }
+
+    /**
+     * Constructs an <code>RuntimeException</code> class
+     * with the specified detail message.
+     *
+     * @param s the detail message.
+     * @param e the Throwable.
+     */
+    public PubException(String s, Throwable e) {
+        super(s, e);
+        this.error = PubError.UNKNOWN;
     }
 
     public IError getError() {

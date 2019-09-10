@@ -17,7 +17,7 @@ public class ExceptionUtils {
     private final static Logger logger = LoggerFactory.getLogger(ExceptionUtils.class);
 
     /**
-     * 创建异常
+     * 创建异常1
      *
      * @param error 错误
      * @return
@@ -27,7 +27,18 @@ public class ExceptionUtils {
     }
 
     /**
-     * 创建异常
+     * 创建异常2
+     *
+     * @param error     错误
+     * @param throwable 异常
+     * @return
+     */
+    public static PubException create(IError error, Throwable throwable) {
+        return new PubException(error, throwable);
+    }
+
+    /**
+     * 创建异常3
      *
      * @param error 错误
      * @param msg   自定义错误信息
@@ -37,6 +48,28 @@ public class ExceptionUtils {
         return new PubException(error, msg);
     }
 
+    /**
+     * 创建异常4
+     *
+     * @param error     错误
+     * @param msg       自定义错误信息
+     * @param throwable 异常
+     * @return
+     */
+    public static PubException create(IError error, String msg, Throwable throwable) {
+        return new PubException(error, msg, throwable);
+    }
+
+    /**
+     * 创建异常5
+     *
+     * @param msg       自定义错误信息
+     * @param throwable 异常
+     * @return
+     */
+    public static PubException create(String msg, Throwable throwable) {
+        return new PubException(msg, throwable);
+    }
 
     /**
      * 抓取异常信息
