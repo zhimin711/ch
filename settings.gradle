@@ -4,6 +4,6 @@ include 'ch-core'
 include 'ch-jdbc-mybatis'
 //include 'ch-mail'
 //include 'ch-tools'
-//include 'ch-doc'
+include 'ch-doc'
 //include 'ch-shiro'
 
