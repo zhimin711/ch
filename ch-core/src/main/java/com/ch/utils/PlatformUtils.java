@@ -103,7 +103,7 @@ public class PlatformUtils {
     /**
      * 获取主机的域名
      *
-     * @return
+     * @return 主机的域名
      */
     public static String getCanonicalHostName() {
         try {

@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.ch.e.PubError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -170,7 +171,8 @@ public class CommonUtils {
             return 1;
         }
         if (!a.getClass().equals(b.getClass())) {
-            throw new RuntimeException("Class Type is not same!");
+//            throw new RuntimeException("Class Type is not same!");
+            throw ExceptionUtils.create(PubError.ARGS, "Class Type is not same!");
         } else if (a instanceof Integer && b instanceof Integer) {
             return ((Integer) a).compareTo((Integer) b);
         } else if (a instanceof Long && b instanceof Long) {
@@ -186,8 +188,9 @@ public class CommonUtils {
         } else if (a instanceof Date && b instanceof Date) {
             return ((Date) a).compareTo((Date) b);
         } else {
-            logger.error("{} compare {} error!", a, b);
-            throw new RuntimeException("Not Support Class Type Compare!");
+            logger.warn("{} compare {} error!", a, b);
+//            throw new RuntimeException("Not Support Class Type Compare!");
+            throw ExceptionUtils.create(PubError.ARGS, "Not Support Class Type Compare!");
         }
     }
 

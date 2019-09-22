@@ -15,6 +15,12 @@ public class JarUtils {
     private JarUtils() {
     }
 
+    /**
+     * 加载Jar包
+     *
+     * @param path jar包路径
+     * @throws NoSuchMethodException
+     */
     public static void load(String path) throws NoSuchMethodException {
         // 系统类库路径
         File libPath = new File(path);

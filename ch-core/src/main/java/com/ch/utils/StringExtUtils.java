@@ -1,7 +1,5 @@
 package com.ch.utils;
 
-import com.ch.Constants;
-
 /**
  * 描述：com.ch.utils
  *
@@ -26,8 +24,8 @@ public class StringExtUtils {
     }
 
     /**
-     * @param s
-     * @param separator
+     * @param s         字符串
+     * @param separator 连接符号
      * @return
      */
     public static String lastStr(String s, String separator) {
@@ -43,7 +41,7 @@ public class StringExtUtils {
      * 链接字符串数组
      *
      * @param separator 连接符号
-     * @param args      符串数组
+     * @param args      字符串数组
      * @return
      */
     public static String linkStr(String separator, String... args) {
