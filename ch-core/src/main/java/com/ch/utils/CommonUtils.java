@@ -138,7 +138,7 @@ public class CommonUtils {
     public static boolean isDecimal(String str) {
         String s = "0.00";
         if (isEmpty(str)) {
-            s = str.replaceFirst(".", "");
+            s = str.replaceFirst("\\.", "");
         }
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(s).matches();
