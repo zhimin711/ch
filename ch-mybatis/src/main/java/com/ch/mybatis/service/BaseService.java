@@ -149,13 +149,18 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
     }
 
     @Override
-    public List<T> findPageList(int pageNum, int pageSize, T record) {
+    public List<T> findPageList(T record, int pageNum, int pageSize) {
         check();
         if (record == null) {
             record = newInstance();
         }
         PageHelper.startPage(pageNum, pageSize, true, true, false);
         return getMapper().select(record);
+    }
+
+    @Override
+    public List<T> findPageList(int pageNum, int pageSize, T record) {
+        return this.findPageList(record, pageNum, pageSize);
     }
 
     @Override
@@ -185,11 +190,16 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
     }
 
     @Override
-    public PageInfo<T> findPage(int pageNum, int pageSize, T record) {
+    public PageInfo<T> findPage(T record, int pageNum, int pageSize) {
         check();
         check(record);
         PageHelper.startPage(pageNum, pageSize);
         List<T> records = getMapper().select(record);
         return new PageInfo<>(records);
+    }
+
+    @Override
+    public PageInfo<T> findPage(int pageNum, int pageSize, T record) {
+        return this.findPage(record, pageNum, pageSize);
     }
 }
