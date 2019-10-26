@@ -12,9 +12,11 @@ public class Constants {
 
     public static final String SUPER_ADMIN = "admin";
     public final static String CURRENT_USER = "currentUser";
-    public static final String TOKEN_HEADER = "Authorization";
-    public final static String TOKEN_USER = "X-AUTH-USER";
+
     public final static String TOKEN = "token";
+    public static final String TOKEN_HEADER = "Authorization";
+    public final static String TOKEN_HEADER2 = "X-TOKEN";
+    public final static String TOKEN_USER = "X-AUTH-USER";
     public final static String SECURITY_ROLE_PREFIX = "ROLE_";
     public final static String SECURITY_SEPARATOR = ":";
     public final static String SEPARATOR = "-";
