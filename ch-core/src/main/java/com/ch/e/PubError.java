@@ -30,6 +30,7 @@ public enum PubError implements IError {
     INVALID("304", "无效"),//
     OUT_OF_LIMIT("305", "溢出/超出限制"),//
     NOT_("306", "无效"),//
+    EXPIRED("307", "已过期"),//
     NOT_AUTH("403", "未授权"),//UNAUTHORIZED
     UNKNOWN("-1", "未知错误");
 
@@ -87,6 +88,10 @@ public enum PubError implements IError {
                 return INVALID;
             case "305":
                 return OUT_OF_LIMIT;
+            case "306":
+                return NOT_;
+            case "307":
+                return EXPIRED;
             case "403":
                 return NOT_AUTH;
             default:
