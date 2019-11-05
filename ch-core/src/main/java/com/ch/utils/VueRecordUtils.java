@@ -22,7 +22,7 @@ public class VueRecordUtils {
      * @param tree
      * @return
      */
-    public static List<VueRecord> covertTree(List<?> tree) {
+    public static List<VueRecord> covertIdTree(List<?> tree) {
         if (CommonUtils.isEmpty(tree)) {
             return new ArrayList<>();
         }
@@ -35,7 +35,7 @@ public class VueRecordUtils {
      * @param tree
      * @return
      */
-    public static List<VueRecord> covertTree2(List<?> tree) {
+    public static List<VueRecord> covertCodeTree(List<?> tree) {
         if (CommonUtils.isEmpty(tree)) {
             return new ArrayList<>();
         }
