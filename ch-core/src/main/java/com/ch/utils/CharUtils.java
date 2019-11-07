@@ -3,7 +3,9 @@ package com.ch.utils;
 import java.util.regex.Pattern;
 
 /**
- * 编码 Utils
+ * 字符工具 Utils
+ * （编码）
+ *
  * @author zhimin on 2017/4/4.
  */
 public class CharUtils {
@@ -31,6 +33,24 @@ public class CharUtils {
      * @return true or false
      */
     public static boolean isChinese(String strName) {
+        if (CommonUtils.isEmpty(strName)) return false;
+        char[] ch = strName.toCharArray();
+        for (char c : ch) {
+            if (!isChinese(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 完整的判断中文汉字和符号
+     *
+     * @param strName 字符串
+     * @return true or false
+     */
+    public static boolean containsChinese(String strName) {
+        if (CommonUtils.isEmpty(strName)) return false;
         char[] ch = strName.toCharArray();
         for (char c : ch) {
             if (isChinese(c)) {
@@ -47,9 +67,7 @@ public class CharUtils {
      * @return true or false
      */
     public static boolean isChineseByUnicode(String str) {
-        if (str == null) {
-            return false;
-        }
+        if (CommonUtils.isEmpty(str)) return false;
         Pattern pattern = Pattern.compile("[\\u4E00-\\u9FBF]+");
         return pattern.matcher(str.trim()).find();
     }
@@ -61,9 +79,7 @@ public class CharUtils {
      * @return true or false
      */
     public static boolean isChineseByCJK(String str) {
-        if (str == null) {
-            return false;
-        }
+        if (CommonUtils.isEmpty(str)) return false;
         // 大小写不同：\\p 表示包含，\\P 表示不包含
         // \\p{Cn} 的意思为 Unicode 中未被定义字符的编码，\\P{Cn} 就表示 Unicode中已经被定义字符的编码
         String reg = "\\p{InCJK Unified Ideographs}&&\\P{Cn}";
@@ -78,6 +94,7 @@ public class CharUtils {
      * @return Unicode
      */
     public static String string2Unicode(String str) {
+        if (CommonUtils.isEmpty(str)) return null;
         StringBuilder unicode = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             // 取出每一个字符
