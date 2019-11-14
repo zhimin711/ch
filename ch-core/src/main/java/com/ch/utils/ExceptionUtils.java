@@ -93,4 +93,58 @@ public class ExceptionUtils {
         return "";
     }
 
+    /**
+     * 抛异常1
+     *
+     * @param error 错误
+     * @return
+     */
+    public static void _throw(IError error) {
+        throw new PubException(error);
+    }
+
+    /**
+     * 抛异常2
+     *
+     * @param error     错误
+     * @param throwable 异常
+     * @return
+     */
+    public static void _throw(IError error, Throwable throwable) {
+        throw new PubException(error, throwable);
+    }
+
+    /**
+     * 抛异常3
+     *
+     * @param error 错误
+     * @param msg   自定义错误信息
+     * @return
+     */
+    public static void _throw(IError error, String msg) {
+        throw new PubException(error, msg);
+    }
+
+    /**
+     * 抛异常4
+     *
+     * @param error     错误
+     * @param msg       自定义错误信息
+     * @param throwable 异常
+     * @return
+     */
+    public static void _throw(IError error, String msg, Throwable throwable) {
+        throw new PubException(error, msg, throwable);
+    }
+
+    /**
+     * 抛异常5
+     *
+     * @param msg       自定义错误信息
+     * @param throwable 异常
+     * @return
+     */
+    public static void _throw(String msg, Throwable throwable) {
+        throw new PubException(msg, throwable);
+    }
 }
