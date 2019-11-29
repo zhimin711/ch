@@ -108,6 +108,27 @@ public class JSONUtils {
     }
 
     /**
+     * 解析Json反射对象
+     * parse json to class
+     *
+     * @param json     json格式化字符串
+     * @param classOfT 返回映射类
+     * @param pattern  时间格式化
+     * @return 返回实体对象
+     */
+    public static <T> T fromJson(String json, Class<T> classOfT, DateUtils.Pattern pattern) {
+        if (json == null) {
+            return null;
+        }
+        try {
+            return newInstance(pattern).fromJson(json, classOfT);
+        } catch (Exception e) {
+            logger.error("parse json with date pattern to class error!", e);
+        }
+        return null;
+    }
+
+    /**
      * Gson
      * new TypeToken<List<KeyValue>>() {}.getType()
      *
@@ -132,6 +153,10 @@ public class JSONUtils {
 
     private static Gson newInstance() {
         return new Gson();
+    }
+
+    private static Gson newInstance(DateUtils.Pattern pattern) {
+        return new GsonBuilder().setDateFormat(pattern.getValue()).create();
     }
 
     private static Gson newInstance2(Config config) {
