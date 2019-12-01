@@ -214,7 +214,6 @@ public class ExampleUtils {
     }
 
 
-
     /**
      * @param sqls
      * @param property
@@ -253,8 +252,8 @@ public class ExampleUtils {
     /**
      * 动态拼接基础字段条件
      *
-     * @param sqls 条件装配
-     * @param record   条件
+     * @param sqls   条件装配
+     * @param record 条件
      * @return 装配条件数
      */
     public static int dynCommon(Sqls sqls, Object record) {
@@ -268,7 +267,7 @@ public class ExampleUtils {
     /**
      * 动态拼接指定字段条件(equal or in)
      *
-     * @param sqls   条件装配
+     * @param sqls       条件装配
      * @param record     条件
      * @param properties 属性
      * @return 装配条件数
@@ -294,7 +293,7 @@ public class ExampleUtils {
     /**
      * 动态拼接指定字段条件(equal or in)
      *
-     * @param sqls   条件装配
+     * @param sqls       条件装配
      * @param record     条件
      * @param properties 属性
      * @return 装配条件数
@@ -316,7 +315,7 @@ public class ExampleUtils {
     /**
      * 动态拼接指定字段条件(equal or in)
      *
-     * @param sqls      条件装配
+     * @param sqls          条件装配
      * @param record        条件
      * @param conditionType 条件类型
      * @param property      属性
@@ -352,7 +351,7 @@ public class ExampleUtils {
     /**
      * 动态拼接指定字段Like条件（只装配String字符串）
      *
-     * @param sqls   条件装配
+     * @param sqls       条件装配
      * @param record     条件
      * @param properties 属性
      * @return 装配条件数
@@ -364,7 +363,7 @@ public class ExampleUtils {
     /**
      * 动态拼接指定字段Like条件（只装配String字符串）
      *
-     * @param sqls   条件装配
+     * @param sqls       条件装配
      * @param record     条件
      * @param likeType   模糊类型
      * @param properties 属性
@@ -388,5 +387,40 @@ public class ExampleUtils {
             c.addAndGet(1);
         }
         return c.get();
+    }
+
+    /**
+     * 动态拼接指定字段Like条件（只装配String字符串）
+     *
+     * @param example 条件装配
+     * @param orderBy 排序
+     * @return 装配条件数
+     */
+    public static int orderBy(Example example, String orderBy) {
+        if (CommonUtils.isEmpty(orderBy)) return 0;
+
+        String[] props = orderBy.split(",");
+        int c = 0;
+        for (String prop : props) {
+            if (CommonUtils.isEmpty(prop)) {
+                continue;
+            }
+            boolean isDesc = false;
+            String str = prop;
+            if (prop.toLowerCase().endsWith(" desc")) {
+                isDesc = true;
+                str = prop.substring(0, prop.length() - 5);
+            } else if (prop.toLowerCase().endsWith(" asc")) {
+                str = prop.substring(0, prop.length() - 4);
+            }
+            if (isDesc) {
+                example.orderBy(str).desc();
+            } else {
+                example.orderBy(str).asc();
+            }
+            c++;
+        }
+
+        return c;
     }
 }
