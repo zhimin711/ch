@@ -303,6 +303,9 @@ public class BeanExtUtils {
     @SuppressWarnings("unchecked")
     public static <T> T getValue2ByProperty(Object obj, String fieldName) {
         try {
+            if(CommonUtils.isEmpty(fieldName)){
+                return null;
+            }
             return (T) getValueByProperty(obj, fieldName);
         } catch (Exception ignored) {
         }
@@ -318,6 +321,9 @@ public class BeanExtUtils {
      */
     public static Object getValueByProperty(Object obj, String fieldName) {
         try {
+            if(CommonUtils.isEmpty(fieldName)){
+                return null;
+            }
             Method m = obj.getClass().getMethod(getGetMethodName(fieldName));
             return m.invoke(obj);
         } catch (Exception ignored) {
