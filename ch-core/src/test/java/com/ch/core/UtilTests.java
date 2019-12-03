@@ -71,6 +71,7 @@ public class UtilTests {
         if (matches.size() > 0) {
             o = matches.get(0).trim();
         }
+
         System.out.println(o);
 
     }
@@ -170,6 +171,9 @@ public class UtilTests {
         Number num1 = 0.000000000000000000f;
         Number num2 = 0;
         logger.info("{} == {} -> {}", num1.floatValue(), num2.floatValue(), num1.doubleValue() == num2.doubleValue());
+
+        logger.info("data calc offset days: {}", DateUtils.calcOffsetDays("2019-12-05", "2019-12-02"));
+        logger.info("data calc cross days: {}", DateUtils.calcCrossDays("2019-12-12", "2019-12-02"));
     }
 
     @Test

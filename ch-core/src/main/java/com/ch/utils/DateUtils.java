@@ -298,7 +298,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获得系统当前日期时间
+     * 获得最小日期（1970-01-01）
      *
      * @return 返回当前日期时间
      */
@@ -307,7 +307,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     /**
-     * 获得系统当前日期时间
+     * 获得最大日期（9999-12-31）
      *
      * @return 返回当前日期时间
      */
@@ -377,13 +377,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 第一天
      */
     public static Date getFirstDayOfMouth(Date date) {
-        assert date != null;
+        Date d = startDayTime(date);
         Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        c.setTime(d);
         c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
 
@@ -518,13 +515,74 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return
      */
     public static long getOffset(String date1, String date2) {
+        return calcOffsetDays(date1, date2, true);
+    }
 
+    /**
+     * 计算2个日期相差天数（以24小时一天为准）
+     *
+     * @param date1 开始日期
+     * @param date2 结束日期
+     * @return
+     */
+    public static long calcOffsetDays(String date1, String date2) {
+        return calcOffsetDays(date1, date2, true);
+    }
+    /**
+     * 计算2个日期跨越天数（以日期为准）
+     *
+     * @param date1 开始日期
+     * @param date2 结束日期
+     * @return
+     */
+    public static long calcCrossDays(String date1, String date2) {
+        return calcOffsetDays(date1, date2, false);
+    }
+
+    /**
+     * 计算2个日期相差天数
+     *
+     * @param date1 开始日期
+     * @param date2 结束日期
+     * @param accTime 精确到时分秒(24小时)
+     * @return
+     */
+    public static long calcOffsetDays(String date1, String date2, boolean accTime) {
         Date d1 = parse(date1, Pattern.DATE_CN);
         Date d2 = parse(date2, Pattern.DATE_CN);
-
         assert d1 != null;
         assert d2 != null;
-        long c = d2.getTime() - d1.getTime();
+        return calcOffsetDays(d1, d2, accTime);
+    }
+
+    /**
+     * 计算2个日期相差天数
+     *
+     * @param date1   时间1
+     * @param date2   时间2
+     * @param accTime 精确到时分秒(24小时)
+     * @return
+     */
+    public static long calcOffsetDays(Date date1, Date date2, boolean accTime) {
+        if (date1 == null || date2 == null) {
+            throw ExceptionUtils.create(PubError.INVALID);
+        }
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(date1);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(date2);
+        if (!accTime) {
+            Date d1 = startDayTime(date1);
+            Date d2 = startDayTime(date2);
+            if (d1.after(d2)) {
+                c1.setTime(d2);
+                c2.setTime(addDays(d1, 1));
+            } else {
+                c1.setTime(d1);
+                c2.setTime(addDays(d2, 1));
+            }
+        }
+        long c = Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis());
         return c / 1000 / 3600 / 24;
     }
 
@@ -730,20 +788,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return c.get(t);
     }
 
-    public static Date addHours(Date date, int hours) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.HOUR_OF_DAY, hours);
-        return cal.getTime();
-    }
-
-    public static Date addMinutes(Date date, int minutes) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.MINUTE, minutes);
-        return cal.getTime();
-    }
-
     /**
      * 计算两个日期之间的工作日数
      *
@@ -907,11 +951,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date2
      * @return
      */
-    public static int daysBetween(Date date1, Date date2) {
-        long hours = hourBetween(date1,date2);
-        long betweenDays = hours / 24;
-
-        return Integer.parseInt(String.valueOf(betweenDays));
+    public static int calcOffsetDays(Date date1, Date date2) {
+        return (int) calcOffsetDays(date1, date2, true);
     }
 
 
@@ -922,13 +963,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date2 日期2
      * @return
      */
-    public static long hourBetween(Date date1, Date date2) {
+    public static long calcOffsetHours(Date date1, Date date2) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date1);
         long time1 = cal.getTimeInMillis();
         cal.setTime(date2);
         long time2 = cal.getTimeInMillis();
-        long betweenHours= (time2 - time1) / (1000 * 3600);
+        long betweenHours = (time2 - time1) / (1000 * 3600);
         return Math.abs(betweenHours);
     }
 
