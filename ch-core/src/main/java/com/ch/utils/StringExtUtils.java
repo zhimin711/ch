@@ -1,5 +1,11 @@
 package com.ch.utils;
 
+import com.ch.Constants;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.List;
+
 /**
  * 描述：com.ch.utils
  *
@@ -78,5 +84,27 @@ public class StringExtUtils {
             }
         }
         return false;
+    }
+
+    public static Long[] parseIds(String idStr) {
+        String[] idArr = idStr.split(Constants.SEPARATOR_2);
+        List<Long> ids = Lists.newArrayList();
+        for (String id : idArr) {
+            Number num = NumberUtils.createNumber(id);
+            ids.add(num.longValue());
+        }
+        return ids.toArray(new Long[]{});
+    }
+
+    public static String toIdStr(Number[] ids) {
+        List<String> idList = Lists.newArrayList();
+        for (Number id : ids) {
+            idList.add(id.toString());
+        }
+        return linkStr(Constants.SEPARATOR_2, idList.toArray(new String[]{}));
+    }
+
+    public static String toIdStr(List<Number> ids) {
+        return toIdStr(ids.toArray(new Number[]{}));
     }
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -188,5 +189,14 @@ public class UtilTests {
 
         System.out.println(FileExtUtils.convertToUnix(url));
 
+    }
+
+    @Test
+    public void testString() {
+        logger.info(Arrays.toString(StringExtUtils.parseIds("1,2")));
+
+        logger.info(StringExtUtils.toIdStr(new Long[]{111L, 222L}));
+        logger.info(StringExtUtils.toIdStr(new Integer[]{1, 2}));
+        logger.info(StringExtUtils.toIdStr(new Float[]{1.1f, 22.01f}));
     }
 }
