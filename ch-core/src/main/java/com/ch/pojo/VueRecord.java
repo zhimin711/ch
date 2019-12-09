@@ -1,6 +1,7 @@
 package com.ch.pojo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  * @date 2018/12/29 10:54
  */
 @Data
+@NoArgsConstructor
 public class VueRecord implements Serializable {
 
     /**
@@ -29,4 +31,14 @@ public class VueRecord implements Serializable {
      */
     private List<VueRecord> children;
 
+    public VueRecord(String value, String label) {
+        this.value = value;
+        this.label = label;
+    }
+
+    public VueRecord(String value, String label, boolean disabled) {
+        this.value = value;
+        this.label = label;
+        this.disabled = disabled;
+    }
 }
