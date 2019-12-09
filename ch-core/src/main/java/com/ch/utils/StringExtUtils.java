@@ -77,7 +77,7 @@ public class StringExtUtils {
         if (CommonUtils.isEmpty(args)) return "";
         StringBuilder sb = new StringBuilder();
         for (String str : args) {
-            if (CommonUtils.isEmpty(str) || CommonUtils.isEquals(Constants.DISABLED, args)) {
+            if (CommonUtils.isEmpty(str) || CommonUtils.isEquals(Constants.DISABLED, str)) {
                 continue;
             }
             if (sb.length() > 0) {
