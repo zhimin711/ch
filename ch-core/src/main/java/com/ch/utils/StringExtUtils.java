@@ -67,6 +67,29 @@ public class StringExtUtils {
     }
 
     /**
+     * 链接字符串数组（并忽略0）
+     *
+     * @param separator 连接符号
+     * @param args      字符串数组
+     * @return
+     */
+    public static String linkStrIgnoreZero(String separator, String... args) {
+        if (CommonUtils.isEmpty(args)) return "";
+        StringBuilder sb = new StringBuilder();
+        for (String str : args) {
+            if (CommonUtils.isEmpty(str) || CommonUtils.isEquals(Constants.DISABLED, args)) {
+                continue;
+            }
+            if (sb.length() > 0) {
+                sb.append(separator).append(str);
+            } else {
+                sb.append(str);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * 检查字符串是包含指定字符集
      *
      * @param str  字符串
@@ -87,7 +110,7 @@ public class StringExtUtils {
     }
 
     public static List<Long> parseIds(String idStr) {
-        if(CommonUtils.isEmpty(idStr)){
+        if (CommonUtils.isEmpty(idStr)) {
             return Lists.newArrayList();
         }
         String[] idArr = idStr.split(Constants.SEPARATOR_2);
