@@ -86,14 +86,21 @@ public class StringExtUtils {
         return false;
     }
 
-    public static Long[] parseIds(String idStr) {
+    public static List<Long> parseIds(String idStr) {
+        if(CommonUtils.isEmpty(idStr)){
+            return Lists.newArrayList();
+        }
         String[] idArr = idStr.split(Constants.SEPARATOR_2);
         List<Long> ids = Lists.newArrayList();
         for (String id : idArr) {
             Number num = NumberUtils.createNumber(id);
             ids.add(num.longValue());
         }
-        return ids.toArray(new Long[]{});
+        return ids;
+    }
+
+    public static Long[] parseIdArr(String idStr) {
+        return parseIds(idStr).toArray(new Long[]{});
     }
 
     public static String toIdStr(Number[] ids) {
