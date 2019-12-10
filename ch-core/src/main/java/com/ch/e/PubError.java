@@ -13,6 +13,7 @@ public enum PubError implements IError {
     ARGS("10", "参数错误/无效"),//
     CONFIG("11", "配置错误/无效"),//
     CONNECT("12", "连接失败"),//
+    RETRY("13", "重试"),//
     ADD("100", "添加失败"),//
     CREATE("101", "创建失败"),//
     UPDATE("102", "更新失败"),//
@@ -53,6 +54,8 @@ public enum PubError implements IError {
                 return CONFIG;
             case "12":
                 return CONNECT;
+            case "13":
+                return RETRY;
             case "100":
                 return ADD;
             case "101":
