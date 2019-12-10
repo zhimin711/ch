@@ -20,7 +20,14 @@ public class Constants {
     public final static String SECURITY_ROLE_PREFIX = "ROLE_";
     public final static String SECURITY_SEPARATOR = ":";
     public final static String SEPARATOR = "-";
+    public final static String SEPARATOR_1 = "#";
     public final static String SEPARATOR_2 = ",";
+    public final static String SEPARATOR_3 = "/";
+    public final static String SEPARATOR_4 = ">";
+    public final static String SEPARATOR_5 = "~";
+    public final static String SEPARATOR_6 = "*";
+    public final static String SEPARATOR_7 = "&";
+    public final static String SEPARATOR_8 = "$";
 
 
     public final static String STATUS = "status";
