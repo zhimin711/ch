@@ -38,7 +38,7 @@ public class StringExtUtils {
         if (CommonUtils.isEmpty(s)) return "";
         if (s.contains(separator)) {
             int i = s.lastIndexOf(separator);
-            return s.substring(i);
+            return s.substring(i + 1);
         }
         return s;
     }
