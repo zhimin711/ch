@@ -144,4 +144,80 @@ public class PlatformUtils {
         return null;
     }
 
+    /**
+     * 根据Request（HttpServletRequest）获取来访者的浏览器版本
+     * request.getHeader("user-agent")
+     *
+     * @param headerUserAgent request
+     * @return
+     */
+    public static String getBrowserInfo(String headerUserAgent) {
+        String browserVersion = null;
+//        String header = request.getHeader("user-agent");
+        if (CommonUtils.isEmpty(headerUserAgent)) {
+            return browserVersion;
+        }
+        if (headerUserAgent.indexOf("MSIE") > 0) {
+            browserVersion = "IE";
+        } else if (headerUserAgent.indexOf("Firefox") > 0) {
+            browserVersion = "Firefox";
+        } else if (headerUserAgent.indexOf("Chrome") > 0) {
+            browserVersion = "Chrome";
+        } else if (headerUserAgent.indexOf("Safari") > 0) {
+            browserVersion = "Safari";
+        } else if (headerUserAgent.indexOf("Camino") > 0) {
+            browserVersion = "Camino";
+        } else if (headerUserAgent.indexOf("Konqueror") > 0) {
+            browserVersion = "Konqueror";
+        }
+        return browserVersion;
+    }
+
+    /**
+     * 获取系统版本信息 request.getHeader("user-agent")
+     *
+     * @param header request
+     * @return
+     */
+    public static String getSystemInfo(String header) {
+        String systemInfo = null;
+//        String header = request.getHeader("user-agent");
+        if (CommonUtils.isEmpty(header)) {
+            return systemInfo;
+        }
+        //得到用户的操作系统
+        if (header.indexOf("NT 6.0") > 0) {
+            systemInfo = "Windows Vista/Server 2008";
+        } else if (header.indexOf("NT 5.2") > 0) {
+            systemInfo = "Windows Server 2003";
+        } else if (header.indexOf("NT 5.1") > 0) {
+            systemInfo = "Windows XP";
+        } else if (header.indexOf("NT 6.1") > 0) {
+            systemInfo = "Windows 7";
+        } else if (header.indexOf("NT 6.2") > 0) {
+            systemInfo = "Windows Slate";
+        } else if (header.indexOf("NT 6.3") > 0) {
+            systemInfo = "Windows 9";
+        } else if (header.indexOf("NT 5") > 0) {
+            systemInfo = "Windows 2000";
+        } else if (header.indexOf("NT 4") > 0) {
+            systemInfo = "Windows NT4";
+        } else if (header.indexOf("Me") > 0) {
+            systemInfo = "Windows Me";
+        } else if (header.indexOf("98") > 0) {
+            systemInfo = "Windows 98";
+        } else if (header.indexOf("95") > 0) {
+            systemInfo = "Windows 95";
+        } else if (header.indexOf("Mac") > 0) {
+            systemInfo = "Mac";
+        } else if (header.indexOf("Unix") > 0) {
+            systemInfo = "UNIX";
+        } else if (header.indexOf("Linux") > 0) {
+            systemInfo = "Linux";
+        } else if (header.indexOf("SunOS") > 0) {
+            systemInfo = "SunOS";
+        }
+        return systemInfo;
+    }
+
 }
