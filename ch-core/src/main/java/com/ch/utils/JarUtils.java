@@ -1,10 +1,15 @@
 package com.ch.utils;
 
+import com.ch.e.PubError;
+import com.google.common.collect.Maps;
+
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Map;
 
 /**
  * @author 01370603
@@ -14,6 +19,8 @@ public class JarUtils {
 
     private JarUtils() {
     }
+
+    private static Map<String, URLClassLoader> clazzLoader = Maps.newConcurrentMap();
 
     /**
      * 加载Jar包
@@ -57,6 +64,8 @@ public class JarUtils {
     }
 
     /**
+     * 加载类Jar包并加载类
+     *
      * @param path      jar包路径
      * @param className 类全名称
      * @return
@@ -64,8 +73,37 @@ public class JarUtils {
      * @throws ClassNotFoundException
      */
     public static Class<?> loadClassForJar(String path, String className) throws MalformedURLException, ClassNotFoundException {
+        if (clazzLoader.get(path) != null) {
+            return clazzLoader.get(path).loadClass(className);
+        }
         URL url1 = new URL(path);
         URLClassLoader myClassLoader1 = new URLClassLoader(new URL[]{url1}, Thread.currentThread().getContextClassLoader());
-        return myClassLoader1.loadClass(className);
+        Class<?> clazz = myClassLoader1.loadClass(className);
+        clazzLoader.put(path, myClassLoader1);
+        return clazz;
     }
+
+
+    /**
+     * 重载类Jar包并加载类
+     *
+     * @param path      jar包路径
+     * @param className 类全名称
+     * @return
+     * @throws MalformedURLException
+     * @throws ClassNotFoundException
+     */
+    public static Class<?> reloadClassForJar(String path, String className) throws MalformedURLException, ClassNotFoundException {
+        if (clazzLoader.get(path) != null) {
+            try {
+                URLClassLoader.class.getMethod("close");
+                clazzLoader.get(path).close();
+                clazzLoader.remove(path);
+            } catch (NoSuchMethodException | SecurityException | IOException e) {
+                ExceptionUtils._throw(PubError.CONNECT, e);
+            }
+        }
+        return loadClassForJar(path, className);
+    }
+
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -79,16 +80,19 @@ public class UtilTests {
 
 
     @Test
-    public void testFile() {
+    public void testFile() throws MalformedURLException, ClassNotFoundException {
         o = FileExtUtils.convertSize(22209L);
         System.out.println(o);
         Date currTime = DateUtils.current();
         String dateStr = DateUtils.format(currTime, DateUtils.Pattern.DATE_SHORT);
         String uuid = UUIDGenerator.generate();
-        File file = new File("D:\\opt\\" + dateStr + File.separator + uuid + "\\demo.txt");
-        System.out.println(file.getParent());
-        boolean ok = FileExtUtils.create(file);
-        System.out.println(ok);
+//        File file = new File("D:\\opt\\" + dateStr + File.separator + uuid + "\\demo.txt");
+//        System.out.println(file.getParent());
+//        boolean ok = FileExtUtils.create(file);
+//        System.out.println(ok);
+        Class<?> clazz = JarUtils.loadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
+        Class<?> clazz2 = JarUtils.reloadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
+        Class<?> clazz3 = JarUtils.loadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
     }
 
     @Test
@@ -193,7 +197,7 @@ public class UtilTests {
 
     @Test
     public void testString() {
-        logger.info(Arrays.toString(StringExtUtils.parseIds("1,2")));
+//        logger.info(Arrays.toString(StringExtUtils.parseIds("1,2")));
 
         logger.info(StringExtUtils.toIdStr(new Long[]{111L, 222L}));
         logger.info(StringExtUtils.toIdStr(new Integer[]{1, 2}));
