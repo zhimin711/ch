@@ -2,6 +2,7 @@ package com.ch.utils;
 
 import com.ch.Constants;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.List;
@@ -20,8 +21,10 @@ public class StringExtUtils {
     }
 
     /**
-     * @param number
-     * @param length
+     * 格式数值为固定格式
+     *
+     * @param number 数值
+     * @param length 长度
      * @return
      */
     public static String formatSort(Number number, int length) {
@@ -30,6 +33,8 @@ public class StringExtUtils {
     }
 
     /**
+     * 取操作符后字符串
+     *
      * @param s         字符串
      * @param separator 连接符号
      * @return
@@ -64,6 +69,35 @@ public class StringExtUtils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 拆分字符串数组(不去重)
+     *
+     * @param separator 拆分符号
+     * @param arrStr    数组字符串
+     * @return
+     */
+    public static List<String> splitStr(String separator, String arrStr) {
+        if (CommonUtils.isEmpty(arrStr)) return Lists.newArrayList();
+        if (arrStr.contains(separator)) {
+            return Lists.newArrayList(arrStr);
+        }
+        String[] arr = arrStr.split(separator);
+        return Lists.newArrayList(arr);
+    }
+
+    /**
+     * 拆分字符串数组并去重(de-duplication)
+     *
+     * @param separator 拆分符号
+     * @param arrStr    数组字符串
+     * @return
+     */
+    public static List<String> splitStrAndDeDuplication(String separator, String arrStr) {
+        List<String> list = splitStr(separator, arrStr);
+        if (list.isEmpty() || list.size() == 1) return list;
+        return Lists.newArrayList(Sets.newHashSet(list));
     }
 
     /**
@@ -109,6 +143,12 @@ public class StringExtUtils {
         return false;
     }
 
+    /**
+     * 解析id字符串为集合(List)
+     *
+     * @param idStr id字符串
+     * @return Long集合
+     */
     public static List<Long> parseIds(String idStr) {
         if (CommonUtils.isEmpty(idStr)) {
             return Lists.newArrayList();
@@ -122,10 +162,22 @@ public class StringExtUtils {
         return ids;
     }
 
+    /**
+     * 解析id字符串为数组([])
+     *
+     * @param idStr id字符串
+     * @return Long数组
+     */
     public static Long[] parseIdArr(String idStr) {
         return parseIds(idStr).toArray(new Long[]{});
     }
 
+    /**
+     * ID数组转换为字符串(","拼接)
+     *
+     * @param ids id数组
+     * @return id字符串
+     */
     public static String toIdStr(Number[] ids) {
         List<String> idList = Lists.newArrayList();
         for (Number id : ids) {
@@ -134,6 +186,12 @@ public class StringExtUtils {
         return linkStr(Constants.SEPARATOR_2, idList.toArray(new String[]{}));
     }
 
+    /**
+     * ID集合转换为字符串(","拼接)
+     *
+     * @param ids id数组
+     * @return id字符串
+     */
     public static String toIdStr(List<Number> ids) {
         return toIdStr(ids.toArray(new Number[]{}));
     }
