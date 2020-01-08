@@ -728,7 +728,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 1234567转中文
      *
-     * @param workday 适用工作日
+     * @param workday   适用工作日
      * @param separator 分割符
      * @return
      */
@@ -764,7 +764,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         cal.setTime(start);
         List<Date> dateList = new ArrayList<>();
         while (cal.getTime().before(addDays(end, 1))) {
-            int week = getOfType(cal.getTime(), Calendar.DAY_OF_WEEK) - 1;
+            int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
             if (week < 1) {
                 week = 7;
             }
@@ -849,5 +849,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             i = 4;
         }
         return String.format("%2d", i);
+    }
+
+    public static Date replaceDate(Date src, Date date) {
+        if (src == null || date == null) return null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(src);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(date);
+
+        c.set(Calendar.YEAR, c2.get(Calendar.YEAR));
+        c.set(Calendar.MONTH, c2.get(Calendar.MONTH));
+        c.set(Calendar.DAY_OF_MONTH, c2.get(Calendar.DAY_OF_MONTH));
+
+        return c.getTime();
     }
 }
