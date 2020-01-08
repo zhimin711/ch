@@ -528,6 +528,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static long calcOffsetDays(String date1, String date2) {
         return calcOffsetDays(date1, date2, true);
     }
+
     /**
      * 计算2个日期跨越天数（以日期为准）
      *
@@ -542,8 +543,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 计算2个日期相差天数
      *
-     * @param date1 开始日期
-     * @param date2 结束日期
+     * @param date1   开始日期
+     * @param date2   结束日期
      * @param accTime 精确到时分秒(24小时)
      * @return
      */
@@ -856,7 +857,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         cal.setTime(start);
         List<Date> dateList = new ArrayList<>();
         while (cal.getTime().before(addDays(end, 1))) {
-            int week = getOfType(cal.getTime(), Calendar.DAY_OF_WEEK) - 1;
+            int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
             if (week < 1) {
                 week = 7;
             }
@@ -971,6 +972,21 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         long time2 = cal.getTimeInMillis();
         long betweenHours = (time2 - time1) / (1000 * 3600);
         return Math.abs(betweenHours);
+    }
+
+
+    public static Date replaceDate(Date src, Date date) {
+        if (src == null || date == null) return null;
+        Calendar c = Calendar.getInstance();
+        c.setTime(src);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(date);
+
+        c.set(Calendar.YEAR, c2.get(Calendar.YEAR));
+        c.set(Calendar.MONTH, c2.get(Calendar.MONTH));
+        c.set(Calendar.DAY_OF_MONTH, c2.get(Calendar.DAY_OF_MONTH));
+
+        return c.getTime();
     }
 
 }
