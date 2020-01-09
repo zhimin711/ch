@@ -341,6 +341,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         c.set(Calendar.SECOND, 0);
         return c.getTime();
     }
+    /**
+     * 获取指定日期的月份的第一天
+     *
+     * @param date 日期
+     * @return 第一天
+     */
+    public static Date getLastDayOfMouth(Date date) {
+        Date d = startDayTime(date);
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+//        c.set(Calendar.DAY_OF_MONTH, 1);
+        c.add(Calendar.MONTH, 1);
+        c.set(Calendar.DAY_OF_MONTH, 0);
+        return c.getTime();
+    }
+
 
     /**
      * 得到指定日期的星期
