@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
+
 public class DateUtilsTests {
 
     Logger logger = LoggerFactory.getLogger(DateUtilsTests.class);
@@ -22,5 +24,12 @@ public class DateUtilsTests {
         logger.info("{}", DateUtils.format(DateUtils.parse("20" + a / 1000000000, DateUtils.Pattern.DATE_SHORT)));
         logger.info("{}", DateUtils.format(DateUtils.parse(Long.toString(b / 100000000).substring(1), DateUtils.Pattern.DATE_SHORT)));
 
+    }
+
+    @Test
+    public void testMonth() {
+        Date d1 = DateUtils.parse("2020-01-01", DateUtils.Pattern.DATE_CN);
+
+        logger.info("{} ~ {}", DateUtils.format(DateUtils.getFirstDayOfMouth(d1)), DateUtils.format(DateUtils.getLastDayOfMouth(d1)));
     }
 }
