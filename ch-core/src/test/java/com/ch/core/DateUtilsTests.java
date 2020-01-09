@@ -28,8 +28,18 @@ public class DateUtilsTests {
 
     @Test
     public void testMonth() {
-        Date d1 = DateUtils.parse("2020-01-01", DateUtils.Pattern.DATE_CN);
+        Date d1 = DateUtils.parse("2020-02-01", DateUtils.Pattern.DATE_CN);
+        Date d2 = DateUtils.parse("2020-02-29 12:00:00");
 
         logger.info("{} ~ {}", DateUtils.format(DateUtils.getFirstDayOfMouth(d1)), DateUtils.format(DateUtils.getLastDayOfMouth(d1)));
+
+        logger.info("isFirstDay:{} - isLastDay:{}", DateUtils.isFirstDay(d2), DateUtils.isLastDay(d2));
+
+        logger.info("FullMonths: {}", DateUtils.getFullMonths(d2, d1));
+
+        logger.info("Month first and last date: {}", DateUtils.getMonthFirstAndLastDay(d1, 12));
+
+
+        logger.info("Month first and last date: {}", DateUtils.getMonthFirstAndLastDay(2019, 12));
     }
 }
