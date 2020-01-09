@@ -481,23 +481,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return format(calendar.getTime(), Pattern.DATE_CN);
     }
 
-    /**
-     * 获取2个日期相差天数
-     *
-     * @param date1 开始日期
-     * @param date2 结束日期
-     * @return
-     */
-    public static long getOffset(String date1, String date2) {
-
-        Date d1 = parse(date1, Pattern.DATE_CN);
-        Date d2 = parse(date2, Pattern.DATE_CN);
-
-        assert d1 != null;
-        assert d2 != null;
-        long c = d2.getTime() - d1.getTime();
-        return c / 1000 / 3600 / 24;
-    }
 
     /**
      * (1)能匹配的年月日类型有：
@@ -880,4 +863,86 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
         return c.getTime();
     }
+
+
+    /**
+     * 获取2个日期相差天数
+     *
+     * @param date1 开始日期
+     * @param date2 结束日期
+     * @return
+     */
+    public static long getOffset(String date1, String date2) {
+        return calcOffsetDays(date1, date2, true);
+    }
+
+    /**
+     * 计算2个日期相差天数（以24小时一天为准）
+     *
+     * @param date1 开始日期
+     * @param date2 结束日期
+     * @return
+     */
+    public static long calcOffsetDays(String date1, String date2) {
+        return calcOffsetDays(date1, date2, true);
+    }
+
+    /**
+     * 计算2个日期跨越天数（以日期为准）
+     *
+     * @param date1 开始日期
+     * @param date2 结束日期
+     * @return
+     */
+    public static long calcCrossDays(String date1, String date2) {
+        return calcOffsetDays(date1, date2, false);
+    }
+
+    /**
+     * 计算2个日期相差天数
+     *
+     * @param date1   开始日期
+     * @param date2   结束日期
+     * @param accTime 精确到时分秒(24小时)
+     * @return
+     */
+    public static long calcOffsetDays(String date1, String date2, boolean accTime) {
+        Date d1 = parse(date1, Pattern.DATE_CN);
+        Date d2 = parse(date2, Pattern.DATE_CN);
+        assert d1 != null;
+        assert d2 != null;
+        return calcOffsetDays(d1, d2, accTime);
+    }
+
+    /**
+     * 计算2个日期相差天数
+     *
+     * @param date1   时间1
+     * @param date2   时间2
+     * @param accTime 精确到时分秒(24小时)
+     * @return
+     */
+    public static long calcOffsetDays(Date date1, Date date2, boolean accTime) {
+        if (date1 == null || date2 == null) {
+            throw ExceptionUtils.create(CoreError.INVALID);
+        }
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(date1);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(date2);
+        if (!accTime) {
+            Date d1 = startDayTime(date1);
+            Date d2 = startDayTime(date2);
+            if (d1.after(d2)) {
+                c1.setTime(d2);
+                c2.setTime(addDays(d1, 1));
+            } else {
+                c1.setTime(d1);
+                c2.setTime(addDays(d2, 1));
+            }
+        }
+        long c = Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis());
+        return c / 1000 / 3600 / 24;
+    }
+
 }
