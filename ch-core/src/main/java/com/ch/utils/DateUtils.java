@@ -945,4 +945,104 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return c / 1000 / 3600 / 24;
     }
 
+    /**
+     * 获取2个时间之前完整月的月分(不区分大小)
+     *
+     * @param date1 时间1
+     * @param date2 时间2
+     * @return
+     */
+    public static List<Integer> getFullMonths(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            throw ExceptionUtils.create(CoreError.INVALID);
+        }
+        Date d1;
+        Date d2;
+        if (date1.after(date2)) {
+            d1 = startDayTime(date2);
+            d2 = startDayTime(date1);
+        } else {
+            d1 = startDayTime(date1);
+            d2 = startDayTime(date2);
+        }
+        Date d3 = getLastDayOfMouth(d1);
+        Date d4 = getFirstDayOfMouth(d2);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(d1);
+        if (d4.before(d3)) {
+            return isSameDay(d1, d4) && isSameDay(d2, d3) ? Lists.newArrayList(c.get(Calendar.MONTH) + 1) : Lists.newArrayList();
+        }
+
+        Date s1 = isFirstDay(d1) ? d1 : addDays(d3, 1);
+        Date e2 = isLastDay(d2) ? d2 : addDays(d4, -1);
+        List<Integer> months = Lists.newArrayList();
+        while (s1.before(e2)) {
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(s1);
+            months.add(c1.get(Calendar.MONTH) + 1);
+            s1 = addMonths(s1, 1);
+        }
+        return months;
+    }
+
+    /**
+     * 日期是否为月的第1天
+     *
+     * @param date 日期
+     * @return
+     */
+    public static boolean isFirstDay(Date date) {
+        if (date == null) {
+            return false;
+        }
+        return getFirstDayOfMouth(date).compareTo(startDayTime(date)) == 0;
+    }
+
+    /**
+     * 日期是否为月的最后天
+     *
+     * @param date 日期
+     * @return
+     */
+    public static boolean isLastDay(Date date) {
+        if (date == null) {
+            return false;
+        }
+        return getLastDayOfMouth(date).compareTo(startDayTime(date)) == 0;
+    }
+
+    /**
+     * 获取指定日期的指定月的开始日期和结束日期
+     *
+     * @param date  指定日期
+     * @param month 指定月(1~12)
+     * @return
+     */
+    public static List<Date> getMonthFirstAndLastDay(Date date, int month) {
+        if (date == null) {
+            throw ExceptionUtils.create(CoreError.INVALID);
+        }
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(date);
+        return getMonthFirstAndLastDay(c1.get(Calendar.YEAR), month);
+    }
+
+    /**
+     * 获取指定年的指定月的开始日期和结束日期
+     *
+     * @param year  指定年
+     * @param month 指定月(1~12)
+     * @return
+     */
+    public static List<Date> getMonthFirstAndLastDay(int year, int month) {
+        int m = month - 1;
+        if (m < 0) {
+            m = 0;
+        }
+        Calendar c1 = Calendar.getInstance();
+        c1.set(Calendar.YEAR, year);
+        c1.set(Calendar.MONTH, m);
+        return Lists.newArrayList(DateUtils.getFirstDayOfMouth(c1.getTime()), DateUtils.getLastDayOfMouth(c1.getTime()));
+    }
 }

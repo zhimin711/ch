@@ -17,4 +17,9 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (number == null) number = 0;
         return String.format("%0" + length + "d", number);
     }
+
+    public static String toString(Number number) {
+        if (number == null) return null;
+        return number.toString();
+    }
 }
