@@ -202,5 +202,7 @@ public class UtilTests {
         logger.info(StringExtUtils.toIdStr(new Long[]{111L, 222L}));
         logger.info(StringExtUtils.toIdStr(new Integer[]{1, 2}));
         logger.info(StringExtUtils.toIdStr(new Float[]{1.1f, 22.01f}));
+
+        logger.info(StringExtUtils.num2Chinese(1201));
     }
 }
