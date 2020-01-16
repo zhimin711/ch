@@ -196,34 +196,4 @@ public class StringExtUtils {
         return toIdStr(ids.toArray(new Number[]{}));
     }
 
-
-    /**
-     * 数字转中文(忽略小数)
-     * Java 好用的
-     * int 数字转中文
-     *
-     * @param number 数字
-     * @return
-     */
-    public static String num2Chinese(Number number) {
-        if (number == null) return "";
-        int src = number.intValue();
-        final String[] num = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
-        final String[] unit = {"", "十", "百", "千", "万", "十", "百", "千", "亿", "十", "百", "千"};
-        StringBuilder dst = new StringBuilder();
-        int count = 0;
-        while (src > 0) {
-            dst.insert(0, (num[src % 10] + unit[count]));
-            src = src / 10;
-            count++;
-        }
-        if (dst.toString().startsWith("一十")) {
-            dst = new StringBuilder(dst.substring(1));
-        }
-        return dst.toString().replaceAll("零[千百十]", "零").replaceAll("零+万", "万")
-                .replaceAll("零+亿", "亿").replaceAll("亿万", "亿零")
-                .replaceAll("零+", "零").replaceAll("零$", "");
-
-    }
-
 }

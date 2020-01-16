@@ -203,6 +203,12 @@ public class UtilTests {
         logger.info(StringExtUtils.toIdStr(new Integer[]{1, 2}));
         logger.info(StringExtUtils.toIdStr(new Float[]{1.1f, 22.01f}));
 
-        logger.info(StringExtUtils.num2Chinese(1201));
+        logger.info(DigitUtils.num2Chinese(1211020001));
+
+        logger.info("1: {}", DigitUtils.chinese2Num("十二"));
+        logger.info("2: {}", DigitUtils.chinese2Num("十二万零一百零二"));
+        logger.info("3: {}", DigitUtils.chinese2Num("一百二十一万一千零二十"));
+        logger.info("4: {}", DigitUtils.chinese2Num("一百二十一万一千零二十"));
+        logger.info("5: {}", DigitUtils.chinese2Num("十二亿一千一百零二万零一"));
     }
 }
