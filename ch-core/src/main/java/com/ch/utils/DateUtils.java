@@ -376,7 +376,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date 日期
      * @return 第一天
      */
-    public static Date getFirstDayOfMouth(Date date) {
+    public static Date getFirstDayOfMonth(Date date) {
         Date d = startDayTime(date);
         Calendar c = Calendar.getInstance();
         c.setTime(d);
@@ -390,7 +390,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date 日期
      * @return 第一天
      */
-    public static Date getLastDayOfMouth(Date date) {
+    public static Date getLastDayOfMonth(Date date) {
         Date d = startDayTime(date);
         Calendar c = Calendar.getInstance();
         c.setTime(d);
@@ -1025,8 +1025,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             d1 = startDayTime(date1);
             d2 = startDayTime(date2);
         }
-        Date d3 = getLastDayOfMouth(d1);
-        Date d4 = getFirstDayOfMouth(d2);
+        Date d3 = getLastDayOfMonth(d1);
+        Date d4 = getFirstDayOfMonth(d2);
 
         Calendar c = Calendar.getInstance();
         c.setTime(d1);
@@ -1056,7 +1056,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (date == null) {
             return false;
         }
-        return getFirstDayOfMouth(date).compareTo(startDayTime(date)) == 0;
+        return getFirstDayOfMonth(date).compareTo(startDayTime(date)) == 0;
     }
 
     /**
@@ -1069,7 +1069,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (date == null) {
             return false;
         }
-        return getLastDayOfMouth(date).compareTo(startDayTime(date)) == 0;
+        return getLastDayOfMonth(date).compareTo(startDayTime(date)) == 0;
     }
 
     /**
@@ -1103,6 +1103,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         Calendar c1 = Calendar.getInstance();
         c1.set(Calendar.YEAR, year);
         c1.set(Calendar.MONTH, m);
-        return Lists.newArrayList(DateUtils.getFirstDayOfMouth(c1.getTime()), DateUtils.getLastDayOfMouth(c1.getTime()));
+        return Lists.newArrayList(DateUtils.getFirstDayOfMonth(c1.getTime()), DateUtils.getLastDayOfMonth(c1.getTime()));
     }
 }

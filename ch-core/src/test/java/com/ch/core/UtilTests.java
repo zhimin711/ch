@@ -8,9 +8,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +49,7 @@ public class UtilTests {
 
     @Test
     public void testDate() {
-        o = DateUtils.getFirstDayOfMouth(DateUtils.current());
+        o = DateUtils.getFirstDayOfMonth(DateUtils.current());
         System.out.println(o);
         Date date = DateUtils.parse("2018-01-02 00:10:21");
         o = DateUtils.format(DateUtils.parseTimestamp(String.valueOf(date.getTime())));

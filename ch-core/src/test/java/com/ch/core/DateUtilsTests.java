@@ -31,7 +31,7 @@ public class DateUtilsTests {
         Date d1 = DateUtils.parse("2020-02-01", DateUtils.Pattern.DATE_CN);
         Date d2 = DateUtils.parse("2020-02-29 12:00:00");
 
-        logger.info("{} ~ {}", DateUtils.format(DateUtils.getFirstDayOfMouth(d1)), DateUtils.format(DateUtils.getLastDayOfMouth(d1)));
+        logger.info("{} ~ {}", DateUtils.format(DateUtils.getFirstDayOfMonth(d1)), DateUtils.format(DateUtils.getLastDayOfMonth(d1)));
 
         logger.info("isFirstDay:{} - isLastDay:{}", DateUtils.isFirstDay(d2), DateUtils.isLastDay(d2));
 
