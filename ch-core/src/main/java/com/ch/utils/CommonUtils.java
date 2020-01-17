@@ -71,6 +71,14 @@ public class CommonUtils {
         return false;
     }
 
+    public static boolean isEmptyAndNull(Object obj) {
+        if (isEmpty(obj)) return true;
+        if (obj instanceof String) {
+            return "null".equalsIgnoreCase(((String) obj).trim());
+        }
+        return false;
+    }
+
     /**
      * 判断对象是否不为空
      * Java封装基本类型
@@ -83,6 +91,7 @@ public class CommonUtils {
     }
 
     /**
+     * 校验全部
      * 判断对象数组是否不为空
      * Java封装基本类型
      *
@@ -90,19 +99,53 @@ public class CommonUtils {
      * @return true or false
      */
     public static boolean isNotEmpty(Object... objects) {
-        if (objects != null && objects.length > 0) {
-            boolean isNot = true;
-            for (Object obj : objects) {
-                if (!isNotEmpty(obj)) {
-                    isNot = false;
-                    break;
-                }
-            }
-            return isNot;
+        if (objects == null || objects.length == 0) {
+            return false;
         }
-        return false;
+        boolean isNot = true;
+        for (Object obj : objects) {
+            if (!isNotEmpty(obj)) {
+                isNot = false;
+                break;
+            }
+        }
+        return isNot;
     }
 
+
+    /**
+     * 判断对象数组是否不为空(包含空字符串)
+     *
+     * @param all     是否校验全部
+     * @param objects 对象集合
+     * @return true or false
+     */
+    public static boolean isNotEmptyNull(boolean all, Object... objects) {
+        if (objects == null || objects.length == 0) {
+            return false;
+        }
+        boolean isNot = true;
+        for (Object obj : objects) {
+            if (!all && !isEmptyAndNull(obj)) {
+                return true;
+            } else if (isEmptyAndNull(obj)) {
+                isNot = false;
+            }
+        }
+        return isNot;
+    }
+
+
+    /**
+     * 校验全部
+     * 判断对象数组是否不为空(包含空字符串)
+     *
+     * @param objects 对象集合
+     * @return true or false
+     */
+    public static boolean isNotEmptyNull(Object... objects) {
+        return isNotEmptyNull(true, objects);
+    }
 
     /**
      * check string is number

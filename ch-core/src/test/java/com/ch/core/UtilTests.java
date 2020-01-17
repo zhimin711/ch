@@ -45,6 +45,7 @@ public class UtilTests {
         for (int i = 0; i < 10; i++) {
             logger.info(EncryptUtils.md5(b));
         }
+        logger.info("{}", CommonUtils.isNotEmptyNull(null,"nul"));
     }
 
     @Test
@@ -208,5 +209,6 @@ public class UtilTests {
         logger.info("3: {}", DigitUtils.chinese2Num("一百二十一万一千零二十"));
         logger.info("4: {}", DigitUtils.chinese2Num("一百二十一万一千零二十"));
         logger.info("5: {}", DigitUtils.chinese2Num("十二亿一千一百零二万零一"));
+
     }
 }
