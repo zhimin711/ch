@@ -574,13 +574,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     /**
      * 计算2个日期相差天数
+     * 按24小时一天计算或跨越0点计算
      *
      * @param date1   时间1
      * @param date2   时间2
-     * @param accTime 精确到时分秒(24小时)
+     * @param _24hours 精确到时分秒(24小时一天计算)
      * @return
      */
-    public static long calcOffsetDays(Date date1, Date date2, boolean accTime) {
+    public static long calcOffsetDays(Date date1, Date date2, boolean _24hours) {
         if (date1 == null || date2 == null) {
             throw ExceptionUtils.create(PubError.INVALID);
         }
@@ -588,7 +589,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         c1.setTime(date1);
         Calendar c2 = Calendar.getInstance();
         c2.setTime(date2);
-        if (!accTime) {
+        if (!_24hours) {
             Date d1 = startDayTime(date1);
             Date d2 = startDayTime(date2);
             if (d1.after(d2)) {
