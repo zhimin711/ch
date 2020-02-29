@@ -147,4 +147,15 @@ public class ExceptionUtils {
     public static void _throw(String msg, Throwable throwable) {
         throw new PubException(msg, throwable);
     }
+
+    /**
+     * 抛异常6
+     *
+     * @param error
+     * @param args
+     */
+    public static void _throw(IError error, Object... args) {
+        throw new PubException(error, error.formatMsg(args));
+    }
+
 }

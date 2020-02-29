@@ -1,5 +1,7 @@
 package com.ch.e;
 
+import java.util.Arrays;
+
 /**
  * 描述：常用（公共）错误
  *
@@ -103,6 +105,14 @@ public enum PubError implements IError {
         return UNKNOWN;
     }
 
+
+    @Override
+    public String formatMsg(Object... args) {
+        if (name.contains("%")) {
+            return String.format(name, args);
+        }
+        return name + Arrays.toString(args);
+    }
 
     @Override
     public Type getType() {

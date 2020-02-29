@@ -7,6 +7,8 @@ package com.ch.e;
  */
 public interface IError {
 
+    String formatMsg(Object... args);
+
     enum Type {
         PUBLIC, CUSTOMER, UNKNOWN
     }
