@@ -62,7 +62,7 @@ public class BeanExtUtils {
      * @param fieldValueMap 属性与值Map
      * @param isOverride    是否覆盖
      */
-    public static void setFieldValue(Object target, Map<String, String> fieldValueMap, boolean isOverride) {
+    public static void setFieldValue(Object target, Map<String, Object> fieldValueMap, boolean isOverride) {
         if (fieldValueMap == null || fieldValueMap.isEmpty()) return;
         Class<?> cls = target.getClass();
         // 取出bean里的所有方法
@@ -87,10 +87,10 @@ public class BeanExtUtils {
                     }
                     Method method = pd.getWriteMethod();
                     if (method == null) continue;
-                    Object val = parseValue(field.getType(), v);
-                    if (CommonUtils.isNotEmpty(val)) {
-                        method.invoke(target, val);
-                    }
+//                    Object val = parseValue(field.getType(), v);
+//                    if (CommonUtils.isNotEmpty(val)) {
+                        method.invoke(target, v);
+//                    }
                 } catch (Exception e) {
                     logger.error("setFieldValue Error!", e);
                 }
