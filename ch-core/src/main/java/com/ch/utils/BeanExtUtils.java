@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,10 +88,10 @@ public class BeanExtUtils {
                     }
                     Method method = pd.getWriteMethod();
                     if (method == null) continue;
-//                    Object val = parseValue(field.getType(), v);
-//                    if (CommonUtils.isNotEmpty(val)) {
+                    Object val = parseValue(field.getType(), v);
+                    if (CommonUtils.isNotEmpty(val)) {
                         method.invoke(target, v);
-//                    }
+                    }
                 } catch (Exception e) {
                     logger.error("setFieldValue Error!", e);
                 }
@@ -99,22 +100,53 @@ public class BeanExtUtils {
 
     }
 
-    private static Object parseValue(Class<?> type, String value) {
+    private static Object parseValue(Class<?> type, Object value) {
         if (CommonUtils.isEmpty(value)) return null;
+        if (type.isInstance(value)) return value;
         Object obj = null;
         String fieldType = type.getSimpleName();
+        boolean isStr = value instanceof String;
+        boolean isNum = value instanceof Number;
+        boolean isDate = value instanceof Date;
         if ("String".equals(fieldType)) {
-            obj = value;
+            obj = isNum ? value.toString() : (isDate ? DateUtils.format((Date) value) : null);
         } else if ("Date".equals(fieldType) || "Timestamp".equals(fieldType)) {
-            obj = DateUtils.parse(value);
+            obj = isStr ? DateUtils.parse((String) value) : null;
         } else if ("Integer".equals(fieldType) || "int".equals(fieldType)) {
-            obj = Integer.parseInt(value);
+            obj = isNum ? ((Number) value).intValue() : null;
+            if (obj == null && isStr) {
+                obj = Integer.parseInt(value.toString());
+            }
         } else if ("Long".equalsIgnoreCase(fieldType) || "long".equals(fieldType)) {
-            obj = Long.parseLong(value);
+            obj = isNum ? ((Number) value).longValue() : null;
+            if (obj == null && isStr) {
+                obj = Long.valueOf(value.toString());
+            }
         } else if ("Double".equalsIgnoreCase(fieldType) || "double".equals(fieldType)) {
-            obj = Double.parseDouble(value);
+            obj = isNum ? ((Number) value).doubleValue() : null;
+            if (obj == null && isStr) {
+                obj = Double.valueOf(value.toString());
+            }
+        } else if ("Float".equalsIgnoreCase(fieldType) || "float".equals(fieldType)) {
+            obj = isNum ? ((Number) value).floatValue() : null;
+            if (obj == null && isStr) {
+                obj = Float.valueOf(value.toString());
+            }
         } else if ("Boolean".equalsIgnoreCase(fieldType) || "boolean".equals(fieldType)) {
-            obj = Boolean.parseBoolean(value);
+            if (isStr) {
+                if ("true".equalsIgnoreCase(value.toString()) || "1".equalsIgnoreCase(value.toString())) {
+                    obj = true;
+                } else if ("false".equalsIgnoreCase(value.toString()) || "0".equalsIgnoreCase(value.toString())) {
+                    obj = false;
+                }
+            }
+            if (isNum) {
+                if (value.equals(0)) {
+                    obj = false;
+                } else if (value.equals(1)) {
+                    obj = true;
+                }
+            }
         } else {
             logger.info("not support type" + fieldType);
         }
@@ -303,7 +335,7 @@ public class BeanExtUtils {
     @SuppressWarnings("unchecked")
     public static <T> T getValue2ByProperty(Object obj, String fieldName) {
         try {
-            if(CommonUtils.isEmpty(fieldName)){
+            if (CommonUtils.isEmpty(fieldName)) {
                 return null;
             }
             return (T) getValueByProperty(obj, fieldName);
@@ -321,7 +353,7 @@ public class BeanExtUtils {
      */
     public static Object getValueByProperty(Object obj, String fieldName) {
         try {
-            if(CommonUtils.isEmpty(fieldName)){
+            if (CommonUtils.isEmpty(fieldName)) {
                 return null;
             }
             Method m = obj.getClass().getMethod(getGetMethodName(fieldName));
