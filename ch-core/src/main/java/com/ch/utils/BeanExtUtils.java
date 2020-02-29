@@ -178,12 +178,25 @@ public class BeanExtUtils {
 
 
     /**
-     * 取Bean声明的属性和值对应关系的MAP
+     * 取Bean声明的属性和值对应关系的MAP(注过滤空属性)
      *
      * @param bean 目标对象
      * @return Map
      */
     public static Map<String, Object> getDeclaredFieldValueMap(Object bean) {
+        return getDeclaredFieldValueMap(bean, true);
+
+    }
+
+
+    /**
+     * 取Bean声明的属性和值对应关系的MAP
+     *
+     * @param bean              目标对象
+     * @param isFilterNull 是否过滤空值
+     * @return Map
+     */
+    public static Map<String, Object> getDeclaredFieldValueMap(Object bean, boolean isFilterNull) {
         Map<String, Object> valueMap = new HashMap<>();
         if (bean == null) return valueMap;
         Class<?> cls = bean.getClass();
@@ -198,7 +211,9 @@ public class BeanExtUtils {
                 }
                 Method fieldGetMet = cls.getMethod(fieldGetName);
                 Object fieldVal = fieldGetMet.invoke(bean);
-                valueMap.put(field.getName(), fieldVal);
+                if (fieldVal != null || !isFilterNull) {
+                    valueMap.put(field.getName(), fieldVal);
+                }
             } catch (Exception e) {
                 logger.error("getDeclaredFieldValueMap Error!", e);
             }
