@@ -90,7 +90,7 @@ public class BeanExtUtils {
                     if (method == null) continue;
                     Object val = parseValue(field.getType(), v);
                     if (CommonUtils.isNotEmpty(val)) {
-                        method.invoke(target, v);
+                        method.invoke(target, val);
                     }
                 } catch (Exception e) {
                     logger.error("setFieldValue Error!", e);
