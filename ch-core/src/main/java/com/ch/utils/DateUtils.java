@@ -125,7 +125,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         /**
          * UTC:年-月-日'T'小时:分钟:秒'Z'
          */
-        DATETIME_UTC("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DATETIME_UTC("yyyy-MM-dd'T'HH:mm:ssZ");
 
         private final String value;
 

@@ -41,5 +41,8 @@ public class DateUtilsTests {
 
 
         logger.info("Month first and last date: {}", DateUtils.getMonthFirstAndLastDay(2019, 12));
+
+        logger.info("UTC: {}", DateUtils.format(DateUtils.getFirstDayOfMonth(d1), DateUtils.Pattern.DATETIME_UTC));
+
     }
 }

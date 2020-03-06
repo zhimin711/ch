@@ -3,6 +3,7 @@ package com.ch.result;
 import com.ch.e.IError;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * desc:自定义错误
@@ -42,5 +43,14 @@ public class Error implements Serializable, IError {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    @Override
+    public String formatMsg(Object... args) {
+        if (name.contains("%")) {
+            return String.format(name, args);
+        }
+        return name + Arrays.toString(args);
     }
 }
