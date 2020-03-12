@@ -63,7 +63,7 @@ public class BeanExtUtils {
      * @param fieldValueMap 属性与值Map
      * @param isOverride    是否覆盖
      */
-    public static void setFieldValue(Object target, Map<String, Object> fieldValueMap, boolean isOverride) {
+    public static void setFieldValue(Object target, Map<String, ?> fieldValueMap, boolean isOverride) {
         if (fieldValueMap == null || fieldValueMap.isEmpty()) return;
         Class<?> cls = target.getClass();
         // 取出bean里的所有方法
