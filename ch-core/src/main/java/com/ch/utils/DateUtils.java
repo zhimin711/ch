@@ -288,6 +288,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (CommonUtils.isEmpty(dateStr)) return null;
         List<Pattern> patterns = Lists.newArrayList();
         switch (dateStr.trim().length()) {
+            case 5:
+                patterns.add(Pattern.TIME_HM);
+                break;
             case 8:
                 patterns.add(Pattern.DATE_SHORT);
                 patterns.add(Pattern.TIME_FULL);
@@ -298,6 +301,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 break;
             case 11:
                 patterns.add(Pattern.DATE_CN_ZH);
+                break;
+            case 22:
+                patterns.add(Pattern.DATETIME_FULL);
                 break;
             default:
                 patterns.add(Pattern.DATETIME_CN);
