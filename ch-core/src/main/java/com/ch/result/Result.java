@@ -181,4 +181,10 @@ public class Result<T> implements Serializable {
         }
         return rows.iterator().next();
     }
+
+    @Override
+    public String toString() {
+        return "Result [status=" + this.status + ", code=" + this.code + ", message=" + this.message + ", timestamp=" + this.timestamp + ", extra=" + this.extra + ", rows=" + this.rows + "]";
+
+    }
 }
