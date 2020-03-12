@@ -285,7 +285,28 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 时间
      */
     public static Date parse(String dateStr) {
-        return parse(dateStr, Pattern.DATETIME_CN);
+        if (CommonUtils.isEmpty(dateStr)) return null;
+        List<Pattern> patterns = Lists.newArrayList();
+        switch (dateStr.trim().length()) {
+            case 8:
+                patterns.add(Pattern.DATE_SHORT);
+                patterns.add(Pattern.TIME_FULL);
+                break;
+            case 10:
+                patterns.add(Pattern.DATE_CN);
+                patterns.add(Pattern.DATE_EN);
+                break;
+            case 11:
+                patterns.add(Pattern.DATE_CN_ZH);
+                break;
+            default:
+                patterns.add(Pattern.DATETIME_CN);
+        }
+        for (Pattern pattern : patterns) {
+            Date date = parse(dateStr, pattern);
+            if (date != null) return date;
+        }
+        return null;
     }
 
     /**
@@ -576,8 +597,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 计算2个日期相差天数
      * 按24小时一天计算或跨越0点计算
      *
-     * @param date1   时间1
-     * @param date2   时间2
+     * @param date1    时间1
+     * @param date2    时间2
      * @param _24hours 精确到时分秒(24小时一天计算)
      * @return
      */
