@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -210,5 +211,13 @@ public class JSONUtils {
         public void setDisableHtmlEscaping(boolean disableHtmlEscaping) {
             this.disableHtmlEscaping = disableHtmlEscaping;
         }
+    }
+
+    public static String toJson2(Object obj) {
+        return JSONObject.toJSONString(obj);
+    }
+
+    public static <T> T fromJson2(String json, Class<T> clazz) {
+        return JSONObject.parseObject(json, clazz);
     }
 }

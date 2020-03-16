@@ -97,11 +97,12 @@ public class UtilTests {
     @Test
     public void testJson() throws Exception {
         o = new KeyValue("a", "b", DateUtils.current());
-        System.out.println(JSONUtils.toJson(o));
+        System.out.println(JSONUtils.toJson2(o));
 //        System.out.println(new JSONObject(o).toString());
 //        KeyValue tmp = mapper.readValue("{\"expires\":\"2017-08-15\",\"value\":\"[{\"b\":\"b\"}]\",\"key\":\"a\"}", KeyValue.class);
 //        JSONArray data = new JSONArray("[]");
 //        System.out.println(data.toString(1));
+        o = JSONUtils.fromJson2(JSONUtils.toJson2(o), KeyValue.class);
         KeyValue[] arr = JSONUtils.fromJson("[]", KeyValue[].class);
     }
 
