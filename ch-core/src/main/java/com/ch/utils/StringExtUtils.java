@@ -49,6 +49,17 @@ public class StringExtUtils {
     }
 
     /**
+     * 取操作符后字符串并转换成Long Id
+     *
+     * @param str 字符串
+     * @return id
+     */
+    public static Long lastId(String str) {
+        String idStr = lastStr(str, Constants.SEPARATOR_2);
+        return CommonUtils.isNumeric(idStr) ? Long.valueOf(idStr) : null;
+    }
+
+    /**
      * 链接字符串数组
      *
      * @param separator 连接符号
