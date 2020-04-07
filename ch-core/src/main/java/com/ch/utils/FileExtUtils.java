@@ -360,6 +360,12 @@ public class FileExtUtils {
     }
 
 
+    /**
+     * 文件名转码
+     *
+     * @param fileName 文件名
+     * @return
+     */
     public static String encodeFileName(String fileName) {
         try {
             return new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");

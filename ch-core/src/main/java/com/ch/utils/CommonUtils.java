@@ -62,11 +62,11 @@ public class CommonUtils {
         if (obj instanceof String) {
             return ((String) obj).trim().length() == 0;
         } else if (obj instanceof Collection) {
-            return ((Collection) obj).isEmpty() && ((Collection) obj).size() <= 0;
+            return ((Collection<?>) obj).size() == 0;
         } else if (obj.getClass().isArray()) {
             return ((Object[]) obj).length == 0;
         } else if (obj instanceof Map) {
-            return ((Map) obj).isEmpty();
+            return ((Map<?, ?>) obj).isEmpty();
         }
         return false;
     }
@@ -237,4 +237,7 @@ public class CommonUtils {
         }
     }
 
+    public static <T> T or(T value, T defaultValue) {
+        return CommonUtils.isNotEmpty(value) ? value : defaultValue;
+    }
 }
