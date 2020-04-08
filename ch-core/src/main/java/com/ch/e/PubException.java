@@ -15,7 +15,7 @@ public class PubException extends RuntimeException {
      * detail message.
      */
     public PubException(IError error) {
-        super();
+        super(error.getName());
         this.error = error;
     }
 
