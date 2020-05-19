@@ -45,7 +45,7 @@ public class UtilTests {
         for (int i = 0; i < 10; i++) {
             logger.info(EncryptUtils.md5(b));
         }
-        logger.info("{}", CommonUtils.isNotEmptyNull(null,"nul"));
+        logger.info("{}", CommonUtils.isNotEmptyNull(null, "nul"));
     }
 
     @Test
@@ -120,11 +120,12 @@ public class UtilTests {
 
     @Test
     public void testSQL() {
-        String sql = "select * # af\n" +
+        String sql = "select * \n# af\n" +
                 "-- a\n" +
                 "from ts_role limit  11";
 
         logger.info("after trim comment: {}", SQLUtils.trimComment(sql));
+        logger.info("after trim simple comment: {}", SQLUtils.trimSimpleComment(sql));
         logger.info("sql has limit: {}", SQLUtils.hasLimit(sql));
 
         sql = StringUtils.formatSort(1, 3);
@@ -134,6 +135,7 @@ public class UtilTests {
     @Test
     public void testBean() {
         KeyValue kv = new KeyValue("a", "a1");
+        KeyValue kv2 = new KeyValue("a", "b1");
 //        kv.setValue(null);
         try {
             Map<String, Object> map = Maps.newHashMap();
@@ -142,7 +144,7 @@ public class UtilTests {
             BeanExtUtils.setFieldValue(kv, map, true);
             logger.info("{}:{}", kv.getKey(), kv.getValue());
 
-//            logger.info("{}:{}", PlatformUtils.getHostName(), PlatformUtils.getCanonicalHostName());
+            logger.info("compareFields: {}", BeanExtUtils.compareFields(kv, kv2,"key","value","a"));
 
         } catch (Exception e) {
             e.printStackTrace();

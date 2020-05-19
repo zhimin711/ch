@@ -89,7 +89,7 @@ public class SQLUtils {
      * @return
      */
     public static String trimComment(String sql) {
-        if(CommonUtils.isEmpty(sql)) return "";
+        if (CommonUtils.isEmpty(sql)) return "";
         String tmp = sql.trim();
         String[] lines = tmp.split("\n");
         StringBuilder sb = new StringBuilder();
@@ -117,6 +117,37 @@ public class SQLUtils {
             }
         }
         return sb.toString().trim();
+    }
+
+    /**
+     * 不支持行SQL包含注释(非开始或结束)
+     *
+     * @param sql 执行语句
+     * @return
+     */
+    public static String trimSimpleComment(String sql) {
+        String[] sqls = sql.split("\n");
+        if (sqls.length == 1) return sql;
+
+        boolean isCommentBlock = false;
+        StringBuilder sb = new StringBuilder(sql.length());
+        for (String psql : sqls) {
+            if (psql.startsWith("--") || psql.startsWith("#")) {
+                continue;
+            } else if (psql.trim().length() == 0) {
+                sb.append("\n");
+            }
+            if (!isCommentBlock && !psql.trim().startsWith("/*") && !psql.trim().endsWith("*/")) {
+                sb.append(psql).append("\n");
+            }
+            if (!isCommentBlock && psql.trim().startsWith("/*")) {
+                isCommentBlock = true;
+            }
+            if (isCommentBlock && psql.trim().endsWith("*/")) {
+                isCommentBlock = false;
+            }
+        }
+        return sb.toString();
     }
 
     /**

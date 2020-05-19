@@ -124,7 +124,7 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
 //        checkParam(ids);
         if (ids == null || ids.isEmpty()) return 0;
         Set<EntityColumn> pkSet = EntityHelper.getPKColumns(getEntityClass());
-        if (pkSet == null || pkSet.isEmpty() || pkSet.size() > 1) {
+        if (pkSet == null || pkSet.size() != 1) {
             throw new MybatisException("no or multi pk columns, this method is not support!");
         }
         EntityColumn pkColumn = pkSet.iterator().next();
@@ -176,8 +176,8 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
         if (getMapper() instanceof BaseMapper) {
             return ((BaseMapper<T>) getMapper()).insertList(records);
         }
-        Long c = records.stream().mapToInt(r -> getMapper().insertSelective(r)).count();
-        return c.intValue();
+        long c = records.stream().mapToInt(r -> getMapper().insertSelective(r)).count();
+        return (int) c;
     }
 
     @Override
@@ -185,8 +185,8 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
         check();
         if (records == null) return 0;
 //        records.forEach(r -> getMapper().updateByPrimaryKeySelective(r));
-        Long c = records.stream().mapToInt(r -> getMapper().updateByPrimaryKeySelective(r)).count();
-        return c.intValue();
+        long c = records.stream().mapToInt(r -> getMapper().updateByPrimaryKeySelective(r)).count();
+        return (int) c;
     }
 
     @Override
