@@ -43,7 +43,8 @@ public class PoolTests {
 
 
         Callable<String> t2 = () -> {
-            throw new Exception("Exception");
+//            throw new Exception("Exception");
+            return " t2 Callable - String";
         };
         callables.add(t2);
         List<Future<String>> futures = DefaultThreadPool.invokeAll(callables);

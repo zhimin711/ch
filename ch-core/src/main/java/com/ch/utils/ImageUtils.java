@@ -10,6 +10,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.awt.color.ColorSpace;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.*;
@@ -177,12 +179,12 @@ public class ImageUtils {
     /**
      * 对图片裁剪，并把裁剪新图片保存
      *
-     * @param srcPath         读取源图片路径
-     * @param toPath          写入图片路径
-     * @param x               剪切起始点x坐标
-     * @param y               剪切起始点y坐标
-     * @param width           剪切宽度
-     * @param height          剪切高度
+     * @param srcPath 读取源图片路径
+     * @param toPath  写入图片路径
+     * @param x       剪切起始点x坐标
+     * @param y       剪切起始点y坐标
+     * @param width   剪切宽度
+     * @param height  剪切高度
      * @throws IOException
      */
     public static void crop(String srcPath, String toPath,
@@ -199,12 +201,12 @@ public class ImageUtils {
     /**
      * 对图片裁剪，并把裁剪新图片保存
      *
-     * @param is               源图片输入流
-     * @param toPath           写入图片路径
-     * @param x                剪切起始点x坐标
-     * @param y                剪切起始点y坐标
-     * @param width            剪切宽度
-     * @param height           剪切高度
+     * @param is     源图片输入流
+     * @param toPath 写入图片路径
+     * @param x      剪切起始点x坐标
+     * @param y      剪切起始点y坐标
+     * @param width  剪切宽度
+     * @param height 剪切高度
      * @throws IOException
      */
     public static void crop(InputStream is, String toPath,
@@ -251,7 +253,7 @@ public class ImageUtils {
      * @param widthRatio   宽度缩小比例
      * @param heightRatio  高度缩小比例
      */
-    public static void reduceImageByRatio(String srcImagePath, String toImagePath, int widthRatio, int heightRatio) {
+    public static void reduceImageByRatio(String srcImagePath, String toImagePath, double widthRatio, double heightRatio) {
         try {
             //读入文件
             // 构造Image对象
@@ -259,18 +261,19 @@ public class ImageUtils {
             int width = src.getWidth();
             int height = src.getHeight();
             // 缩小边长
-            BufferedImage bufferedImage = new BufferedImage(width / widthRatio, height / heightRatio, BufferedImage.TYPE_INT_RGB);
-            bufferedImage = src.getSubimage(0, 0, width, height);
+            BufferedImage bufferedImage = new BufferedImage(((int) (width * widthRatio)), ((int) (height * heightRatio)), BufferedImage.TYPE_INT_RGB);
+//            bufferedImage = src.getSubimage(0, 0, width, height);
             // 绘制 缩小  后的图片
-//            boolean flag = bufferedImage.getGraphics().drawImage(src, 0, 0, width / widthRatio, height / heightRatio, null);
-//            logger.info("drawImage: ",flag);
-            String formatName = FileExtUtils.getFileExtension(srcImagePath);
+            boolean flag = bufferedImage.getGraphics().drawImage(src, 0, 0, ((int) (width * widthRatio)), ((int) (height * heightRatio)), null);
+            logger.info("reduceImageByRatio drawImage: {}", flag);
+            String formatName = FileExtUtils.getFileExtensionName(srcImagePath);
 
             ImageIO.write(bufferedImage, formatName, new File(toImagePath));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * 长高等比例缩小图片
@@ -289,14 +292,46 @@ public class ImageUtils {
             BufferedImage tag = new BufferedImage(width / ratio, height / ratio, BufferedImage.TYPE_INT_RGB);
             // 绘制 缩小  后的图片
             tag.getGraphics().drawImage(src, 0, 0, width / ratio, height / ratio, null);
-            String formatName = FileExtUtils.getFileExtension(srcImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(srcImagePath);
             File targetImage = new File(toImagePath);
-            targetImage.createNewFile();
+//            targetImage.createNewFile();
 //            if (!targetImage.exists()) {
 //                FileExtUtils.create(targetImage);
 //            }
             ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, targetImage /* target */);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void reduceImageBy(String inFilePath, String outFilePath, int width, int height) {
+        Image image = read(inFilePath);
+
+        int originalImageWidth = image.getWidth(null);
+        int originalImageHeight = image.getHeight(null);
+
+        BufferedImage originalImage = new BufferedImage(originalImageWidth, originalImageHeight, BufferedImage.TYPE_3BYTE_BGR);
+        Graphics2D g2d = originalImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+//        originalImage.createGraphics().drawImage(image, 0, 0, null);
+
+        BufferedImage changedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+
+        double widthBo = (double) width / originalImageWidth;
+        double heightBo = (double) width / originalImageHeight;
+
+        AffineTransform transform = new AffineTransform();
+        transform.setToScale(widthBo, heightBo);
+
+        AffineTransformOp ato = new AffineTransformOp(transform, null);
+        ato.filter(originalImage, changedImage);
+
+        File fo = new File(outFilePath); //将要转换出的小图文件
+
+        try {
+            String formatName = FileExtUtils.getFileExtensionName(inFilePath);
+            ImageIO.write(changedImage, formatName, fo);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -324,7 +359,7 @@ public class ImageUtils {
             //绘制放大后的图片
             tag.getGraphics().drawImage(src, 0, 0, width * widthRatio, height * heightRatio, null);
 
-            String formatName = FileExtUtils.getFileExtension(srcImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(srcImagePath);
             ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
 
         } catch (Exception e) {
@@ -351,7 +386,7 @@ public class ImageUtils {
             BufferedImage tag = new BufferedImage(width * ratio, height * ratio, BufferedImage.TYPE_INT_RGB);
             //绘制放大后的图片
             tag.getGraphics().drawImage(src, 0, 0, width * ratio, height * ratio, null);
-            String formatName = FileExtUtils.getFileExtension(srcImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(srcImagePath);
             ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
 
         } catch (Exception e) {
@@ -370,15 +405,13 @@ public class ImageUtils {
      */
     public static void resizeImage(String srcImagePath, String toImagePath, int width, int height) throws IOException {
 
-        //读入文件
-        File file = new File("D:\\work\\tmp", "test0.jpg");
         // 构造Image对象
-        BufferedImage src = javax.imageio.ImageIO.read(file);
+        BufferedImage src = read(srcImagePath);
         // 放大边长
         BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         //绘制放大后的图片
         tag.getGraphics().drawImage(src, 0, 0, width, height, null);
-        String formatName = FileExtUtils.getFileExtension(srcImagePath);
+        String formatName = FileExtUtils.getFileExtensionName(srcImagePath);
         ImageIO.write(tag, /*"GIF"*/ formatName /* format desired */, new File(toImagePath) /* target */);
 
     }
@@ -394,8 +427,7 @@ public class ImageUtils {
     public void joinImagesHorizontal(String firstSrcImagePath, String secondSrcImagePath, String imageFormat, String toPath) {
         try {
             //读取第一张图片
-            File fileOne = new File(firstSrcImagePath);
-            BufferedImage imageOne = ImageIO.read(fileOne);
+            BufferedImage imageOne = read(firstSrcImagePath);
             int width = imageOne.getWidth();//图片宽度
             int height = imageOne.getHeight();//图片高度
             //从图片中读取RGB
@@ -403,8 +435,7 @@ public class ImageUtils {
             imageArrayOne = imageOne.getRGB(0, 0, width, height, imageArrayOne, 0, width);
 
             //对第二张图片做相同的处理
-            File fileTwo = new File(secondSrcImagePath);
-            BufferedImage imageTwo = ImageIO.read(fileTwo);
+            BufferedImage imageTwo = read(secondSrcImagePath);
             int width2 = imageTwo.getWidth();
             int height2 = imageTwo.getHeight();
             int[] ImageArrayTwo = new int[width2 * height2];
@@ -455,9 +486,9 @@ public class ImageUtils {
 
             int dst_width = 0;
             int dst_height = images[0].getHeight();
-            for (int i = 0; i < images.length; i++) {
-                dst_height = dst_height > images[i].getHeight() ? dst_height : images[i].getHeight();
-                dst_width += images[i].getWidth();
+            for (BufferedImage image : images) {
+                dst_height = Math.max(dst_height, image.getHeight());
+                dst_width += image.getWidth();
             }
             //System.out.println(dst_width);
             //System.out.println(dst_height);
@@ -557,7 +588,7 @@ public class ImageUtils {
             int dst_height = 0;
             int dst_width = images[0].getWidth();
             for (int i = 0; i < images.length; i++) {
-                dst_width = dst_width > images[i].getWidth() ? dst_width : images[i].getWidth();
+                dst_width = Math.max(dst_width, images[i].getWidth());
                 dst_height += images[i].getHeight();
             }
             //System.out.println(dst_width);
@@ -601,7 +632,7 @@ public class ImageUtils {
             BufferedImage image2 = read(additionImagePath);
             Graphics g = image.getGraphics();
             g.drawImage(image2, x, y, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -618,7 +649,7 @@ public class ImageUtils {
      * @param toPath            图像写入路径
      * @throws IOException
      */
-    public void mergeImageList(String negativeImagePath, java.util.List additionImageList, String imageFormat, String toPath) throws IOException {
+    public void mergeImageList(String negativeImagePath, List<String[]> additionImageList, String imageFormat, String toPath) throws IOException {
         InputStream is = null;
         InputStream is2 = null;
         OutputStream os = null;
@@ -673,7 +704,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, 0, 0, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -701,7 +732,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, image.getWidth() - image2.getWidth(), 0, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -729,7 +760,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, 0, image.getHeight() - image2.getHeight(), null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -757,7 +788,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, image.getWidth() - image2.getWidth(), image.getHeight() - image2.getHeight(), null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -785,7 +816,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, image.getWidth() / 2 - image2.getWidth() / 2, image.getHeight() / 2 - image2.getHeight() / 2, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -813,7 +844,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, image.getWidth() / 2 - image2.getWidth() / 2, 0, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -841,7 +872,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, image.getWidth() / 2 - image2.getWidth() / 2, image.getHeight() - image2.getHeight(), null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -869,7 +900,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, 0, image.getHeight() / 2 - image2.getHeight() / 2, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -897,7 +928,7 @@ public class ImageUtils {
             BufferedImage image2 = ImageIO.read(is2);
             Graphics g = image.getGraphics();
             g.drawImage(image2, image.getWidth() - image2.getWidth(), image.getHeight() / 2 - image2.getHeight() / 2, null);
-            String formatName = FileExtUtils.getFileExtension(negativeImagePath);
+            String formatName = FileExtUtils.getFileExtensionName(negativeImagePath);
             ImageIO.write(image, /*"GIF"*/ formatName /* format desired */, new File(toPath) /* target */);
 
         } catch (Exception e) {
@@ -1056,7 +1087,7 @@ public class ImageUtils {
      * @param toPath       写入路径
      * @throws IOException
      */
-    public void drawPoints(String srcImagePath, List pointList, int width, int height, Color ovalColor, String imageFormat, String toPath) throws IOException {
+    public void drawPoints(String srcImagePath, List<Point> pointList, int width, int height, Color ovalColor, String imageFormat, String toPath) throws IOException {
         FileOutputStream fos = null;
         try {
             //获取源图片
@@ -1067,7 +1098,7 @@ public class ImageUtils {
             //填充一个椭圆形
             if (pointList != null) {
                 for (int i = 0; i < pointList.size(); i++) {
-                    Point point = (Point) pointList.get(i);
+                    Point point = pointList.get(i);
                     int x = (int) point.getX();
                     int y = (int) point.getY();
                     g2d.fillOval(x, y, width, height);

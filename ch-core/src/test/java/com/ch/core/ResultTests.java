@@ -23,6 +23,8 @@ public class ResultTests {
     @Test
     public void testCommon() {
         PageResult<KeyValue> res = PageResult.success();
+
+//        ExceptionUtils._throw(PubError.NOT_EXISTS);
     }
 
 }
