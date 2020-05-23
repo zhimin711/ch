@@ -116,7 +116,7 @@ public class ZipUtils {
      * @return 文件集合
      */
     public static List<File> unzipFile(String zipFileName, String targetDir) {
-        return unzipFile(zipFileName, targetDir, null);
+        return unzipFile(zipFileName, targetDir, null, true);
     }
 
     /**
@@ -127,24 +127,33 @@ public class ZipUtils {
      * @param extensions  输出文件后缀(过滤)
      * @return 文件集合
      */
-    public static List<File> unzipFile(String zipFileName, String targetDir, Set<String> extensions) {
+    public static List<File> unzipFile(String zipFileName, String targetDir, Set<String> extensions, boolean useOriginalFileName) {
         List<File> fileList = new ArrayList<>();
         org.apache.tools.zip.ZipFile zipFile = null;
         try {
             zipFile = new org.apache.tools.zip.ZipFile(zipFileName);
-            Enumeration e = zipFile.getEntries();
+            Enumeration<org.apache.tools.zip.ZipEntry> e = zipFile.getEntries();
             org.apache.tools.zip.ZipEntry zipEntry;
             InputStream in = null;
             OutputStream os = null;
             FileExtUtils.create(targetDir);
             while (e.hasMoreElements()) {
-                zipEntry = (org.apache.tools.zip.ZipEntry) e.nextElement();
+                zipEntry = e.nextElement();
                 String entryName = zipEntry.getName();
                 logger.info("unzip File name: {}", entryName);
                 if (CommonUtils.isNotEmpty(extensions) && !extensions.contains(FileExtUtils.getFileExtensionName(entryName))) {
                     continue;
                 }
-                File newFile = new File(targetDir, UUID.randomUUID().toString() + FileExtUtils.getFileExtension(entryName));
+                File newFile;
+                if (zipEntry.isDirectory()) {
+                    FileExtUtils.create(targetDir + File.separator + entryName);
+                    continue;
+                }
+                if (useOriginalFileName) {
+                    newFile = new File(targetDir + File.separator + entryName);
+                } else {
+                    newFile = new File(targetDir, UUID.randomUUID().toString() + FileExtUtils.getFileExtension(entryName));
+                }
                 try {
                     in = zipFile.getInputStream(zipEntry);
                     os = new FileOutputStream(newFile);

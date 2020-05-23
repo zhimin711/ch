@@ -22,4 +22,12 @@ public class ZipUtilsTests {
         ZipUtils.zipFile(srcPath, zipPath);
     }
 
+    @Test
+    public void unzipFile() {
+        String zipPath = "D:\\work\\tmp\\cropperjs-master.zip";
+        String srcPath = "D:\\work\\tmp";
+
+        ZipUtils.unzipFile(zipPath, srcPath);
+    }
+
 }
