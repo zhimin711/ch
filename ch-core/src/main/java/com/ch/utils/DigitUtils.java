@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * decs:
+ * decs: 处理数字的工具类
  *
  * @author 01370603
  * @date 2020/1/16
@@ -148,7 +148,6 @@ public class DigitUtils {
 
         return result;
     }
-
 
 
     /**

@@ -453,6 +453,9 @@ public class BeanExtUtils {
                         map.put(name, valueMap);
                         continue;
                     }
+                    if (oldValue instanceof Number && newValue  instanceof Number && ((Number) oldValue).doubleValue() == ((Number) newValue).doubleValue()) {
+                        continue;
+                    }
 
                     if (!oldValue.equals(newValue)) {// 比较这两个值是否相等,不等就可以放入map了
                         Map<String, Object> valueMap = new HashMap<String, Object>();
