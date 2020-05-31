@@ -189,6 +189,13 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
         return (int) c;
     }
 
+    /**
+     * 分布查询
+     * @param record   对象
+     * @param pageNum  页数
+     * @param pageSize 每页大小
+     * @return
+     */
     @Override
     public PageInfo<T> findPage(T record, int pageNum, int pageSize) {
         check();
@@ -198,6 +205,11 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
         return new PageInfo<>(records);
     }
 
+    /**
+     * 分布查询
+     *
+     * @deprecated
+     */
     @Override
     public PageInfo<T> findPage(int pageNum, int pageSize, T record) {
         return this.findPage(record, pageNum, pageSize);

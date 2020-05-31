@@ -4,10 +4,14 @@ import com.ch.t.ConditionType;
 import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import com.ch.utils.SQLUtils;
+import com.google.common.collect.Lists;
+import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.mapperhelper.EntityHelper;
 import tk.mybatis.mapper.util.Sqls;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -19,7 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ExampleUtils {
 
     private static final String[] BASE = new String[]{"id", "pid", "type", "status"};
-    private static final String[] LIKE = new String[]{"code", "name"};
+    private static final String[] LIKE_SUFFIX = new String[]{"code"};
+    private static final String[] LIKE_ANY = new String[]{"name"};
 
     private ExampleUtils() {
     }
@@ -69,7 +74,8 @@ public class ExampleUtils {
         AtomicInteger c = new AtomicInteger(0);
         if (record == null) return c.get();
         c.getAndAdd(dynEqual(criteria, record, BASE));
-        c.getAndAdd(dynLike(criteria, record, LIKE));
+        c.getAndAdd(dynLike(criteria, record, LikeType.LIKE_SUFFIX, LIKE_SUFFIX));
+        c.getAndAdd(dynLike(criteria, record, LIKE_ANY));
         return c.get();
     }
 
@@ -260,7 +266,8 @@ public class ExampleUtils {
         AtomicInteger c = new AtomicInteger(0);
         if (record == null) return c.get();
         c.getAndAdd(dynEqual(sqls, record, BASE));
-        c.getAndAdd(dynLike(sqls, record, LIKE));
+        c.getAndAdd(dynLike(sqls, record, LikeType.LIKE_SUFFIX, LIKE_SUFFIX));
+        c.getAndAdd(dynLike(sqls, record, LIKE_ANY));
         return c.get();
     }
 
@@ -390,7 +397,7 @@ public class ExampleUtils {
     }
 
     /**
-     * 动态拼接指定字段Like条件（只装配String字符串）
+     * 排序解析
      *
      * @param example 条件装配
      * @param orderBy 排序
@@ -422,5 +429,27 @@ public class ExampleUtils {
         }
 
         return c;
+    }
+
+    public static Example create(Object obj) {
+        Example ex = new Example(obj.getClass());
+        Example.Criteria cri = ex.createCriteria();
+        Set<EntityColumn> cols = EntityHelper.getColumns(obj.getClass());
+        if(cols.size() == 0) return ex;
+        List<String> props2 = Lists.newArrayList(LIKE_SUFFIX);
+        List<String> props3 = Lists.newArrayList(LIKE_ANY);
+        cols.forEach(r -> {
+            String k = r.getProperty();
+            Object v = BeanExtUtils.getValueByProperty(obj, k);
+            if (v == null) return;
+            if (props2.contains(k)) {
+                cri.andLike(k, SQLUtils.likeSuffix(v.toString()));
+            } else if (props3.contains(k)) {
+                cri.andLike(k, SQLUtils.likeAny(v.toString()));
+            } else {
+                cri.andEqualTo(k, v);
+            }
+        });
+        return ex;
     }
 }

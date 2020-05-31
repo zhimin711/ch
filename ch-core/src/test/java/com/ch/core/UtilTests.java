@@ -53,7 +53,7 @@ public class UtilTests {
         o = DateUtils.getFirstDayOfMonth(DateUtils.current());
         System.out.println(o);
         Date date = DateUtils.parse("2018-01-02 00:10:21");
-        o = DateUtils.format(DateUtils.parseTimestamp(String.valueOf(date.getTime())));
+//        o = DateUtils.format(DateUtils.parseTimestamp(String.valueOf(date.getTime())));
         System.out.println(o);
         o = DateUtils.matchDateString("#2017-11-17 10:35:10.487|INFO |");
         o = DateUtils.matchDateString("11-17 10:35:10.487|INFO |");
@@ -89,9 +89,9 @@ public class UtilTests {
 //        System.out.println(file.getParent());
 //        boolean ok = FileExtUtils.create(file);
 //        System.out.println(ok);
-        Class<?> clazz = JarUtils.loadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
-        Class<?> clazz2 = JarUtils.reloadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
-        Class<?> clazz3 = JarUtils.loadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
+//        Class<?> clazz = JarUtils.loadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
+//        Class<?> clazz2 = JarUtils.reloadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
+//        Class<?> clazz3 = JarUtils.loadClassForJar("file:D:\\mnt\\share\\common\\libs\\ground-rs-api-6.6-SNAPSHOT.jar", "com.sf.shiva.trtms.ground.rs.pojo.temp.TemRequireVO");
     }
 
     @Test
