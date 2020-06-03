@@ -1,6 +1,7 @@
 package com.ch.core;
 
 import com.ch.pojo.KeyValue;
+import com.ch.pojo.VueRecord;
 import com.ch.utils.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -8,6 +9,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
@@ -34,18 +36,19 @@ public class UtilTests {
         logger.info("==========");
         String a = "20a";
         String b = "20b";
-        System.out.println(CommonUtils.compareTo(a, b));
-        System.out.println(CommonUtils.isEquals(a, b));
-        System.out.println(CommonUtils.isEquals(20.0000000000022, 20.0000000000022));
-        logger.info("{}", CommonUtils.isEquals(20L, 20));
+        logger.info("1.{}", CommonUtils.compareTo(a, b));
+        logger.info("1.{}", CommonUtils.isEquals(a, b));
+        logger.info("1.{}", CommonUtils.isEquals(20.0000000000022, 20.0000000000022));
+        logger.info("1.{}", CommonUtils.isEquals(20L, 20));
+        logger.info("6. {}", CommonUtils.isEquals(new BigDecimal("2.7"), new BigDecimal(2.700f)));
         o = DateUtils.current();
-        logger.info("{}", CommonUtils.isEquals(o, o));
+        logger.info("2.{}", CommonUtils.isEquals(o, o));
         o = CommonUtils.isNotEmpty(Lists.newArrayList("1"));
-        logger.info("{}", o);
+        logger.info("3.{}", o);
         for (int i = 0; i < 10; i++) {
             logger.info(EncryptUtils.md5(b));
         }
-        logger.info("{}", CommonUtils.isNotEmptyNull(null, "nul"));
+        logger.info("4.{}", CommonUtils.isNotEmptyNull(null, "nul"));
     }
 
     @Test
@@ -136,6 +139,7 @@ public class UtilTests {
     public void testBean() {
         KeyValue kv = new KeyValue("a", "a1");
         KeyValue kv2 = new KeyValue("a", "b1");
+        VueRecord vr = new VueRecord("b","c");
 //        kv.setValue(null);
         try {
             Map<String, Object> map = Maps.newHashMap();
@@ -144,7 +148,8 @@ public class UtilTests {
             BeanExtUtils.setFieldValue(kv, map, true);
             logger.info("{}:{}", kv.getKey(), kv.getValue());
 
-            logger.info("compareFields: {}", BeanExtUtils.compareFields(kv, kv2,"key","value","a"));
+            logger.info("compareFields: {}", BeanExtUtils.compareFields(kv, kv2));
+            logger.info("compareSameFields: {}", BeanExtUtils.compareSameFields(kv, vr,"name"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,6 +217,11 @@ public class UtilTests {
         logger.info("3: {}", DigitUtils.chinese2Num("一百二十一万一千零二十"));
         logger.info("4: {}", DigitUtils.chinese2Num("一百二十一万一千零二十"));
         logger.info("5: {}", DigitUtils.chinese2Num("十二亿一千一百零二万零一"));
+
+
+        logger.info("6: {}", new BigDecimal(2.7).toPlainString());
+        logger.info("6: {}", new BigDecimal(2.7000f).toPlainString());
+        logger.info("6: {}", DigitUtils.fixed(new BigDecimal(2.7000f)));
 
     }
 }

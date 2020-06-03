@@ -1,5 +1,6 @@
 package com.ch.utils;
 
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
@@ -177,6 +178,18 @@ public class DigitUtils {
                 .replaceAll("零+亿", "亿").replaceAll("亿万", "亿零")
                 .replaceAll("零+", "零").replaceAll("零$", "");
 
+    }
+
+
+    public static BigDecimal fixed(BigDecimal bd, int scale) {
+        if (bd == null) {
+            return null;
+        }
+        return bd.setScale(scale, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
+    }
+
+    public static BigDecimal fixed(BigDecimal bd) {
+        return fixed(bd, 2);
     }
 
 }

@@ -4,6 +4,7 @@ import com.ch.e.PubError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class CommonUtils {
     /**
      * 对象比较 支持类型
      * 基本类型：Integer、Long、Double、Float、byte、short
+     * BigDecimal类型：只精确3位小数
      * 其它类型：String、Date
      *
      * @param a 对象a
@@ -35,8 +37,13 @@ public class CommonUtils {
      */
     public static boolean isEquals(final Object a, final Object b) {
 //        logger.debug("{} === {}", a, b);
+        if (a == null && b == null) {
+            return true;
+        }
         if (isNotEmpty(a) && isNotEmpty(b)) {
-            if (a instanceof Number && b instanceof Number) {
+            if (a instanceof BigDecimal && b instanceof BigDecimal) {
+                return DigitUtils.fixed((BigDecimal) a, 3).equals(DigitUtils.fixed((BigDecimal) b, 3));
+            } else if (a instanceof Number && b instanceof Number) {
                 return a.equals(b);
             } else if (a instanceof String && b instanceof String) {
                 return a.equals(b);

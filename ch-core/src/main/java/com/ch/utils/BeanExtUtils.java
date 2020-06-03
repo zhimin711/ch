@@ -381,43 +381,54 @@ public class BeanExtUtils {
     /**
      * 比较两个实体属性值，返回一个boolean,true则表时两个对象中的属性值无差异
      *
-     * @param oldObject 进行属性比较的对象1
-     * @param newObject 进行属性比较的对象2
+     * @param oldObject  进行属性比较的对象1
+     * @param newObject  进行属性比较的对象2
      * @param properties 比较的对象属性
      * @return 属性差异比较结果boolean
      */
     public static boolean compareObject(Object oldObject, Object newObject, String... properties) {
-        Map<String, Map<String, Object>> resultMap = compareFields(oldObject, newObject, properties);
+        if (oldObject == null || newObject == null) {
+            return true;
+        }
+        Map<String, Map<String, Object>> resultMap;
+        if (oldObject.getClass() == newObject.getClass()) {
+            //同一类型的才有可比性
+            resultMap = compareFields(oldObject, newObject, properties);
+        } else {
+            resultMap = compareSameFields(oldObject, newObject, properties);
+        }
         return resultMap.size() <= 0;
     }
 
     /**
      * 比较两个实体属性值，返回一个map以有差异的属性名为key，value为一个Map分别存oldObject,newObject此属性名的值
      *
-     * @param oldObject 进行属性比较的对象1
-     * @param newObject 进行属性比较的对象2
+     * @param oldObject  进行属性比较的对象1
+     * @param newObject  进行属性比较的对象2
      * @param properties 比较的对象属性
      * @return 属性差异比较结果map
      */
     @SuppressWarnings("rawtypes")
     public static Map<String, Map<String, Object>> compareFields(Object oldObject, Object newObject, String... properties) {
-        Map<String, Map<String, Object>> map = null;
+        Map<String, Map<String, Object>> map = new HashMap<>();
 
         try {
+            if (oldObject == null || newObject == null) {
+                return map;
+            }
             /**
              * 只有两个对象都是同一类型的才有可比性
              */
             if (oldObject.getClass() == newObject.getClass()) {
-                map = new HashMap<>();
 
                 Class clazz = oldObject.getClass();
                 //获取object的所有属性
                 PropertyDescriptor[] pds = Introspector.getBeanInfo(clazz, Object.class).getPropertyDescriptors();
-
+                List<String> compareProps = Lists.newArrayList(properties);
                 for (PropertyDescriptor pd : pds) {
                     //遍历获取属性名
                     String name = pd.getName();
-                    if (!Lists.newArrayList(properties).contains(name)) {
+                    if (!compareProps.isEmpty() && !compareProps.contains(name)) {
                         continue;
                     }
                     //获取属性的get方法
@@ -453,11 +464,7 @@ public class BeanExtUtils {
                         map.put(name, valueMap);
                         continue;
                     }
-                    if (oldValue instanceof Number && newValue  instanceof Number && ((Number) oldValue).doubleValue() == ((Number) newValue).doubleValue()) {
-                        continue;
-                    }
-
-                    if (!oldValue.equals(newValue)) {// 比较这两个值是否相等,不等就可以放入map了
+                    if (!CommonUtils.isEquals(newValue, oldValue)) {// 比较这两个值是否相等,不等就可以放入map了
                         Map<String, Object> valueMap = new HashMap<String, Object>();
                         valueMap.put("oldValue", oldValue);
                         valueMap.put("newValue", newValue);
@@ -467,10 +474,42 @@ public class BeanExtUtils {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("compareFields error!", e);
         }
 
         return map;
     }
 
+    public static Map<String, Map<String, Object>> compareSameFields(Object oldObject, Object newObject, String... properties) {
+        Map<String, Map<String, Object>> map = new HashMap<>();
+        if (oldObject == null || newObject == null) {
+            return map;
+        }
+        if (properties.length > 0) {
+            for (String prop : properties) {
+                Object v1 = getValueByProperty(oldObject, prop);
+                Object v2 = getValueByProperty(newObject, prop);
+                if (!CommonUtils.isEquals(v1, v2)) {
+                    Map<String, Object> valueMap = new HashMap<String, Object>();
+                    valueMap.put("oldValue", v1);
+                    valueMap.put("newValue", v2);
+                    map.put(prop, valueMap);
+                }
+            }
+        } else {
+            Map<String, Object> vMap1 = getDeclaredFieldValueMap(oldObject);
+            Map<String, Object> vMap2 = getDeclaredFieldValueMap(newObject);
+            vMap1.forEach((k, v) -> {
+                if (vMap2.containsKey(k)) {
+                    if (!CommonUtils.isEquals(v, vMap2.get(k))) {
+                        Map<String, Object> valueMap = new HashMap<String, Object>();
+                        valueMap.put("oldValue", v);
+                        valueMap.put("newValue", vMap2.get(k));
+                        map.put(k, valueMap);
+                    }
+                }
+            });
+        }
+        return map;
+    }
 }
