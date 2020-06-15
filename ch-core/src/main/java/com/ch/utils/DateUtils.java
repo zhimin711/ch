@@ -1134,4 +1134,28 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         c1.set(Calendar.MONTH, m);
         return Lists.newArrayList(DateUtils.getFirstDayOfMonth(c1.getTime()), DateUtils.getLastDayOfMonth(c1.getTime()));
     }
+
+    /**
+     * 最近一周(7天)的日期（不包含当天）
+     *
+     * @return
+     */
+    public static List<Date> getLastWeekDays() {
+        Date startDateTime = DateUtils.startDayTime(DateUtils.addDays(DateUtils.current(), -7));
+        Date endDateTime = DateUtils.endDayTime(DateUtils.addDays(DateUtils.current(), -1));
+
+        return DateUtils.workDate(startDateTime, endDateTime, "1234567");
+    }
+
+    /**
+     * 最近一个月(30天)的日期（不包含当天）
+     *
+     * @return
+     */
+    public static List<Date> getLastMonthDays() {
+        Date startDateTime = DateUtils.startDayTime(DateUtils.addDays(DateUtils.current(), -30));
+        Date endDateTime = DateUtils.endDayTime(DateUtils.addDays(DateUtils.current(), -1));
+
+        return DateUtils.workDate(startDateTime, endDateTime, "1234567");
+    }
 }

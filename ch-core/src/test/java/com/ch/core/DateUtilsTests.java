@@ -26,11 +26,8 @@ public class DateUtilsTests {
         logger.info("{}", DateUtils.format(DateUtils.parse("20" + a / 1000000000, DateUtils.Pattern.DATE_SHORT)));
         logger.info("{}", DateUtils.format(DateUtils.parse(Long.toString(b / 100000000).substring(1), DateUtils.Pattern.DATE_SHORT)));
 
-        Date startDateTime = DateUtils.startDayTime(DateUtils.addDays(DateUtils.current(), -7));
-
-        Date endDateTime = DateUtils.endDayTime(DateUtils.addDays(DateUtils.current(), -1));
-
-        List<Date> dateList = DateUtils.workDate(startDateTime, endDateTime, "1234567");
+        List<Date> dateList = DateUtils.getLastMonthDays();
+        logger.info("getLastMonthDays: {}",dateList.size());
         dateList.forEach(r->logger.info("workday =====>{}",DateUtils.format(r)));
     }
 
