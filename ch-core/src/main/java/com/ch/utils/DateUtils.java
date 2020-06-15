@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 
 /**
- * 描述：com.ch.utils
+ * 描述：时间&日期工具
  *
  * @author 80002023
  * 2017/2/4.
@@ -90,6 +90,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
          * 年-月
          */
         DATE_MONTH_SHORT("yyyyMM"), //
+        /**
+         * 月-日
+         */
+        DATE_MM_DD("MM-dd"), //
         /**
          * 年-月-日 小时
          */
@@ -246,8 +250,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 解析时间截
      *
-     * @param timestamp
-     * @return
+     * @param timestamp 时间截
+     * @return  时间
      */
     public static Date parseTimestamp(Long timestamp) {
         if (CommonUtils.isEmpty(timestamp)) {
@@ -530,7 +534,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String getDateByBefore(int beforeNum) {
         Calendar now = Calendar.getInstance();
-        now.add(6, -1 * beforeNum);
+        now.add(Calendar.DAY_OF_YEAR, -1 * beforeNum);
         return format(now.getTime(), Pattern.DATE_CN);
     }
 
@@ -555,7 +559,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param date1 开始日期
      * @param date2 结束日期
-     * @return
+     * @return 天数
      */
     public static long getOffset(String date1, String date2) {
         return calcOffsetDays(date1, date2, true);
@@ -566,7 +570,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param date1 开始日期
      * @param date2 结束日期
-     * @return
+     * @return 天数
      */
     public static long calcOffsetDays(String date1, String date2) {
         return calcOffsetDays(date1, date2, true);
@@ -577,7 +581,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param date1 开始日期
      * @param date2 结束日期
-     * @return
+     * @return 天数
      */
     public static long calcCrossDays(String date1, String date2) {
         return calcOffsetDays(date1, date2, false);
@@ -589,7 +593,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date1   开始日期
      * @param date2   结束日期
      * @param accTime 精确到时分秒(24小时)
-     * @return
+     * @return 天数
      */
     public static long calcOffsetDays(String date1, String date2, boolean accTime) {
         Date d1 = parse(date1, Pattern.DATE_CN);
@@ -606,7 +610,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @param date1    时间1
      * @param date2    时间2
      * @param _24hours 精确到时分秒(24小时一天计算)
-     * @return
+     * @return 天数
      */
     public static long calcOffsetDays(Date date1, Date date2, boolean _24hours) {
         if (date1 == null || date2 == null) {
@@ -650,7 +654,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 如果dateStr中有多个时间串存在，只会匹配第一个串，其他的串忽略
      *
      * @param dateStr 时间
-     * @return
+     * @return  匹配日期
      */
     public static String matchDateString(String dateStr) {
         return matchDateString(dateStr, Pattern.DATETIME_CN);
@@ -716,7 +720,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 获取指定日期开始日间 0点0分0秒0毫秒
      *
      * @param date 指定日期
-     * @return
+     * @return 指定日期
      */
     public static Date startDayTime(Date date) {
         assert date != null;
@@ -733,7 +737,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 获取指定日期结束日间 23点59分59秒999毫秒
      *
      * @param date 指定日期
-     * @return
+     * @return 日期结束日间
      */
     public static Date endDayTime(Date date) {
         assert date != null;
@@ -751,7 +755,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 清除指定日期毫秒
      *
      * @param date 指定日期
-     * @return
+     * @return 指定日期
      */
     public static Date clearMillisecond(Date date) {
         assert date != null;
@@ -767,8 +771,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 获日期取周中文名称
      *
-     * @param date
-     * @return
+     * @param date 日期
+     * @return 周中文名称
      */
     public static String getWeek(Date date) {
         Calendar cal = Calendar.getInstance();
@@ -783,8 +787,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 获工作是取周中文名称
      *
-     * @param week
-     * @return
+     * @param week 周
+     * @return String
      */
     public static String getWeek(final Integer week) {
         int index_week = 0;
@@ -867,7 +871,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param workday   适用工作日
      * @param separator 分割符
-     * @return
+     * @return String
      */
     public static String convertWorkdays(String workday, String separator) {
         if (CommonUtils.isEmpty(workday)) {
@@ -970,20 +974,20 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 当前季度号
      *
-     * @return
+     * @return String
      */
     public static String getQuarterly(Date date) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         int currentMonth = c.get(Calendar.MONTH) + 1;
         int i = 0;
-        if (currentMonth >= 1 && currentMonth <= 3) {
+        if (currentMonth <= 3) {
             i = 1;
-        } else if (currentMonth >= 4 && currentMonth <= 6) {
+        } else if (currentMonth <= 6) {
             i = 2;
-        } else if (currentMonth >= 7 && currentMonth <= 9) {
+        } else if (currentMonth <= 9) {
             i = 3;
-        } else if (currentMonth >= 10 && currentMonth <= 12) {
+        } else if (currentMonth <= 12) {
             i = 4;
         }
         return String.format("%2d", i);
@@ -993,9 +997,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 计算两个日期之间相差的天数
      *
-     * @param date1
-     * @param date2
-     * @return
+     * @param date1 日期1
+     * @param date2 日期2
+     * @return int
      */
     public static int calcOffsetDays(Date date1, Date date2) {
         return (int) calcOffsetDays(date1, date2, true);
@@ -1007,7 +1011,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param date1 日期1
      * @param date2 日期2
-     * @return
+     * @return long
      */
     public static long calcOffsetHours(Date date1, Date date2) {
         Calendar cal = Calendar.getInstance();
@@ -1039,7 +1043,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param date1 时间1
      * @param date2 时间2
-     * @return
+     * @return List<Integer>
      */
     public static List<Integer> getFullMonths(Date date1, Date date2) {
         if (date1 == null || date2 == null) {
@@ -1079,7 +1083,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 日期是否为月的第1天
      *
      * @param date 日期
-     * @return
+     * @return boolean
      */
     public static boolean isFirstDay(Date date) {
         if (date == null) {
@@ -1092,7 +1096,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 日期是否为月的最后天
      *
      * @param date 日期
-     * @return
+     * @return boolean
      */
     public static boolean isLastDay(Date date) {
         if (date == null) {
@@ -1106,7 +1110,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param date  指定日期
      * @param month 指定月(1~12)
-     * @return
+     * @return List
      */
     public static List<Date> getMonthFirstAndLastDay(Date date, int month) {
         if (date == null) {
@@ -1122,7 +1126,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      *
      * @param year  指定年
      * @param month 指定月(1~12)
-     * @return
+     * @return List
      */
     public static List<Date> getMonthFirstAndLastDay(int year, int month) {
         int m = month - 1;
@@ -1138,7 +1142,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 最近一周(7天)的日期（不包含当天）
      *
-     * @return
+     * @return List
      */
     public static List<Date> getLastWeekDays() {
         Date startDateTime = DateUtils.startDayTime(DateUtils.addDays(DateUtils.current(), -7));
@@ -1150,7 +1154,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     /**
      * 最近一个月(30天)的日期（不包含当天）
      *
-     * @return
+     * @return List
      */
     public static List<Date> getLastMonthDays() {
         Date startDateTime = DateUtils.startDayTime(DateUtils.addDays(DateUtils.current(), -30));
