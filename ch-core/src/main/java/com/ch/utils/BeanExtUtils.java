@@ -100,7 +100,7 @@ public class BeanExtUtils {
 
     }
 
-    private static Object parseValue(Class<?> type, Object value) {
+    public static Object parseValue(Class<?> type, Object value) {
         if (CommonUtils.isEmpty(value)) return null;
         if (type.isInstance(value)) return value;
         Object obj = null;
@@ -408,7 +408,6 @@ public class BeanExtUtils {
      * @param properties 比较的对象属性
      * @return 属性差异比较结果map
      */
-    @SuppressWarnings("rawtypes")
     public static Map<String, Map<String, Object>> compareFields(Object oldObject, Object newObject, String... properties) {
         Map<String, Map<String, Object>> map = new HashMap<>();
 
@@ -416,12 +415,10 @@ public class BeanExtUtils {
             if (oldObject == null || newObject == null) {
                 return map;
             }
-            /**
-             * 只有两个对象都是同一类型的才有可比性
-             */
+            // 只有两个对象都是同一类型的才有可比性
             if (oldObject.getClass() == newObject.getClass()) {
 
-                Class clazz = oldObject.getClass();
+                Class<?> clazz = oldObject.getClass();
                 //获取object的所有属性
                 PropertyDescriptor[] pds = Introspector.getBeanInfo(clazz, Object.class).getPropertyDescriptors();
                 List<String> compareProps = Lists.newArrayList(properties);
@@ -502,7 +499,7 @@ public class BeanExtUtils {
             vMap1.forEach((k, v) -> {
                 if (vMap2.containsKey(k)) {
                     if (!CommonUtils.isEquals(v, vMap2.get(k))) {
-                        Map<String, Object> valueMap = new HashMap<String, Object>();
+                        Map<String, Object> valueMap = new HashMap<>();
                         valueMap.put("oldValue", v);
                         valueMap.put("newValue", vMap2.get(k));
                         map.put(k, valueMap);

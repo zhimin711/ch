@@ -897,10 +897,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (start == null || end == null) {
             throw ExceptionUtils.create(PubError.ARGS);
         }
+        Date e = startDayTime(addDays(end, 1));
         Calendar cal = Calendar.getInstance();
         cal.setTime(start);
         List<Date> dateList = new ArrayList<>();
-        while (cal.getTime().before(addDays(end, 1))) {
+        while (cal.getTime().before(e)) {
             int week = cal.get(Calendar.DAY_OF_WEEK) - 1;
             if (week < 1) {
                 week = 7;

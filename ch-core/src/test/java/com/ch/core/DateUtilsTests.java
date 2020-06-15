@@ -1,11 +1,13 @@
 package com.ch.core;
 
+import com.ch.pojo.KeyValue;
 import com.ch.utils.DateUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.List;
 
 public class DateUtilsTests {
 
@@ -24,6 +26,12 @@ public class DateUtilsTests {
         logger.info("{}", DateUtils.format(DateUtils.parse("20" + a / 1000000000, DateUtils.Pattern.DATE_SHORT)));
         logger.info("{}", DateUtils.format(DateUtils.parse(Long.toString(b / 100000000).substring(1), DateUtils.Pattern.DATE_SHORT)));
 
+        Date startDateTime = DateUtils.startDayTime(DateUtils.addDays(DateUtils.current(), -7));
+
+        Date endDateTime = DateUtils.endDayTime(DateUtils.addDays(DateUtils.current(), -1));
+
+        List<Date> dateList = DateUtils.workDate(startDateTime, endDateTime, "1234567");
+        dateList.forEach(r->logger.info("workday =====>{}",DateUtils.format(r)));
     }
 
     @Test
