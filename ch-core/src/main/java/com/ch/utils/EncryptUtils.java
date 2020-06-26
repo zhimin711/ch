@@ -12,8 +12,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -327,6 +330,31 @@ public class EncryptUtils {
      */
     public static String decodeBase64ToString(String str) {
         return new String(decodeBase64(str));
+    }
+    /**
+     * 获取该输入流的MD5值
+     *
+     * @param is 输入流
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     */
+    public static String getMD5(InputStream is) throws NoSuchAlgorithmException, IOException {
+        StringBuilder md5 = new StringBuilder();
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] dataBytes = new byte[1024];
+
+        int len;
+        while ((len = is.read(dataBytes)) != -1) {
+            md.update(dataBytes, 0, len);
+        };
+        byte[] mdBytes = md.digest();
+
+        // convert the byte to hex format
+        for (byte mdByte : mdBytes) {
+            md5.append(Integer.toString((mdByte & 0xff) + 0x100, 16).substring(1));
+        }
+        return md5.toString();
     }
 
 }

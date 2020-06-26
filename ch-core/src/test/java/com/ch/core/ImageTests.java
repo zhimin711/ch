@@ -1,10 +1,14 @@
 package com.ch.core;
 
+import com.ch.utils.EncryptUtils;
 import com.ch.utils.ImageUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
 import javax.activation.MimetypesFileTypeMap;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 public class ImageTests {
 
@@ -15,7 +19,7 @@ public class ImageTests {
         url = "D:\\work\\tmp\\test6.jpg";
 //        ImageUtils.read(url);
         newFilePath = "D:\\work\\tmp\\out.jpg";
-        ImageUtils.resizeImage(url, newFilePath, 800, 500);
+//        ImageUtils.resizeImage(url, newFilePath, 800, 500);
 //        ImageUtils.reduceImageByRatio(url, newFilePath, 0.5, 0.5);
 //        ImageUtils.imageOp(url, newFilePath, 100, 100);
 //        ImageUtils.reduceImageEqualProportion(url, newFilePath, 3);
@@ -26,6 +30,18 @@ public class ImageTests {
 //        ImageUtils.crop(url, newFilePath, -10, 100, 300, 300);
         newFilePath = "D:\\work\\tmp\\test4.jpg";
 //        ImageUtils.resizeImage(url, newFilePath, 3000, 2000);
+        url = "https://img-blog.csdn.net/20160303115241766?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center";
+        newFilePath = "D:\\work\\tmp\\test1.jpg";
+//        ImageUtils.download(url,newFilePath);
+        String md5 = DigestUtils.md5Hex(new FileInputStream(newFilePath));
+        try {
+            String md51 = EncryptUtils.getMD5(new FileInputStream(newFilePath));
+            System.out.println(md5);
+            System.out.println(md51);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test

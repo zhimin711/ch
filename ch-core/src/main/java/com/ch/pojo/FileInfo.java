@@ -32,6 +32,10 @@ public class FileInfo implements Serializable {
      */
     private String type;
     /**
+     * 文件Md5
+     */
+    private String md5;
+    /**
      * 文件大小
      */
     private long size;

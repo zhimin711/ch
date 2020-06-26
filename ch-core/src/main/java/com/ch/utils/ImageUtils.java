@@ -1,6 +1,8 @@
 package com.ch.utils;
 
 import com.ch.e.PubError;
+import com.ch.pojo.FileInfo;
+import com.ch.t.ImageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +17,12 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 图片工具类
@@ -1563,7 +1567,77 @@ public class ImageUtils {
             System.out.println(mrMsg);
         }
     }
-    //数量        11          11x6
-    //纵向        375
-    //横向        391     3250
+
+    /**
+     * 从网络获取图片保存到共享目录指定文件夹
+     *
+     * @param imgUrl 图片地址
+     * @param folder 保存文件夹
+     * @return
+     */
+    public static FileInfo download(String imgUrl, String folder) {
+        if (NetUtils.isURL2(imgUrl)) {
+            HttpURLConnection conn = null;
+            InputStream in = null;
+            OutputStream os = null;
+            try {
+                imgUrl = URLDecoder.decode(imgUrl, "UTF-8");
+                URL url = new URL(imgUrl);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("accept", "*/*");
+                conn.setRequestProperty("connection", "Keep-Alive");
+                conn.setRequestProperty("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.108 Safari/537.36");
+
+                conn.connect();
+
+                Map<String, List<String>> map = conn.getHeaderFields();
+                ImageType type = ImageType.UNKNOWN;
+                for (String s : map.keySet()) {
+                    if ("Content-Type".equals(s)) {
+                        List<String> values = map.get(s);
+                        type = ImageType.fromType(values.get(0));
+                    } else if ("Content-Length".equals(s)) {
+                    }
+                }
+                if (type == ImageType.UNKNOWN) {
+                    return null;
+                }
+                if (conn.getResponseCode() == 200) {
+                    in = conn.getInputStream();
+                    if (in != null) {
+                        String fileName = ImageUtils.parseFileNameByUrl(imgUrl);
+                        String uuid = UUIDGenerator.generate();
+                        String newFileName = uuid + type.getFileSuffix();
+                        File file = new File(folder, newFileName);
+                        logger.debug("Download image file save path: {}", file.getPath());
+                        os = new FileOutputStream(file);
+                        byte[] bs = new byte[1024];
+                        // 读取到的数据长度
+                        int len;
+                        // 开始读取
+                        while ((len = in.read(bs)) != -1) {
+                            os.write(bs, 0, len);
+                        }
+
+                        String md5 = EncryptUtils.getMD5(in);
+
+                        FileInfo fileInfo = new FileInfo();
+                        fileInfo.setUrl(newFileName);
+                        fileInfo.setOriginal(fileName);
+                        fileInfo.setTitle(uuid);
+                        fileInfo.setType(type.getContentType());
+                        fileInfo.setSize(file.length());
+                        fileInfo.setMd5(md5);
+                        logger.info(JSONUtils.toJson(fileInfo));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                IOUtils.close(os, in);
+                IOUtils.close(conn);
+            }
+        }
+        return null;
+    }
 }
