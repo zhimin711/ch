@@ -2,6 +2,7 @@ package com.ch.utils;
 
 import com.ch.e.PubError;
 import com.ch.pojo.FileInfo;
+import com.ch.result.Callback;
 import com.ch.t.ImageType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1576,6 +1577,17 @@ public class ImageUtils {
      * @return
      */
     public static FileInfo download(String imgUrl, String folder) {
+        return downloadWithValidate(imgUrl, folder, info -> false);
+    }
+
+    /**
+     * 从网络获取图片保存到共享目录指定文件夹
+     *
+     * @param imgUrl 图片地址
+     * @param folder 保存文件夹
+     * @return
+     */
+    public static FileInfo downloadWithValidate(String imgUrl, String folder, Callback<FileInfo> callback) {
         if (NetUtils.isURL2(imgUrl)) {
             HttpURLConnection conn = null;
             InputStream in = null;
@@ -1620,15 +1632,21 @@ public class ImageUtils {
                         }
 
                         String md5 = EncryptUtils.getMD5(in);
-
                         FileInfo fileInfo = new FileInfo();
+                        fileInfo.setMd5(md5);
+                        if (!callback.validate(fileInfo)) {
+                            boolean isDel = file.delete();
+                            if (!isDel) {
+                                logger.error(file.getPath() + " delete failed!");
+                            }
+                            return fileInfo;
+                        }
                         fileInfo.setUrl(newFileName);
                         fileInfo.setOriginal(fileName);
                         fileInfo.setTitle(uuid);
                         fileInfo.setType(type.getContentType());
                         fileInfo.setSize(file.length());
-                        fileInfo.setMd5(md5);
-                        logger.info(JSONUtils.toJson(fileInfo));
+                        return fileInfo;
                     }
                 }
             } catch (Exception e) {
