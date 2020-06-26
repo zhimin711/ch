@@ -29,6 +29,7 @@ public class NetUtils {
      * 判断IP格式和范围
      */
     public final static String REGEX_IP = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+    public final static String REGEX_IP_PROTOCOL = "^((http|https)://)?([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}?(/)";
     /**
      * 域名正则表达式1
      */
@@ -79,7 +80,7 @@ public class NetUtils {
     }
 
     /**
-     * 解析网址,返回根网址
+     * 解析网址,返回带协议头的域名或IP
      *
      * @param url HTTP或HTTPS网络地址
      * @return 域名或IP地址
@@ -92,12 +93,15 @@ public class NetUtils {
             //匹配结果
             return m.group();
         }
-        //替换
+        p = Pattern.compile(REGEX_IP_PROTOCOL);
+        m = p.matcher(url);
+        if (m.find()) return m.group();
+
         return "";
     }
 
     /**
-     * 解析网址,返回根网址
+     * 解析网址,返回请求相对地址
      *
      * @param url HTTP或HTTPS网络地址
      * @return 域名或IP地址
@@ -110,14 +114,21 @@ public class NetUtils {
             //匹配结果
             return url.replaceAll(REGEX_DOMAIN, "");
         }
+        p = Pattern.compile(REGEX_IP_PROTOCOL);
+        m = p.matcher(url);
+        if (m.find()) return url.replaceAll(REGEX_IP_PROTOCOL, "");
+
         p = Pattern.compile(REGEX_DOMAIN2);
         m = p.matcher(url);
-        if (m.find()) return url.replaceAll(REGEX_DOMAIN2, "");
+        if (m.find()) {
+            return url.replaceAll(REGEX_DOMAIN2, "");
+        }
+
         return "";
     }
 
     /**
-     * 解析网址,返回根网址
+     * 解析网址,返回根域名或IP（不匹配正则）
      *
      * @param url HTTP或HTTPS网络地址
      * @return 域名或IP地址
