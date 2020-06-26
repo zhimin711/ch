@@ -31,6 +31,10 @@ public class Constants {
 
 
     public final static String STATUS = "status";
+
+    public final static String PATH_UPLOAD = "/upload";
+    public final static String PATH_IMAGES = "/images";
+    public final static String PATH_UPLOAD_IMAGES = PATH_UPLOAD + PATH_IMAGES;
     /**
      * base int status
      */

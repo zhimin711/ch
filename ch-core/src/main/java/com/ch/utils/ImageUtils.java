@@ -1577,7 +1577,7 @@ public class ImageUtils {
      * @return
      */
     public static FileInfo download(String imgUrl, String folder) {
-        return downloadWithValidate(imgUrl, folder, info -> false);
+        return downloadWithValidate(imgUrl, folder, info -> true);
     }
 
     /**
@@ -1635,6 +1635,7 @@ public class ImageUtils {
                         FileInfo fileInfo = new FileInfo();
                         fileInfo.setMd5(md5);
                         if (!callback.validate(fileInfo)) {
+                            IOUtils.close(os);
                             boolean isDel = file.delete();
                             if (!isDel) {
                                 logger.error(file.getPath() + " delete failed!");

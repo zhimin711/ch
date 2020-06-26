@@ -35,7 +35,7 @@ public class IOUtils {
                     if (closeable != null)
                         closeable.close();
                 } catch (IOException e) {
-                    logger.error("Close {} io failed! {}", e);
+                    logger.error("Close io failed!", e);
                 }
             }
         }
