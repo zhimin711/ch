@@ -1634,12 +1634,12 @@ public class ImageUtils {
                         while ((len = in.read(bs)) != -1) {
                             os.write(bs, 0, len);
                         }
+                        IOUtils.close(os);
 
-                        String md5 = EncryptUtils.getMD5(in);
+                        String md5 = EncryptUtils.getMD5(new FileInputStream(file));
                         FileInfo fileInfo = new FileInfo();
                         fileInfo.setMd5(md5);
                         if (!callback.validate(fileInfo)) {
-                            IOUtils.close(os);
                             boolean isDel = file.delete();
                             if (!isDel) {
                                 logger.error(file.getPath() + " delete failed!");

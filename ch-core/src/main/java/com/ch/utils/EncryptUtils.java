@@ -340,21 +340,25 @@ public class EncryptUtils {
      * @throws IOException
      */
     public static String getMD5(InputStream is) throws NoSuchAlgorithmException, IOException {
-        StringBuilder md5 = new StringBuilder();
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        byte[] dataBytes = new byte[1024];
+        try {
+            StringBuilder md5 = new StringBuilder();
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] dataBytes = new byte[1024];
 
-        int len;
-        while ((len = is.read(dataBytes)) != -1) {
-            md.update(dataBytes, 0, len);
-        };
-        byte[] mdBytes = md.digest();
+            int len;
+            while ((len = is.read(dataBytes)) != -1) {
+                md.update(dataBytes, 0, len);
+            }
+            byte[] mdBytes = md.digest();
 
-        // convert the byte to hex format
-        for (byte mdByte : mdBytes) {
-            md5.append(Integer.toString((mdByte & 0xff) + 0x100, 16).substring(1));
+            // convert the byte to hex format
+            for (byte mdByte : mdBytes) {
+                md5.append(Integer.toString((mdByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return md5.toString();
+        } finally {
+            IOUtils.close(is);
         }
-        return md5.toString();
     }
 
 }
