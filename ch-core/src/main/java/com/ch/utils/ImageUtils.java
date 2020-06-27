@@ -1620,6 +1620,10 @@ public class ImageUtils {
                         String fileName = ImageUtils.parseFileNameByUrl(imgUrl);
                         String uuid = UUIDGenerator.generate();
                         String newFileName = uuid + type.getFileSuffix();
+                        File folderFile = new File(folder);
+                        if(!folderFile.exists()){
+                            FileExtUtils.create(folderFile);
+                        }
                         File file = new File(folder, newFileName);
                         logger.debug("Download image file save path: {}", file.getPath());
                         os = new FileOutputStream(file);
@@ -1642,9 +1646,9 @@ public class ImageUtils {
                             }
                             return fileInfo;
                         }
-                        fileInfo.setUrl(newFileName);
                         fileInfo.setOriginal(fileName);
-                        fileInfo.setTitle(uuid);
+                        fileInfo.setName(uuid);
+                        fileInfo.setUrl(newFileName);
                         fileInfo.setType(type.getContentType());
                         fileInfo.setSize(file.length());
                         return fileInfo;

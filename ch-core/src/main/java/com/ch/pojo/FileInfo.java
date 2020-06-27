@@ -22,7 +22,11 @@ public class FileInfo implements Serializable {
     /**
      * 存储文件名
      */
-    private String title;
+    private String name;
+    /**
+     * 存储目录
+     */
+    private String dir;
     /**
      * 地址
      */

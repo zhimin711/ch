@@ -251,7 +251,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 解析时间截
      *
      * @param timestamp 时间截
-     * @return  时间
+     * @return 时间
      */
     public static Date parseTimestamp(Long timestamp) {
         if (CommonUtils.isEmpty(timestamp)) {
@@ -326,6 +326,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Date current() {
         return Calendar.getInstance().getTime();
+    }
+
+    public static String currentDate() {
+        return currentDateFormat(Pattern.DATE_SHORT);
+    }
+
+    public static String currentDateCN() {
+        return currentDateFormat(Pattern.DATE_CN);
+    }
+
+    public static String currentDateEN() {
+        return currentDateFormat(Pattern.DATE_EN);
+    }
+
+    public static String currentDateFormat(Pattern pattern) {
+        return format(current(), pattern);
     }
 
     /**
@@ -654,7 +670,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 如果dateStr中有多个时间串存在，只会匹配第一个串，其他的串忽略
      *
      * @param dateStr 时间
-     * @return  匹配日期
+     * @return 匹配日期
      */
     public static String matchDateString(String dateStr) {
         return matchDateString(dateStr, Pattern.DATETIME_CN);
