@@ -30,10 +30,12 @@ public class NetUtils {
      */
     public final static String REGEX_IP = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
     public final static String REGEX_IP_PROTOCOL = "^((http|https)://)?([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+    public final static String REGEX_PROTOCOL = "^((http:)|(https:))";
     /**
      * 域名正则表达式1
      */
     public final static String REGEX_DOMAIN = "^((http://)|(https://))?([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}";
+    public final static String REGEX_DOMAIN3 = "^(//)?([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}";
     /**
      * 域名正则表达式2
      */
@@ -203,5 +205,18 @@ public class NetUtils {
         return matcher.matches();
     }
 
+    public static boolean isCDN(String url) {
+        Pattern pattern = Pattern.compile(REGEX_DOMAIN3);
+        return pattern.matcher(url).find();
+    }
 
+    public static String parseProtocol(String url) {
+        Pattern pattern = Pattern.compile(REGEX_PROTOCOL);
+        Matcher m = pattern.matcher(url);
+        if (m.find()) {
+            //匹配结果
+            return m.group();
+        }
+        return "";
+    }
 }
