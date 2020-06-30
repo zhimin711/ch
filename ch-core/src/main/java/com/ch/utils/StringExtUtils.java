@@ -91,7 +91,7 @@ public class StringExtUtils {
      */
     public static List<String> splitStr(String separator, String arrStr) {
         if (CommonUtils.isEmpty(arrStr)) return Lists.newArrayList();
-        if (arrStr.contains(separator)) {
+        if (!arrStr.contains(separator)) {
             return Lists.newArrayList(arrStr);
         }
         String[] arr = arrStr.split(separator);
