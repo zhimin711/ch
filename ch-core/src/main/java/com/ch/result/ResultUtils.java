@@ -3,8 +3,7 @@ package com.ch.result;
 import com.ch.Status;
 import com.ch.e.PubError;
 import com.ch.e.PubException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,9 +14,8 @@ import java.util.List;
  *
  * @author zhimin.ma
  */
+@Slf4j
 public class ResultUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(ResultUtils.class);
 
     private ResultUtils() {
     }
@@ -31,10 +29,10 @@ public class ResultUtils {
             }
             return Result.success(records);
         } catch (PubException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return Result.error(e.getError());
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return Result.error(PubError.UNKNOWN);
         }
     }
@@ -67,10 +65,10 @@ public class ResultUtils {
             if (records == null) records = Collections.emptyList();
             return Result.success(records);
         } catch (PubException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return Result.error(e.getError());
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return Result.error(PubError.UNKNOWN);
         }
     }
@@ -90,10 +88,10 @@ public class ResultUtils {
             }
             result.setStatus(Status.SUCCESS);
         } catch (PubException e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return PageResult.error(e.getError());
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             return PageResult.error(PubError.UNKNOWN);
         }
         return result;

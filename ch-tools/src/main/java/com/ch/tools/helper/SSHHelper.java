@@ -3,8 +3,7 @@ package com.ch.tools.helper;
 import com.ch.tools.pojo.ResInfo;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 
@@ -14,9 +13,8 @@ import java.io.InputStream;
  * @author zhimin
  * @version 1.0
  */
+@Slf4j
 public class SSHHelper extends ServerHelper {
-
-    private final static Logger logger = LoggerFactory.getLogger(SSHHelper.class);
 
     public SSHHelper(String host, Integer port, String user, String password) throws JSchException {
         super(host, port, user, password);
@@ -82,7 +80,7 @@ public class SSHHelper extends ServerHelper {
         InputStream stdStream = ssh.getInputStream();
         InputStream errStream = ssh.getErrStream();
 
-        logger.debug("=========> ssh run: {}",command);
+        log.debug("=========> ssh run: {}",command);
         ssh.setCommand(command);
         ssh.connect(timeout);
         try {
@@ -102,7 +100,7 @@ public class SSHHelper extends ServerHelper {
                     int i = stdStream.read(tmp, 0, 1024);
                     if (i < 0) break;
                     strBuffer.append(new String(tmp, 0, i, "UTF-8"));
-//                    logger.info(new String(tmp, 0, i));
+//                    log.info(new String(tmp, 0, i));
                     countLine++;
                     if (countLine > 1000) {
                         break;
@@ -110,7 +108,7 @@ public class SSHHelper extends ServerHelper {
                 }
                 if (ssh.isClosed()) {
                     int code = ssh.getExitStatus();
-//                    logger.info("exit-status: " + code);
+//                    log.info("exit-status: " + code);
                     result = new ResInfo(code, strBuffer.toString(), errResult.toString());
                     break;
                 } else if (limit > 0 && countLine > 1000) {
@@ -122,7 +120,7 @@ public class SSHHelper extends ServerHelper {
         } finally {
             closeChannel();
         }
-        logger.debug(result.toString());
+        log.debug(result.toString());
         return result;
     }
 

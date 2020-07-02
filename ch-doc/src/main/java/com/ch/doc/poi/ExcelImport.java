@@ -94,7 +94,7 @@ public class ExcelImport {
             fis = new FileInputStream(excelFile);
             readWorkBook = create(fis);
         } catch (Exception e1) {
-            logger.error("read file not found!", e1);
+            log.error("read file not found!", e1);
             throw ExceptionUtils.create(PubError.INVALID);
         } finally {
             IOUtils.close(fis);
@@ -168,7 +168,7 @@ public class ExcelImport {
                             }
                         }
                     } catch (Exception e) {
-                        logger.error("read file new obj error!", e);
+                        log.error("read file new obj error!", e);
                         throw ExceptionUtils.create(PubError.NOT_ALLOWED);
                     }
                     PropertyUtils.setProperty(obj, column.getPropName(), value);

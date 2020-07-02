@@ -4,8 +4,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.util.Vector;
@@ -14,9 +13,8 @@ import java.util.Vector;
  * FTP工具类
  * Created by 01370603 on 2017/11/9.
  */
+@Slf4j
 public class SFTPHelper extends ServerHelper {
-
-    private final static Logger logger = LoggerFactory.getLogger(SFTPHelper.class);
 
     public SFTPHelper(String host, Integer port, String user, String password) throws JSchException {
         super(host, port, user, password);
@@ -55,24 +53,24 @@ public class SFTPHelper extends ServerHelper {
             SftpATTRS sftpATTRS = channel.lstat(remoteFile);
             if (sftpATTRS.isDir()) {
                 //目录
-                logger.debug("remote File:dir");
+                log.debug("remote File:dir");
                 channel.rmdir(remoteFile);
                 return true;
             } else if (sftpATTRS.isReg()) {
                 //文件
-                logger.debug("remote File:file");
+                log.debug("remote File:file");
                 channel.rm(remoteFile);
                 return true;
             } else {
-                logger.debug("remote File:unkown");
+                log.debug("remote File:unkown");
                 return false;
             }
         } catch (JSchException e) {
             close();
-            logger.error("deleteRemoteFileOrDirectory", e);
+            log.error("deleteRemoteFileOrDirectory", e);
             return false;
         } catch (SftpException e) {
-            logger.error("deleteRemoteFileOrDirectory", e);
+            log.error("deleteRemoteFileOrDirectory", e);
             return false;
         }
 
@@ -90,17 +88,17 @@ public class SFTPHelper extends ServerHelper {
             SftpATTRS sftpATTRS = channel.lstat(remoteFile);
             if (sftpATTRS.isDir() || sftpATTRS.isReg()) {
                 //目录 和文件
-                logger.info("remote File:dir");
+                log.info("remote File:dir");
                 return true;
             } else {
-                logger.info("remote File: unkown");
+                log.info("remote File: unkown");
                 return false;
             }
         } catch (JSchException e) {
             close();
             return false;
         } catch (SftpException e) {
-            logger.error("detectedFileExist!", e);
+            log.error("detectedFileExist!", e);
         }
         return false;
     }
@@ -111,11 +109,11 @@ public class SFTPHelper extends ServerHelper {
             channel.connect();
             Vector vector = channel.ls(dir);
             if (vector != null && !vector.isEmpty()) ;
-            //vector.forEach(r -> logger.info("==>", r));
+            //vector.forEach(r -> log.info("==>", r));
         } catch (JSchException e) {
-            logger.error("JSchException", e);
+            log.error("JSchException", e);
         } catch (SftpException e) {
-            logger.error("SftpException", e);
+            log.error("SftpException", e);
         }
 
     }

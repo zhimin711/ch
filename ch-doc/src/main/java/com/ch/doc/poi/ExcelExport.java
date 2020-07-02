@@ -6,13 +6,12 @@ package com.ch.doc.poi;
 import com.ch.e.PubError;
 import com.ch.utils.ExceptionUtils;
 import com.ch.utils.IOUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -26,9 +25,9 @@ import java.util.*;
  * @author 01370603
  * @since 1.0
  */
+@Slf4j
 public class ExcelExport {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final DateFormat sf = new SimpleDateFormat("yyyy/MM/dd");
 
     private SXSSFWorkbook workbook = null; // 工作簿
@@ -83,7 +82,7 @@ public class ExcelExport {
             XSSFWorkbook xs = new XSSFWorkbook(is);
             workbook = new SXSSFWorkbook(xs);
         } catch (Exception e) {
-            logger.error("write", e);
+            log.error("write", e);
             throw ExceptionUtils.create(PubError.CREATE);
         } finally {
             IOUtils.close(is);
@@ -288,14 +287,14 @@ public class ExcelExport {
                 try {
                     method = entity.getClass().getMethod(methodName);
                 } catch (Exception e) {
-                    logger.error("entityToArray", e);
+                    log.error("entityToArray", e);
                     throw ExceptionUtils.create(PubError.INVALID);
                 }
                 Object value = null;
                 try {
                     value = method.invoke(entity);
                 } catch (Exception e) {
-                    logger.error("entityToArray", e);
+                    log.error("entityToArray", e);
                     throw ExceptionUtils.create(PubError.INVALID);
                 }
                 objList.add(value);
@@ -329,7 +328,7 @@ public class ExcelExport {
             workbook.write(os);
             workbook.dispose();
         } catch (Exception e) {
-            logger.error("write", e);
+            log.error("write", e);
             throw ExceptionUtils.create(PubError.NOT_EXISTS);
         } finally {
             IOUtils.close(os);

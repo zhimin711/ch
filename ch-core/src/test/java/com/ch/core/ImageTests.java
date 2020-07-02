@@ -1,14 +1,9 @@
 package com.ch.core;
 
-import com.ch.utils.EncryptUtils;
-import com.ch.utils.ImageUtils;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 public class ImageTests {
 
@@ -31,8 +26,9 @@ public class ImageTests {
         newFilePath = "D:\\work\\tmp\\test4.jpg";
 //        ImageUtils.resizeImage(url, newFilePath, 3000, 2000);
         url = "https://img-blog.csdn.net/20160303115241766?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center";
+        url = "https://upload-images.jianshu.io/upload_images/16040037-59e33d15a568a709";
         newFilePath = "D:\\work\\tmp\\";
-        ImageUtils.download(url, newFilePath);
+//        ImageUtils.download(url, newFilePath);
 
     }
 

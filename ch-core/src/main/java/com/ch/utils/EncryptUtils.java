@@ -1,9 +1,8 @@
 package com.ch.utils;
 
 import com.ch.e.PubError;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -28,9 +27,8 @@ import java.util.Base64;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class EncryptUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(EncryptUtils.class);
 
     public enum AlgorithmType {
         MD5("MD5"),
@@ -107,7 +105,7 @@ public class EncryptUtils {
             SecretKey secureKey = keyFactory.generateSecret(desKey);
             return encodeBase64(encrypt(source.getBytes(), AlgorithmType.DES, secureKey));
         } catch (Throwable e) {
-            logger.error("DES encrypt error!", e);
+            log.error("DES encrypt error!", e);
         }
         return source;
     }
@@ -130,7 +128,7 @@ public class EncryptUtils {
             SecretKey secureKey = keyFactory.generateSecret(desKey);
             return new String(decrypt(decodeBase64(source), AlgorithmType.DES, secureKey));
         } catch (Throwable e) {
-            logger.error("DES decrypt error!", e);
+            log.error("DES decrypt error!", e);
         }
         return source;
     }
@@ -156,7 +154,7 @@ public class EncryptUtils {
             SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, AlgorithmType.AES.code);// 转换为AES专用密钥
             return encodeBase64(encrypt(source.getBytes(), AlgorithmType.AES, secretKeySpec));
         } catch (Throwable e) {
-            logger.error("AES encrypt error!", e);
+            log.error("AES encrypt error!", e);
         }
         return source;
     }
@@ -179,7 +177,7 @@ public class EncryptUtils {
             SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, AlgorithmType.AES.code);// 转换为AES专用密钥
             return new String(decrypt(decodeBase64(source), AlgorithmType.AES, secretKeySpec));
         } catch (Throwable e) {
-            logger.error("AES decrypt error!", e);
+            log.error("AES decrypt error!", e);
         }
         return null;
     }
@@ -207,7 +205,7 @@ public class EncryptUtils {
             byte[] encrypted = cipher.doFinal(source.getBytes());
             return encodeBase64(encrypted);
         } catch (Throwable e) {
-            logger.error("AES CBC encrypt error!", e);
+            log.error("AES CBC encrypt error!", e);
         }
         return source;
     }
@@ -233,7 +231,7 @@ public class EncryptUtils {
             byte[] original = cipher.doFinal(encrypted);
             return new String(original);
         } catch (Throwable e) {
-            logger.error("AES CBC decrypt error!", e);
+            log.error("AES CBC decrypt error!", e);
         }
         return null;
     }

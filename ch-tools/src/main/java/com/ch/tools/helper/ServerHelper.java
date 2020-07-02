@@ -5,16 +5,14 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 服务器抽象工具类
  * Created by 01370603 on 2017/11/9.
  */
+@Slf4j
 public abstract class ServerHelper {
-
-    private final static Logger logger = LoggerFactory.getLogger(ServerHelper.class);
 
     private Session session;
     private Channel channel;
@@ -60,7 +58,7 @@ public abstract class ServerHelper {
 
             session.connect();
         } catch (JSchException e) {
-            logger.error("Server Helper 获取连接发生错误!", e);
+            log.error("Server Helper 获取连接发生错误!", e);
             throw e;
         }
         return session;
@@ -71,7 +69,7 @@ public abstract class ServerHelper {
         try {
             Thread.sleep(delay);
         } catch (Exception e) {
-            logger.error("sleep error!", e);
+            log.error("sleep error!", e);
         }
     }
 

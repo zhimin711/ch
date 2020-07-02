@@ -1,8 +1,7 @@
 package com.ch.utils;
 
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -17,9 +16,8 @@ import java.util.*;
  * @author 01370603
  * @date 2017/4/26.
  */
+@Slf4j
 public class BeanExtUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(BeanExtUtils.class);
 
     private BeanExtUtils() {
     }
@@ -48,7 +46,7 @@ public class BeanExtUtils {
                 try {
                     method.invoke(target, value);
                 } catch (Exception e) {
-                    logger.error("set target object of property value error!", e);
+                    log.error("set target object of property value error!", e);
                 }
             }
         }
@@ -93,7 +91,7 @@ public class BeanExtUtils {
                         method.invoke(target, val);
                     }
                 } catch (Exception e) {
-                    logger.error("setFieldValue Error!", e);
+                    log.error("setFieldValue Error!", e);
                 }
             }
         });
@@ -148,7 +146,7 @@ public class BeanExtUtils {
                 }
             }
         } else {
-            logger.info("not support type" + fieldType);
+            log.info("not support type" + fieldType);
         }
         return obj;
     }
@@ -215,7 +213,7 @@ public class BeanExtUtils {
                     valueMap.put(field.getName(), fieldVal);
                 }
             } catch (Exception e) {
-                logger.error("getDeclaredFieldValueMap Error!", e);
+                log.error("getDeclaredFieldValueMap Error!", e);
             }
         }
         return valueMap;
@@ -255,7 +253,7 @@ public class BeanExtUtils {
                 }
                 valueMap.put(methodName, result);
             } catch (Exception e) {
-                logger.error("getFieldValueMap Error!", e);
+                log.error("getFieldValueMap Error!", e);
             }
         }
         return valueMap;
@@ -471,7 +469,7 @@ public class BeanExtUtils {
                 }
             }
         } catch (Exception e) {
-            logger.error("compareFields error!", e);
+            log.error("compareFields error!", e);
         }
 
         return map;

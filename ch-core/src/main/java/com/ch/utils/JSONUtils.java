@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -18,9 +17,8 @@ import java.util.List;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class JSONUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(JSONUtils.class);
 
     private JSONUtils() {
     }
@@ -38,7 +36,7 @@ public class JSONUtils {
         try {
             return newInstance().toJson(object);
         } catch (Exception e) {
-            logger.error("use gson format object to json string error!", e);
+            log.error("use gson format object to json string error!", e);
         }
         return "{}";
     }
@@ -60,7 +58,7 @@ public class JSONUtils {
             Gson gson = gb.create();
             return gson.toJson(object);
         } catch (Exception e) {
-            logger.error("use gson plugin format object to json and Without Expose error!", e);
+            log.error("use gson plugin format object to json and Without Expose error!", e);
         }
         return "";
     }
@@ -83,7 +81,7 @@ public class JSONUtils {
             Gson gson = gb.create();
             return gson.toJson(object);
         } catch (Exception e) {
-            logger.error("use gson plugin format object to json and Without date format error!", e);
+            log.error("use gson plugin format object to json and Without date format error!", e);
         }
         return "";
     }
@@ -103,7 +101,7 @@ public class JSONUtils {
         try {
             return newInstance().fromJson(json, classOfT);
         } catch (Exception e) {
-            logger.error("parse json to class error!", e);
+            log.error("parse json to class error!", e);
         }
         return null;
     }
@@ -124,7 +122,7 @@ public class JSONUtils {
         try {
             return newInstance(pattern).fromJson(json, classOfT);
         } catch (Exception e) {
-            logger.error("parse json with date pattern to class error!", e);
+            log.error("parse json with date pattern to class error!", e);
         }
         return null;
     }
@@ -147,7 +145,7 @@ public class JSONUtils {
                 return records;
             }
         } catch (Exception e) {
-            logger.error("parse array json string to List T error!", e);
+            log.error("parse array json string to List T error!", e);
         }
         return null;
     }

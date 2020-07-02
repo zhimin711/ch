@@ -1,7 +1,6 @@
 package com.ch.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetAddress;
 import java.util.Random;
@@ -14,20 +13,19 @@ import java.util.Random;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class UUIDGenerator {
-
-    private final static Logger logger = LoggerFactory.getLogger(UUIDGenerator.class);
 
     private static final int IP;
 
     static {
         int ipAddress;
         try {
-//            logger.info("This Server IP: {}", PlatformUtils.getLocalIp());
+//            log.info("This Server IP: {}", PlatformUtils.getLocalIp());
 //            ipAddress = ipToInt(PlatformUtils.getLocalAddress());
             ipAddress = ipToInt(InetAddress.getLocalHost().getAddress());
         } catch (Exception e) {
-            logger.error("uuid to generate get host ip error!", e);
+            log.error("uuid to generate get host ip error!", e);
             ipAddress = 0;
         }
         IP = ipAddress;

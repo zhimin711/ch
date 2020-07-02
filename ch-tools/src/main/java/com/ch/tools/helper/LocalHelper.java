@@ -3,8 +3,7 @@ package com.ch.tools.helper;
 import com.ch.tools.pojo.ResInfo;
 import com.ch.utils.IOUtils;
 import com.ch.utils.PlatformUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,9 +14,8 @@ import java.util.Arrays;
  * 本地指令工具
  * Created by 01370603 on 2017/11/15.
  */
+@Slf4j
 public class LocalHelper {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public ResInfo execute(String command) throws Exception {
         return execute(command, 0, 0);
@@ -33,7 +31,7 @@ public class LocalHelper {
         if (PlatformUtils.isWindows()) {
             commands = new String[]{"cmd", "/c", command};
         }
-        logger.info(Arrays.toString(commands));
+        log.info(Arrays.toString(commands));
         Process process = Runtime.getRuntime().exec(commands);
 
         if (PlatformUtils.isWindows() || limit <= 0) {
@@ -69,7 +67,7 @@ public class LocalHelper {
             sleep(delay);
             if (!process.isAlive()) {
                 int code = process.exitValue();
-//                    logger.info("exit-status: " + code);
+//                    log.info("exit-status: " + code);
                 result = new ResInfo(code, strBuffer.toString(), errResult.toString());
                 break;
             } else if (limit > 0 && count > limit) {
@@ -86,7 +84,7 @@ public class LocalHelper {
         try {
             Thread.sleep(delay);
         } catch (Exception e) {
-            logger.error("sleep error!", e);
+            log.error("sleep error!", e);
         }
     }
 

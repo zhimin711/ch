@@ -4,8 +4,7 @@ import com.ch.utils.CommonUtils;
 import com.ch.utils.FileExtUtils;
 import com.ch.utils.IOUtils;
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,9 +22,8 @@ import java.util.zip.ZipOutputStream;
  * @version 1.0
  * @since JDK1.8
  */
+@Slf4j
 public class ZipUtils {
-
-    private static final Logger logger = LoggerFactory.getLogger(ZipUtils.class);
 
     private ZipUtils() {
     }
@@ -55,7 +53,7 @@ public class ZipUtils {
             }
             return true;
         } catch (Exception e) {
-            logger.error("extract file error!", e);
+            log.error("extract file error!", e);
         } finally {
             IOUtils.close(input, output, zipFile);
         }
@@ -98,7 +96,7 @@ public class ZipUtils {
             }
             zis.closeEntry();
         } catch (IOException e) {
-            logger.error("unzip error!", e);
+            log.error("unzip error!", e);
         } finally {
             IOUtils.close(zis, bos);
         }
@@ -140,7 +138,7 @@ public class ZipUtils {
             while (e.hasMoreElements()) {
                 zipEntry = e.nextElement();
                 String entryName = zipEntry.getName();
-                logger.info("unzip File name: {}", entryName);
+                log.info("unzip File name: {}", entryName);
                 if (CommonUtils.isNotEmpty(extensions) && !extensions.contains(FileExtUtils.getFileExtensionName(entryName))) {
                     continue;
                 }
@@ -164,14 +162,14 @@ public class ZipUtils {
                     }
                     fileList.add(newFile);
                 } catch (IOException e1) {
-                    logger.error("unzip inner file error!", e1);
+                    log.error("unzip inner file error!", e1);
                 } finally {
                     IOUtils.close(in, os);
                 }
             }
             return fileList;
         } catch (Exception e) {
-            logger.error("unzipFile  error!", e);
+            log.error("unzipFile  error!", e);
         } finally {
             IOUtils.close(zipFile);
         }
@@ -203,7 +201,7 @@ public class ZipUtils {
             } else
                 writeZipFile(zos, new File(sourcePath), null);
         } catch (FileNotFoundException e) {
-            logger.error("创建ZIP文件失败", e);
+            log.error("创建ZIP文件失败", e);
         } finally {
             IOUtils.close(zos);
         }
@@ -240,7 +238,7 @@ public class ZipUtils {
                     zos.flush();
                 }
             } catch (IOException e) {
-                logger.error("创建ZIP文件失败", e);
+                log.error("创建ZIP文件失败", e);
             } finally {
                 IOUtils.close(fis);
             }
@@ -260,7 +258,7 @@ public class ZipUtils {
 //            zos.setEncoding("gbk");//此处修改字节码方式。
             writeZip(new File(sourcePath), "", zos);
         } catch (FileNotFoundException e) {
-            logger.error("创建ZIP文件失败", e);
+            log.error("创建ZIP文件失败", e);
         } finally {
             IOUtils.close(zos);
 
@@ -299,7 +297,7 @@ public class ZipUtils {
                     }
 
                 } catch (IOException e) {
-                    logger.error("创建ZIP文件失败", e);
+                    log.error("创建ZIP文件失败", e);
                 } finally {
                     IOUtils.close(fis);
                 }

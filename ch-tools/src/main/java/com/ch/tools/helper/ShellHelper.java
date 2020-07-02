@@ -2,8 +2,7 @@ package com.ch.tools.helper;
 
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSchException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +12,8 @@ import java.io.OutputStream;
  * FTP工具类
  * Created by 01370603 on 2017/11/9.
  */
+@Slf4j
 public class ShellHelper extends ServerHelper {
-
-    private final static Logger logger = LoggerFactory.getLogger(ShellHelper.class);
 
     public ShellHelper(String host, Integer port, String user, String password) throws JSchException {
         super(host, port, user, password);
@@ -55,7 +53,7 @@ public class ShellHelper extends ServerHelper {
 
                     //转换输出结果并打印出来
                     String temp = new String(data, 0, nLen, "iso8859-1");
-                    logger.info(temp);
+                    log.info(temp);
                     cmd = "pwd";
                     os.write(cmd.getBytes());
                     os.flush();
@@ -66,11 +64,11 @@ public class ShellHelper extends ServerHelper {
             is.close();
             os.close();
         } catch (JSchException e) {
-            logger.error("JSchException", e);
+            log.error("JSchException", e);
         } catch (IOException e) {
-            logger.error("IOException", e);
+            log.error("IOException", e);
         } catch (InterruptedException e) {
-            logger.error("InterruptedException", e);
+            log.error("InterruptedException", e);
         } finally {
             close();
         }

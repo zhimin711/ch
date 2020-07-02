@@ -1,8 +1,7 @@
 package com.ch.utils;
 
 import com.ch.e.PubError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -16,9 +15,9 @@ import java.text.DecimalFormat;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class FileExtUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(FileExtUtils.class);
 
     private FileExtUtils() {
     }
@@ -55,7 +54,7 @@ public class FileExtUtils {
      * @return 文件扩展名
      */
     public static String getFileExtension(String fileName) {
-//        logger.info("File name: {}", fileName);
+//        log.info("File name: {}", fileName);
         if (CommonUtils.isEmpty(fileName)) {
             return "";
         }
@@ -216,7 +215,7 @@ public class FileExtUtils {
                 }
             }
         } catch (IOException e) {
-            logger.info("readToString Error!", e);
+            log.info("readToString Error!", e);
         }
         return builder.toString();
     }
@@ -370,7 +369,7 @@ public class FileExtUtils {
         try {
             return new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1");
         } catch (UnsupportedEncodingException e) {
-            logger.error("UnsupportedEncodingException!", e);
+            log.error("UnsupportedEncodingException!", e);
         }
         return fileName;
     }

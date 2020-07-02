@@ -1,6 +1,7 @@
 package com.ch.utils;
 
 import com.ch.e.PubError;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +19,9 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @since 1.8
  */
-public class CommonUtils {
 
-    private final static Logger logger = LoggerFactory.getLogger(CommonUtils.class);
+@Slf4j
+public class CommonUtils {
 
     private CommonUtils() {
     }
@@ -36,7 +37,7 @@ public class CommonUtils {
      * @return true or false
      */
     public static boolean isEquals(final Object a, final Object b) {
-//        logger.debug("{} === {}", a, b);
+//        log.debug("{} === {}", a, b);
         if (a == null && b == null) {
             return true;
         }
@@ -238,7 +239,7 @@ public class CommonUtils {
         } else if (a instanceof Date && b instanceof Date) {
             return ((Date) a).compareTo((Date) b);
         } else {
-            logger.warn("{} compare {} error!", a, b);
+            log.warn("{} compare {} error!", a, b);
 //            throw new RuntimeException("Not Support Class Type Compare!");
             throw ExceptionUtils.create(PubError.ARGS, "Not Support Class Type Compare!");
         }

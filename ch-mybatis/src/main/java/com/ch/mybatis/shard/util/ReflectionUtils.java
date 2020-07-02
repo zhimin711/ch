@@ -1,21 +1,14 @@
 package com.ch.mybatis.shard.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
+import java.lang.reflect.*;
 
 /**
  * @author Zhimin.Ma
  */
+@Slf4j
 public class ReflectionUtils {
-
-    private static final Log logger = LogFactory.getLog(ReflectionUtils.class);
 
 
     /**
@@ -141,19 +134,19 @@ public class ReflectionUtils {
         Type genType = clazz.getGenericSuperclass();
 
         if (!(genType instanceof ParameterizedType)) {
-            logger.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
+            log.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
             return Object.class;
         }
 
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
         if (index >= params.length || index < 0) {
-            logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
+            log.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
                     + params.length);
             return Object.class;
         }
         if (!(params[index] instanceof Class)) {
-            logger.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
+            log.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
             return Object.class;
         }
 

@@ -4,8 +4,7 @@ import com.ch.e.PubError;
 import com.ch.pojo.FileInfo;
 import com.ch.result.Callback;
 import com.ch.t.ImageType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -29,9 +28,8 @@ import java.util.Map;
  * 图片工具类
  * Created by 80002023 on 2017/4/5.
  */
+@Slf4j
 public class ImageUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(ImageUtils.class);
 
     private ImageUtils() {
     }
@@ -45,7 +43,7 @@ public class ImageUtils {
     public static String parseFileNameByUrl(String imgUrl) {
         if (CommonUtils.isNotEmpty(imgUrl)) {
             //
-            logger.info("parse file name by url: {}", imgUrl);
+            log.info("parse file name by url: {}", imgUrl);
             if (!imgUrl.endsWith("/")) {
                 final int startIndex = imgUrl.lastIndexOf("/");
                 return imgUrl.substring(startIndex + 1);
@@ -71,7 +69,7 @@ public class ImageUtils {
             }
             return bufImage;
         } catch (IOException e) {
-            logger.error("read img err!", e);
+            log.error("read img err!", e);
             throw ExceptionUtils.create(PubError.INVALID);
         }
     }
@@ -92,7 +90,7 @@ public class ImageUtils {
             }
             return is;
         } catch (IOException e) {
-            logger.error("read img err!", e);
+            log.error("read img err!", e);
             throw ExceptionUtils.create(PubError.INVALID);
         }
     }
@@ -138,7 +136,7 @@ public class ImageUtils {
             BufferedImage bufImage = ImageIO.read(srcImgInputStream);
             return subRatio(bufImage, targetImg, ratio);
         } catch (IOException e) {
-            logger.error("subRatio from srcImgInputStream err!", e);
+            log.error("subRatio from srcImgInputStream err!", e);
             throw ExceptionUtils.create(PubError.INVALID);
         }
     }
@@ -160,7 +158,7 @@ public class ImageUtils {
             int w = oW;
             int h = oH;
             if (oR == ratio) {
-                logger.warn("image sub by ratio[{}] is same!", ratio);
+                log.warn("image sub by ratio[{}] is same!", ratio);
                 return 0;
             }
             if (oR > ratio) {
@@ -175,7 +173,7 @@ public class ImageUtils {
             }
             ImageIO.write(subImage, FileExtUtils.getFileExtensionName(targetImage.getName()), targetImage);
         } catch (IOException e) {
-            logger.info("sub image file of ratio error!", e);
+            log.info("sub image file of ratio error!", e);
             throw ExceptionUtils.create(PubError.CREATE);
         }
         return 1;
@@ -231,7 +229,7 @@ public class ImageUtils {
             ImageReadParam param = reader.getDefaultReadParam();
 
 //            BufferedImage b = ImageIO.read(iis);
-            logger.info("Format: {}", reader.getFormatName());
+            log.info("Format: {}", reader.getFormatName());
             //定义一个矩形
             if (x < 0) x = 0;
             if (y < 0) y = 0;
@@ -270,7 +268,7 @@ public class ImageUtils {
 //            bufferedImage = src.getSubimage(0, 0, width, height);
             // 绘制 缩小  后的图片
             boolean flag = bufferedImage.getGraphics().drawImage(src, 0, 0, ((int) (width * widthRatio)), ((int) (height * heightRatio)), null);
-            logger.info("reduceImageByRatio drawImage: {}", flag);
+            log.info("reduceImageByRatio drawImage: {}", flag);
             String formatName = FileExtUtils.getFileExtensionName(srcImagePath);
 
             ImageIO.write(bufferedImage, formatName, new File(toImagePath));
@@ -1588,7 +1586,7 @@ public class ImageUtils {
      * @return
      */
     public static FileInfo downloadWithValidate(String imgUrl, String folder, Callback<FileInfo> callback) {
-        if (NetUtils.isURL2(imgUrl)) {
+        if (NetUtils.isURL2(imgUrl) || NetUtils.isCDN(imgUrl)) {
             HttpURLConnection conn = null;
             InputStream in = null;
             OutputStream os = null;
@@ -1625,7 +1623,7 @@ public class ImageUtils {
                             FileExtUtils.create(folderFile);
                         }
                         File file = new File(folder, newFileName);
-                        logger.debug("Download image file save path: {}", file.getPath());
+                        log.debug("Download image file save path: {}", file.getPath());
                         os = new FileOutputStream(file);
                         byte[] bs = new byte[1024];
                         // 读取到的数据长度
@@ -1642,7 +1640,7 @@ public class ImageUtils {
                         if (!callback.validate(fileInfo)) {
                             boolean isDel = file.delete();
                             if (!isDel) {
-                                logger.error(file.getPath() + " delete failed!");
+                                log.error(file.getPath() + " delete failed!");
                             }
                             return fileInfo;
                         }

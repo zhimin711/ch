@@ -3,6 +3,7 @@ package com.ch.utils;
 import com.ch.e.PubError;
 import com.ch.t.DateRule;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +19,8 @@ import java.util.regex.Matcher;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
-
-    private static Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
     /**
      * 时间格式
@@ -277,7 +277,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         try {
             return newFormatInstance(pattern).parse(dateStr);
         } catch (Exception e) {
-            logger.error("Parse date failed! date = " + dateStr + ", pattern = " + pattern, e);
+            log.error("Parse date failed! date = " + dateStr + ", pattern = " + pattern, e);
         }
         return null;
     }
@@ -408,7 +408,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         if (CommonUtils.isEmpty(expires)) {
             return 0L;
         }
-        logger.info("convert expires date seconds! {}", expires);
+        log.info("convert expires date seconds! {}", expires);
         Date dateTime = current();
         if (dateTime.before(expires)) {
             return (expires.getTime() - dateTime.getTime()) / 1000;
@@ -694,7 +694,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 return matches.get(0).trim();
             }
         } catch (Exception e) {
-            logger.error("matchDateString Error!", e);
+            log.error("matchDateString Error!", e);
         }
 
         return dateStr;

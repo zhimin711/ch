@@ -1,7 +1,6 @@
 package com.ch.pool;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,9 +18,8 @@ import java.util.concurrent.*;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class DefaultThreadPool {
-
-    private final static Logger logger = LoggerFactory.getLogger(DefaultThreadPool.class);
 
 //    private final static BlockingQueue<Runnable> QUEUE;
 
@@ -70,7 +68,7 @@ public class DefaultThreadPool {
         try {
             return getInstance().invokeAny(tasks);
         } catch (InterruptedException | ExecutionException e) {
-            logger.error("DefaultThreadPool invokeAny Error!", e);
+            log.error("DefaultThreadPool invokeAny Error!", e);
         }
         return null;
     }
@@ -86,7 +84,7 @@ public class DefaultThreadPool {
         try {
             return getInstance().invokeAll(tasks);
         } catch (InterruptedException e) {
-            logger.error("DefaultThreadPool invokeAll Error!", e);
+            log.error("DefaultThreadPool invokeAll Error!", e);
         }
         return null;
     }
@@ -112,7 +110,7 @@ public class DefaultThreadPool {
         try {
             return getInstance().awaitTermination(timeout, unit);
         } catch (InterruptedException e) {
-            logger.error("DefaultThreadPool awaitTermination Error!", e);
+            log.error("DefaultThreadPool awaitTermination Error!", e);
         }
         return false;
     }

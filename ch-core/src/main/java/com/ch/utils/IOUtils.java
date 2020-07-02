@@ -1,7 +1,6 @@
 package com.ch.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -16,9 +15,9 @@ import java.net.URLConnection;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class IOUtils {
 
-    private static Logger logger = LoggerFactory.getLogger(IOUtils.class);
 
     private IOUtils() {
     }
@@ -35,7 +34,7 @@ public class IOUtils {
                     if (closeable != null)
                         closeable.close();
                 } catch (IOException e) {
-                    logger.error("Close io failed!", e);
+                    log.error("Close io failed!", e);
                 }
             }
         }

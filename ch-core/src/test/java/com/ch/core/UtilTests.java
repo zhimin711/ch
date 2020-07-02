@@ -198,6 +198,7 @@ public class UtilTests {
         url = "http://www.r5k.com/books/z2_81_81780/984118/";
 //        url = "http://106.12.140.185/tech/133";
 //        System.out.println(NetUtils.trim(FileExtUtils.convertToUnix(url)));
+        System.out.println(NetUtils.parseProtocol(url));
         System.out.println(NetUtils.parseUrl(url));
         System.out.println(NetUtils.parseBaseUrl(url));
         System.out.println(NetUtils.parseSuffixUrl(url));

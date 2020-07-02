@@ -2,8 +2,7 @@ package com.ch.tools.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,8 @@ import java.util.Map;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class JacksonUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(JacksonUtils.class);
 
     private JacksonUtils() {
     }
@@ -37,7 +35,7 @@ public class JacksonUtils {
         try {
             return mapper.writeValueAsString(object);
         } catch (Exception e) {
-            logger.error("use jackson format object to json string error!", e);
+            log.error("use jackson format object to json string error!", e);
         }
         return "";
     }
@@ -71,7 +69,7 @@ public class JacksonUtils {
             // convert JSON string to <T>
             return mapper.readValue(json, type);
         } catch (Exception e) {
-            logger.error("parse json to class error!", e);
+            log.error("parse json to class error!", e);
         }
         return null;
     }
@@ -95,7 +93,7 @@ public class JacksonUtils {
             });
             return map;
         } catch (Exception e) {
-            logger.error("parse json to class error!", e);
+            log.error("parse json to class error!", e);
         }
         return null;
     }
@@ -120,7 +118,7 @@ public class JacksonUtils {
                 return records;
             }
         } catch (Exception e) {
-            logger.error("parse array json string to List T error!", e);
+            log.error("parse array json string to List T error!", e);
         }
         return null;
     }

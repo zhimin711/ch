@@ -4,12 +4,11 @@ import com.ch.e.PubError;
 import com.ch.tools.pojo.FileInfo;
 import com.ch.utils.*;
 import com.google.common.collect.Lists;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,9 +20,8 @@ import java.util.List;
  * FTP 工具
  * Created by 01370603 on 2017/11/14.
  */
+@Slf4j
 public class FtpHelper {
-
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private FTPClient client;
 
@@ -57,7 +55,7 @@ public class FtpHelper {
 
         int reply = client.getReplyCode();
         if (!FTPReply.isPositiveCompletion(reply)) {
-            logger.error("FTP server refused connection.");
+            log.error("FTP server refused connection.");
             disconnect();
             throw ExceptionUtils.create(PubError.CONNECT,"FTP server refused connection!");
         }
@@ -69,7 +67,7 @@ public class FtpHelper {
                 client.logout();
                 client.disconnect();
             } catch (IOException e) {
-                logger.error("disconnect!", e);
+                log.error("disconnect!", e);
             }
         }
     }
@@ -122,7 +120,7 @@ public class FtpHelper {
             }
             return covertToFileInfo(ftpFiles);
         } catch (IOException e) {
-            logger.error("listFiles", e);
+            log.error("listFiles", e);
         }
         return Lists.newArrayList();
     }
@@ -151,7 +149,7 @@ public class FtpHelper {
             os = new FileOutputStream(file);
             return client.retrieveFile(remoteFile, os);
         } catch (IOException e) {
-            logger.error("download file!", e);
+            log.error("download file!", e);
         } finally {
             IOUtils.close(os);
         }

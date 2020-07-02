@@ -1,7 +1,6 @@
 package com.ch.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,9 +13,8 @@ import java.util.regex.Pattern;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public class NetUtils {
-
-    private static final Logger logger = LoggerFactory.getLogger(NetUtils.class);
 
     public final static String HTTP_PROTOCOL = "http://";
     public final static String HTTPS_PROTOCOL = "https://";
@@ -88,7 +86,7 @@ public class NetUtils {
      * @return 域名或IP地址
      */
     public static String parseBaseUrl(String url) {
-        logger.debug("parseBaseUrl: {}", url);
+        log.debug("parseBaseUrl: {}", url);
         Pattern p = Pattern.compile(REGEX_DOMAIN);
         Matcher m = p.matcher(url);
         if (m.find()) {
@@ -109,7 +107,7 @@ public class NetUtils {
      * @return 域名或IP地址
      */
     public static String parseSuffixUrl(String url) {
-        logger.debug("parseSuffixUrl: {}", url);
+        log.debug("parseSuffixUrl: {}", url);
         Pattern p = Pattern.compile(REGEX_DOMAIN);
         Matcher m = p.matcher(url);
         if (m.find()) {
@@ -136,7 +134,7 @@ public class NetUtils {
      * @return 域名或IP地址
      */
     public static String parseUrl(String url) {
-        logger.debug(url);
+        log.debug(url);
         if (isProtocolURL(url)) {
             int start = 0;
             if (url.startsWith(HTTP_PROTOCOL)) {

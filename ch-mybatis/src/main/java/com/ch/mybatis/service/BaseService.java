@@ -6,8 +6,7 @@ import com.ch.utils.BeanExtUtils;
 import com.ch.utils.CommonUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.EntityColumn;
 import tk.mybatis.mapper.entity.Example;
@@ -29,9 +28,8 @@ import java.util.Set;
  * @version 1.0
  * @since 1.8
  */
+@Slf4j
 public abstract class BaseService<PK extends Serializable, T> implements IService<PK, T> {
-
-    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     protected abstract Mapper<T> getMapper();
 
@@ -53,7 +51,7 @@ public abstract class BaseService<PK extends Serializable, T> implements IServic
         try {
             return getEntityClass().newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            logger.error("Mybatis Service New Instance Error", e);
+            log.error("Mybatis Service New Instance Error", e);
             throw new MybatisException("New Instance Error!");
         }
     }

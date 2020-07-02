@@ -10,18 +10,32 @@ subprojects {
 
     sourceCompatibility = 1.8
     [compileJava, compileTestJava, javadoc]*.options*.encoding = "UTF-8"
-    
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
     repositories {
         mavenLocal()
         jcenter()
         mavenCentral()
 //        maven { url 'http://127.0.0.1:8081/repository/maven-public/' }
     }
-
+    ext {
+        setProperty("slf4jVersion", '1.7.29')
+        setProperty("jacksonVersion", '2.11.0')
+        setProperty("googleGuavaVersion", '21.0')
+        setProperty("googleGsonVersion", '2.8.5')
+        setProperty("apacheCommonsLang3Version", '3.4')
+        setProperty("fastjsonVersion", '1.2.59')
+    }
     dependencies {
         testImplementation group: 'junit', name: 'junit', version: '4.12'
         testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
-        compileOnly 'org.projectlombok:lombok:1.18.8'
-        implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+
+        implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+//        compileOnly 'org.projectlombok:lombok:1.18.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.10'
     }
 }

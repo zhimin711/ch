@@ -2,6 +2,7 @@ package com.ch.utils;
 
 import com.ch.e.PubException;
 import com.ch.e.IError;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +13,8 @@ import java.io.StringWriter;
  * @author 01370603
  * @date 2018/8/14 11:56
  */
+@Slf4j
 public class ExceptionUtils {
-
-    private final static Logger logger = LoggerFactory.getLogger(ExceptionUtils.class);
 
     /**
      * 创建异常1
@@ -86,7 +86,7 @@ public class ExceptionUtils {
             throwable.printStackTrace(pw);
             return sw.toString();
         } catch (Exception e) {
-            logger.error("to String error!", e);
+            log.error("to String error!", e);
         } finally {
             IOUtils.close(sw, pw);
         }
