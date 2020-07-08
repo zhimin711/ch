@@ -29,6 +29,16 @@ public class KeyValue {
         this.value = value;
     }
 
+    public KeyValue(Number key, String value) {
+        this.key = key + "";
+        this.value = value;
+    }
+
+    public KeyValue(Number key, Number value) {
+        this.key = key + "";
+        this.value = value + "";
+    }
+
     public KeyValue(String key, String value, Date date) {
         this.key = key;
         this.value = value;
