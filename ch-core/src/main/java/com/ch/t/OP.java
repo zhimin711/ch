@@ -1,10 +1,12 @@
 package com.ch.t;
 
 /**
+ * option or operate
+ *
  * @author 01370603
  * @date 2018/8/22 16:52
  */
-public enum OPType {
+public enum OP {
     /**
      * 启动
      */
