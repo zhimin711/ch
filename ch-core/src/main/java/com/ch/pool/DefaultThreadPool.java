@@ -32,7 +32,7 @@ public class DefaultThreadPool {
 //        executor = createFixedPool(num);
     }
 
-    private static ExecutorService getInstance() {
+    private static synchronized ExecutorService getInstance() {
         if (executor == null || executor.isShutdown()) {
             int num = Runtime.getRuntime().availableProcessors() / 2;
             executor = createFixedPool(num);

@@ -83,12 +83,23 @@ public class PlatformUtils {
         return System.getProperty("os.arch");
     }
 
+    private final static String localIP;
+    private final static String hostName;
+
+    static {
+        localIP = getLocalIp();
+        hostName = getHostName();
+    }
+
     /**
      * 获取主机名
      *
      * @return
      */
     public static String getHostName() {
+        if (CommonUtils.isNotEmpty(hostName)) {
+            return hostName;
+        }
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             return inetAddress.getHostName();//获取主机名
@@ -119,6 +130,9 @@ public class PlatformUtils {
      * @return 本机IP
      */
     public static String getLocalIp() {
+        if (CommonUtils.isNotEmpty(localIP)) {
+            return localIP;
+        }
         try {
             InetAddress address = InetAddress.getLocalHost();
             return address.getHostAddress();

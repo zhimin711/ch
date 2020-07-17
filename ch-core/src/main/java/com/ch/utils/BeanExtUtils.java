@@ -31,7 +31,7 @@ public class BeanExtUtils {
      * @param clazz      值类型
      * @return 返回对象
      */
-    public static Object setPropertyValue(Object target, String methodName, Object value, Class clazz) {
+    public static Object setPropertyValue(Object target, String methodName, Object value, Class<?> clazz) {
         if (target != null && methodName != null) {
             Class<?> actualEditable = target.getClass();
 
