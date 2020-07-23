@@ -77,9 +77,12 @@ public class JarUtils {
             return clazzLoader.get(path).loadClass(className);
         }
         URL url1 = new URL(path);
-        URLClassLoader myClassLoader1 = new URLClassLoader(new URL[]{url1}, Thread.currentThread().getContextClassLoader());
-        Class<?> clazz = myClassLoader1.loadClass(className);
-        clazzLoader.put(path, myClassLoader1);
+        Class<?> clazz;
+        synchronized (JarUtils.class) {
+            URLClassLoader myClassLoader1 = new URLClassLoader(new URL[]{url1}, Thread.currentThread().getContextClassLoader());
+            clazz = myClassLoader1.loadClass(className);
+            clazzLoader.put(path, myClassLoader1);
+        }
         return clazz;
     }
 

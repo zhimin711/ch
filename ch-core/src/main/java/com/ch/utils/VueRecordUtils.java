@@ -56,6 +56,7 @@ public class VueRecordUtils {
         return records.stream().map(o -> {
             Object value = BeanExtUtils.getValueByProperty(o, valueProperty);
             Object label = BeanExtUtils.getValueByProperty(o, labelProperty);
+            Object status = BeanExtUtils.getValueByProperty(o, "status");
             VueRecord record = new VueRecord();
             if (value != null) {
                 record.setValue(value.toString());
@@ -63,9 +64,12 @@ public class VueRecordUtils {
             if (label != null) {
                 record.setLabel(label.toString());
             }
+            if (status != null) {
+                record.setDisabled(Boolean.parseBoolean(status.toString()));
+            }
             Object children = BeanExtUtils.getValueByProperty(o, childrenProperty);
-            if (children instanceof Collection && ((Collection) children).size() > 0) {
-                List<VueRecord> children1 = covertRecords((Collection) children, valueProperty, labelProperty, childrenProperty);
+            if (children instanceof Collection && ((Collection<?>) children).size() > 0) {
+                List<VueRecord> children1 = covertRecords((Collection<?>) children, valueProperty, labelProperty, childrenProperty);
                 record.setChildren(children1);
             }
             return record;
